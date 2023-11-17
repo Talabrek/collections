@@ -1,0 +1,25 @@
+package com.blockworlds.collector.config;
+
+import com.blockworlds.collector.CollectorPlugin;
+import org.bukkit.configuration.file.FileConfiguration;
+
+public class ConfigManager {
+
+    private final CollectorPlugin plugin;
+    private FileConfiguration config;
+
+    public ConfigManager(CollectorPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    public void loadConfig() {
+        plugin.saveDefaultConfig();
+        config = plugin.getConfig();
+        // Additional configuration logic
+        // Example: int dropRate = config.getInt("item-drop-rate", 5); // Default drop rate
+    }
+
+    public FileConfiguration getConfig() {
+        return config;
+    }
+}
