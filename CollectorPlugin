@@ -1,0 +1,53 @@
+package com.blockworlds.collector;
+
+import org.bukkit.plugin.java.JavaPlugin;
+import com.blockworlds.collector.database.DatabaseManager;
+import com.blockworlds.collector.config.ConfigManager;
+
+// Placeholder for LuckPerms and Placeholder API imports
+
+public class CollectorPlugin extends JavaPlugin {
+
+    private DatabaseManager databaseManager;
+    private ConfigManager configManager;
+
+    @Override
+    public void onEnable() {
+        // Initialize configuration
+        configManager = new ConfigManager(this);
+        configManager.loadConfig();
+
+        // Set up database connection
+        databaseManager = new DatabaseManager(this);
+        databaseManager.connect();
+
+        // Register event listeners
+        // Example: getServer().getPluginManager().registerEvents(new ExampleListener(this), this);
+
+        // Register commands
+        // Example: this.getCommand("example").setExecutor(new ExampleCommand(this));
+
+        // Initialize Placeholder API integration
+        // Example: if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) { /* Integrate Placeholder API */ }
+
+        // Initialize LuckPerms integration
+        // Example: if(Bukkit.getPluginManager().getPlugin("LuckPerms") != null) { /* Integrate LuckPerms */ }
+
+        getLogger().info("CollectorPlugin has been enabled!");
+    }
+
+    @Override
+    public void onDisable() {
+        databaseManager.disconnect();
+        getLogger().info("CollectorPlugin has been disabled.");
+    }
+
+    // Getters for other classes to access managers
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
+}
