@@ -1,0 +1,54 @@
+package com.blockworlds.collector.database;
+
+import com.blockworlds.collector.CollectorPlugin;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DatabaseManager {
+
+    private final CollectorPlugin plugin;
+    private Connection connection;
+
+    public DatabaseManager(CollectorPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    public void connect() {
+        String host = plugin.getConfigManager().getConfig().getString("database.host");
+        int port = plugin.getConfigManager().getConfig().getInt("database.port");
+        String database = plugin.getConfigManager().getConfig().getString("database.database");
+        String username = plugin.getConfigManager().getConfig().getString("database.username");
+        String password = plugin.getConfigManager().getConfig().getString("database.password");
+
+        try {
+            if (connection != null && !connection.isClosed()) {
+                return;
+            }
+
+            synchronized (this) {
+                if (connection == null || connection.isClosed()) {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    connection = DriverManager.getConnection(
+                            "jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
+                    plugin.getLogger().info("MySQL Connection established.");
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void disconnect() {
+        if (connection != null) {
+            try {
+                connection.close();
+                plugin.getLogger().info("MySQL Connection closed.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // TODO: Add methods for data operations like saving and retrieving player collections
+}
