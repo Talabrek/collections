@@ -3,7 +3,11 @@ package com.blockworlds.collector.database;
 import com.blockworlds.collector.CollectorPlugin;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.UUID;
 
 public class DatabaseManager {
 
@@ -37,6 +41,8 @@ public class DatabaseManager {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        initializeDatabase();
     }
 
     public void disconnect() {
@@ -50,5 +56,78 @@ public class DatabaseManager {
         }
     }
 
-    // TODO: Add methods for data operations like saving and retrieving player collections
+    // Initialize database tables
+    private void initializeDatabase() {
+        try (Statement statement = connection.createStatement()) {
+            // Create player_collections table
+            statement.execute("CREATE TABLE IF NOT EXISTS player_collections (" +
+                              "player_uuid VARCHAR(36) NOT NULL, " +
+                              "item_name VARCHAR(255) NOT NULL, " +
+                              "PRIMARY KEY (player_uuid, item_name));");
+
+            // Create available_collections table
+            statement.execute("CREATE TABLE IF NOT EXISTS available_collections (" +
+                              "collection_name VARCHAR(255) NOT NULL PRIMARY KEY);");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to add an item to a player's collection
+    public void addItemToCollection(UUID playerUUID, String itemName) {
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO player_collections (player_uuid, item_name) VALUES (?, ?) ON DUPLICATE KEY UPDATE item_name = item_name;")) {
+            ps.setString(1, playerUUID.toString());
+            ps.setString(2, itemName);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to check if an item is already collected by a player
+    public boolean isItemCollected(UUID playerUUID, String itemName) {
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM player_collections WHERE player_uuid = ? AND item_name = ?;")) {
+            ps.setString(1, playerUUID.toString());
+            ps.setString(2, itemName);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Method to retrieve a player's collected items
+    public ResultSet getPlayerCollection(UUID playerUUID) {
+        try (PreparedStatement ps = connection.prepareStatement("SELECT item_name FROM player_collections WHERE player_uuid = ?;")) {
+            ps.setString(1, playerUUID.toString());
+            return ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Add a new collection to the available_collections table
+    public void addAvailableCollection(String collectionName) {
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO available_collections (collection_name) VALUES (?) ON DUPLICATE KEY UPDATE collection_name = collection_name;")) {
+            ps.setString(1, collectionName);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Get all available collections
+    public ResultSet getAvailableCollections() {
+        try (PreparedStatement ps = connection.prepareStatement("SELECT collection_name FROM available_collections;")) {
+            return ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // TODO: Add additional database methods as needed
 }
