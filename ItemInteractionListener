@@ -1,0 +1,50 @@
+package com.blockworlds.collector.listeners;
+
+import com.blockworlds.collector.CollectorPlugin;
+import com.blockworlds.collector.gui.CollectionJournalGUI;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
+
+public class ItemInteractionListener implements Listener {
+
+    private final CollectorPlugin plugin;
+
+    public ItemInteractionListener(CollectorPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getAction().isRightClick() && event.hasItem()) {
+            ItemStack item = event.getItem();
+
+            if (isCollectibleItem(item)) {
+                event.setCancelled(true);
+                openCollectionJournal(event.getPlayer(), item);
+            }
+        }
+    }
+
+    private boolean isCollectibleItem(ItemStack item) {
+        if (item != null && item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta.hasLore()) {
+                List<String> lore = meta.getLore();
+                return lore != null && !lore.isEmpty() && ChatColor.stripColor(lore.get(0)).equals("Collectible");
+            }
+        }
+        return false;
+    }
+
+    private void openCollectionJournal(Player player, ItemStack item) {
+        // Implementation of GUI opening logic
+        CollectionJournalGUI.openForPlayer(plugin, player, item);
+    }
+}
