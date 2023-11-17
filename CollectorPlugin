@@ -22,7 +22,7 @@ public class CollectorPlugin extends JavaPlugin {
         databaseManager.connect();
 
         // Register event listeners
-        // Example: getServer().getPluginManager().registerEvents(new ExampleListener(this), this);
+        getServer().getPluginManager().registerEvents(new ItemInteractionListener(this), this);
 
         // Register commands
         // Example: this.getCommand("example").setExecutor(new ExampleCommand(this));
