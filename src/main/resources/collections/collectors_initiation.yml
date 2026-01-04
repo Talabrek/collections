@@ -1,0 +1,116 @@
+# Collector's Initiation
+# A beginner collection to introduce players to the system
+
+id: "collectors_initiation"
+name: "Collector's Initiation"
+description: "Begin your collecting journey! Find these common items around the world."
+tier: COMMON
+icon: SPYGLASS
+
+# Base64 texture for the collectible head (yellow question mark)
+head-texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNlODM1OTM1ZTk1YTNiNGVhNjc0NmEyZThiZWI5MGRmYzc5ZDI3OWEzNjdmNmRjM2YzM2U1ZjVlZjQifX19"
+
+# Zones where this collection can spawn (empty = all zones)
+zones: []
+
+# Required collections to complete first (meta-collection)
+requires: []
+
+# Collection-level spawn conditions (optional)
+# All items in this collection inherit these conditions unless overridden
+conditions:
+  dimensions:
+    - NORMAL  # Overworld only
+  min-y: 50   # Above Y=50
+  max-y: 320  # Below world height
+
+# Collection items
+items:
+  weathered_coin:
+    name: "Weathered Coin"
+    material: GOLD_NUGGET
+    lore:
+      - "<gray>An old coin worn smooth by time.</gray>"
+      - "<dark_gray>Who knows what stories it could tell?</dark_gray>"
+    weight: 10
+    soulbound: true
+
+  smooth_pebble:
+    name: "Smooth Pebble"
+    material: FLINT
+    lore:
+      - "<gray>A perfectly smooth river stone.</gray>"
+      - "<dark_gray>Polished by countless years of flowing water.</dark_gray>"
+    weight: 10
+    soulbound: true
+
+  colorful_feather:
+    name: "Colorful Feather"
+    material: FEATHER
+    lore:
+      - "<gray>A vibrant feather from an exotic bird.</gray>"
+      - "<dark_gray>Its colors shimmer in the light.</dark_gray>"
+    weight: 10
+    soulbound: true
+
+  ancient_bone:
+    name: "Ancient Bone"
+    material: BONE
+    lore:
+      - "<gray>A bone fragment from a long-dead creature.</gray>"
+      - "<dark_gray>What kind of beast did this belong to?</dark_gray>"
+    weight: 10
+    soulbound: true
+
+  glimmering_dust:
+    name: "Glimmering Dust"
+    material: GLOWSTONE_DUST
+    lore:
+      - "<gray>Mysterious dust that faintly glows.</gray>"
+      - "<dark_gray>It sparkles with magical energy.</dark_gray>"
+    weight: 8
+    soulbound: true
+    # Item-level conditions: only spawns at night in dark areas
+    conditions:
+      time: NIGHT
+      max-light: 7
+
+  lucky_clover:
+    name: "Lucky Clover"
+    material: FERN
+    lore:
+      - "<gray>A rare four-leaf clover.</gray>"
+      - "<dark_gray>Perhaps it will bring you fortune!</dark_gray>"
+    weight: 6
+    soulbound: true
+    # Item-level conditions: only spawns with sky access (outdoors)
+    conditions:
+      require-sky: true
+
+# Rewards for completing the collection
+rewards:
+  # Experience points to award
+  experience: 100
+
+  # Message shown on completion
+  message: "<gold>Congratulations!</gold> <green>You've taken your first steps as a collector!</green>"
+
+  # Spawn celebration fireworks
+  fireworks: true
+
+  # Custom sound to play (optional, uses default if not set)
+  sound: "ui.toast.challenge_complete"
+
+  # Item rewards
+  items:
+    collectors_badge:
+      material: NETHER_STAR
+      amount: 1
+      name: "<gold>Collector's Badge</gold>"
+      lore:
+        - "<gray>Proof of your dedication to collecting.</gray>"
+        - "<yellow>Awarded for completing your first collection.</yellow>"
+
+  # Commands to run (%player% is replaced with player name)
+  commands:
+    - "say %player% has completed their first collection!"

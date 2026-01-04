@@ -1,0 +1,191 @@
+# Collections Plugin Configuration
+# https://github.com/blockworlds/collections
+
+# General Settings
+settings:
+  # Cooldown between collecting items (milliseconds)
+  collection-cooldown-ms: 500
+
+  # Maximum collectibles per zone
+  max-collectibles-per-zone: 5
+
+  # Default respawn delay in seconds after a collectible is collected
+  default-respawn-delay-seconds: 60
+
+  # How often to check collectible validity (minutes)
+  validity-check-interval-minutes: 5
+
+  # How often to check for spawning new collectibles (seconds)
+  spawn-check-interval-seconds: 30
+
+  # Enable debug mode for verbose logging
+  debug: false
+
+# Particle Effects
+particles:
+  # Maximum distance to show particles (blocks)
+  distance-blocks: 32
+
+  # Interval between particle spawns (ticks, 20 = 1 second)
+  interval-ticks: 10
+
+# Goggle Settings
+goggles:
+  # Enable the goggle visibility system
+  enabled: true
+
+  # Make goggles soulbound (kept on death)
+  soulbound: true
+
+  # Basic Collector's Goggles - reveals UNCOMMON tier collectibles
+  collectors_goggles:
+    name: "<aqua>Collector's Goggles</aqua>"
+    lore:
+      - "<gray>Specially crafted lenses that</gray>"
+      - "<gray>reveal hidden collectibles.</gray>"
+      - ""
+      - "<yellow>Reveals: <aqua>Uncommon</aqua> collectibles</yellow>"
+    color: "#3399FF"
+
+  # Master Collector's Goggles - reveals UNCOMMON + RARE tier collectibles
+  master_collectors_goggles:
+    name: "<gold>Master Collector's Goggles</gold>"
+    lore:
+      - "<gray>Ancient lenses imbued with</gray>"
+      - "<gray>the wisdom of master collectors.</gray>"
+      - ""
+      - "<yellow>Reveals: <aqua>Uncommon</aqua> + <gold>Rare</gold> collectibles</yellow>"
+    color: "#FFD700"
+
+  # Recipe settings
+  recipes:
+    # Enable crafting recipes for goggles
+    enabled: true
+
+    # Unlock recipes in player's recipe book when they collect their first collectible
+    unlock_on_first_collect: true
+
+# Database Settings
+database:
+  # Database type: sqlite or mysql
+  type: sqlite
+
+  # Path to SQLite database file (relative to server root)
+  path: plugins/Collections/data.db
+
+  # MySQL settings (only used if type is mysql)
+  mysql:
+    host: localhost
+    port: 3306
+    database: collections
+    username: root
+    password: ""
+    pool-size: 10
+
+# Spawn Algorithm Settings
+spawn:
+  # Grid spacing for spawn location search (blocks)
+  grid-spacing: 8
+
+  # Initial search radius from zone center (blocks)
+  initial-radius: 32
+
+  # Maximum search radius before giving up (blocks)
+  max-radius: 128
+
+  # Maximum locations to test per radius expansion
+  max-attempts-per-pass: 200
+
+  # Allow relaxing sky-access requirement as fallback
+  allow-condition-relaxation: true
+
+  # Despawn collectibles after this many minutes if not collected
+  # Timer continues even when chunks unload
+  # Set to 0 to disable automatic despawn
+  despawn-after-minutes: 10
+
+  # Enable spawn debug logging
+  debug: false
+
+# Messages (MiniMessage format)
+# See https://docs.advntr.dev/minimessage/format.html
+messages:
+  # General
+  no-permission: "<red>You don't have permission to do that.</red>"
+  player-only: "<red>This command can only be used by players.</red>"
+  reload-success: "<green>Collections reloaded successfully!</green>"
+  reload-failed: "<red>Failed to reload: <message></red>"
+
+  # Collection
+  item-collected: "<green>You found a <gold><item></gold>!</green>"
+  item-duplicate: "<yellow>You already have this <item> in your journal.</yellow>"
+  item-added-to-journal: "<green>Added <gold><item></gold> to your journal!</green>"
+  collection-complete: "<gold><bold>Collection Complete!</bold></gold> <green>You completed <collection>!</green>"
+  inventory-full: "<red>Your inventory is full! The item dropped at your feet.</red>"
+  cooldown-active: "<red>Please wait before collecting another item.</red>"
+  already-collected: "<red>Someone else collected this first!</red>"
+  item-cannot-modify: "<red>Collection items cannot be modified.</red>"
+
+  # Rewards
+  reward-claimed: "<green>Rewards claimed for <gold><collection></gold>!</green>"
+  reward-already-claimed: "<yellow>You've already claimed rewards for this collection.</yellow>"
+  reward-not-complete: "<red>You haven't completed this collection yet.</red>"
+  reward-inventory-full: "<red>Please make room in your inventory to claim rewards.</red>"
+
+  # Goggles
+  goggles-required: "<yellow>You need <tier> Goggles to see this collectible.</yellow>"
+  goggles-unlocked: "<green>You've unlocked the <tier> Goggles recipe!</green>"
+
+  # Admin
+  admin-spawn-success: "<green>Spawned collectible in zone <zone>.</green>"
+  admin-spawn-failed: "<red>Failed to spawn collectible: <reason></red>"
+  admin-clear-success: "<green>Cleared <count> collectibles.</green>"
+  admin-give-success: "<green>Gave <item> to <player>.</green>"
+  admin-reset-success: "<green>Reset progress for <player>.</green>"
+  admin-reset-backup: "<yellow>Backup created before reset.</yellow>"
+
+  # Errors
+  collection-not-found: "<red>Collection not found: <collection></red>"
+  item-not-found: "<red>Item not found: <item></red>"
+  item-not-found-in-hand: "<red>Item is no longer in your hand.</red>"
+  player-not-found: "<red>Player not found: <player></red>"
+  zone-not-found: "<red>Zone not found: <zone></red>"
+
+  # GUI
+  add-cancelled: "<yellow>Item kept in inventory.</yellow>"
+  collection-incomplete: "<red>You haven't completed <collection> yet.</red>"
+
+# Sound Effects
+sounds:
+  collect-item: "entity.experience_orb.pickup"
+  add-to-journal: "entity.player.levelup"
+  complete-collection: "ui.toast.challenge_complete"
+  claim-reward: "entity.player.levelup"
+  open-journal: "item.book.page_turn"
+
+  # GUI sounds
+  gui-open: "block.chest.open"
+  gui-click: "ui.button.click"
+  gui-success: "entity.player.levelup"
+  gui-error: "entity.villager.no"
+  gui-claim-reward: "ui.toast.challenge_complete"
+
+# Collectible Tiers
+# Each tier has different visibility requirements
+tiers:
+  common:
+    # No goggles required
+    particle: "HAPPY_VILLAGER"
+    particle-color: "#FFFFFF"
+  uncommon:
+    # Requires basic goggles
+    particle: "ENCHANT"
+    particle-color: "#55FF55"
+  rare:
+    # Requires master goggles
+    particle: "ENCHANT"
+    particle-color: "#5555FF"
+  event:
+    # Special event collectibles
+    particle: "ENCHANTED_HIT"
+    particle-color: "#FF55FF"

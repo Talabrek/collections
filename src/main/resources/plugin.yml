@@ -1,0 +1,13 @@
+# Legacy plugin.yml for MockBukkit test compatibility
+# Paper uses paper-plugin.yml, this file is for testing only
+name: Collections
+version: '${version}'
+main: com.blockworlds.collections.Collections
+api-version: '1.21'
+description: EQ2-style collectibles system for Paper
+authors: [BlockWorlds]
+website: https://blockworlds.com
+folia-supported: true
+
+# Commands are registered via Brigadier, not here
+# This file exists for MockBukkit compatibility during testing
