@@ -1,0 +1,92 @@
+# Meadow Blooms - Common tier collection
+# Found in plains, meadows, and flower-rich biomes
+
+id: "meadow_blooms"
+name: "Meadow Blooms"
+description: "Delicate flowers from sun-drenched fields"
+tier: COMMON
+
+conditions:
+  biomes:
+    - MEADOW
+    - PLAINS
+    - SUNFLOWER_PLAINS
+    - FLOWER_FOREST
+    - CHERRY_GROVE
+  dimensions:
+    - NORMAL
+  min-y: 62
+  max-y: 200
+  require-sky: true
+  time: DAY
+
+items:
+  morning_glory:
+    name: "Morning Glory"
+    material: BLUE_ORCHID
+    lore:
+      - "&7Opens its petals to greet"
+      - "&7the rising sun each day."
+    weight: 20
+
+  wild_rose:
+    name: "Wild Rose"
+    material: POPPY
+    lore:
+      - "&7A perfect red rose growing"
+      - "&7free in the meadow."
+    weight: 20
+
+  lavender_sprig:
+    name: "Lavender Sprig"
+    material: ALLIUM
+    lore:
+      - "&7Its calming scent carries"
+      - "&7on the summer breeze."
+    weight: 20
+
+  sunflower_seed:
+    name: "Giant Sunflower Seed"
+    material: SUNFLOWER
+    lore:
+      - "&7From a sunflower that grew"
+      - "&7taller than a person."
+    weight: 15
+
+  butterfly_wing:
+    name: "Butterfly Wing"
+    material: PHANTOM_MEMBRANE
+    lore:
+      - "&7Shed by a butterfly during"
+      - "&7its metamorphosis."
+    weight: 15
+
+  honeycomb_piece:
+    name: "Wild Honeycomb"
+    material: HONEYCOMB
+    lore:
+      - "&7Sweet golden honey still"
+      - "&7dripping from the comb."
+    weight: 10
+
+  four_leaf_clover:
+    name: "Four-Leaf Clover"
+    material: FERN
+    lore:
+      - "&7An exceptionally rare find!"
+      - "&eGrants luck to its holder."
+    weight: 5
+    glowing: true
+
+rewards:
+  experience: 300
+  items:
+    - material: GOLDEN_APPLE
+      name: "&6Meadow's Blessing"
+      lore:
+        - "&7Infused with the essence"
+        - "&7of a thousand flowers."
+      amount: 3
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &eMeadow Blooms&7 collection!"

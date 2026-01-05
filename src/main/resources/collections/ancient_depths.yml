@@ -1,0 +1,84 @@
+# Ancient Depths - Rare tier collection
+# Found in the deepest parts of the Overworld (negative Y)
+
+id: "ancient_depths"
+name: "Ancient Depths"
+description: "Primordial relics from the world's foundation"
+tier: RARE
+
+conditions:
+  dimensions:
+    - NORMAL
+  max-y: -30
+  underground: true
+
+items:
+  bedrock_shard:
+    name: "Bedrock Shard"
+    material: FLINT
+    lore:
+      - "&7A fragment of the unbreakable"
+      - "&7foundation of the world."
+    weight: 25
+
+  primordial_bone:
+    name: "Primordial Bone"
+    material: BONE
+    lore:
+      - "&7From a creature that existed"
+      - "&7before recorded history."
+    weight: 25
+
+  deepslate_fossil:
+    name: "Deepslate Fossil"
+    material: DEEPSLATE
+    lore:
+      - "&7An imprint of ancient life"
+      - "&7preserved in stone."
+    weight: 20
+
+  ancient_diamond:
+    name: "Ancient Diamond"
+    material: DIAMOND
+    lore:
+      - "&7Formed billions of years ago"
+      - "&7under immense pressure."
+    weight: 15
+
+  lava_crystal:
+    name: "Lava Crystal"
+    material: MAGMA_CREAM
+    lore:
+      - "&7Crystallized from magma"
+      - "&7over countless millennia."
+    weight: 10
+    glowing: true
+
+  core_fragment:
+    name: "World Core Fragment"
+    material: NETHER_STAR
+    lore:
+      - "&7A piece of the world's"
+      - "&7very heart. Immensely rare."
+    weight: 5
+    soulbound: true
+    glowing: true
+
+rewards:
+  experience: 2000
+  items:
+    - material: NETHERITE_PICKAXE
+      name: "&4Primordial Excavator"
+      lore:
+        - "&7Carved from the first stone."
+      enchantments:
+        - EFFICIENCY:5
+        - FORTUNE:3
+        - UNBREAKING:3
+        - MENDING:1
+  commands:
+    - "lp user %player% permission set collections.title.deepdelver true"
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &4Ancient Depths&7 collection!"
+    - "&7You've earned the title: &4[Deep Delver]"

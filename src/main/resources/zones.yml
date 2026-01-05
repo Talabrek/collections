@@ -2,66 +2,371 @@
 # Define areas where collectibles can spawn
 
 zones:
-  # Example: Overworld zone covering the entire world
-  overworld:
-    name: "Overworld"
+  # ============================================
+  # COMMON TIER ZONES - Visible to all players
+  # ============================================
+
+  # Starter collection - available everywhere on the surface
+  overworld_surface:
+    name: "Overworld Surface"
     enabled: true
     world: "world"
-    # bounds: Leave empty for unbounded (entire world)
-    # bounds:
-    #   min-x: -1000
-    #   max-x: 1000
-    #   min-z: -1000
-    #   max-z: 1000
     conditions:
-      # Biomes: Leave empty for all biomes
-      biomes: []
-      # Dimensions: NORMAL, NETHER, THE_END
       dimensions:
         - NORMAL
-      # Y-level restrictions
-      min-y: 64
-      max-y: 320
-      # Light level restrictions (0-15)
-      min-light: 8
-      # Require sky access (no blocks above)
+      min-y: 62
+      max-y: 200
       require-sky: true
-      # Underground only (blocks above)
-      underground: false
-    # Collections that can spawn in this zone (empty = all)
     collections:
-      - "collectors_initiation"
-    # Maximum active collectibles in this zone
-    max-collectibles: 5
-    # Delay in seconds before respawning after collection
+      - collectors_initiation
+    max-collectibles: 10
     respawn-delay: 60
 
-  # Example: Nether zone
-  nether:
+  # Forest biomes
+  forest_zones:
+    name: "Forests"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - FOREST
+        - BIRCH_FOREST
+        - OLD_GROWTH_BIRCH_FOREST
+        - FLOWER_FOREST
+      dimensions:
+        - NORMAL
+      min-y: 62
+      max-y: 128
+      require-sky: true
+    collections:
+      - forest_specimens
+    max-collectibles: 6
+    respawn-delay: 45
+
+  # Ocean and beach biomes
+  ocean_zones:
+    name: "Oceans & Beaches"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - OCEAN
+        - DEEP_OCEAN
+        - WARM_OCEAN
+        - LUKEWARM_OCEAN
+        - COLD_OCEAN
+        - BEACH
+        - STONY_SHORE
+      dimensions:
+        - NORMAL
+      min-y: 58
+      max-y: 72
+    collections:
+      - ocean_treasures
+    max-collectibles: 8
+    respawn-delay: 45
+
+  # Frozen biomes
+  frozen_zones:
+    name: "Frozen Lands"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - SNOWY_PLAINS
+        - SNOWY_TAIGA
+        - FROZEN_RIVER
+        - FROZEN_OCEAN
+        - DEEP_FROZEN_OCEAN
+        - ICE_SPIKES
+        - SNOWY_SLOPES
+        - FROZEN_PEAKS
+        - GROVE
+      dimensions:
+        - NORMAL
+      min-y: 62
+      max-y: 200
+    collections:
+      - frozen_fossils
+    max-collectibles: 6
+    respawn-delay: 45
+
+  # Plains and meadow biomes
+  meadow_zones:
+    name: "Meadows & Plains"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - MEADOW
+        - PLAINS
+        - SUNFLOWER_PLAINS
+        - FLOWER_FOREST
+        - CHERRY_GROVE
+      dimensions:
+        - NORMAL
+      min-y: 62
+      max-y: 200
+      require-sky: true
+    collections:
+      - meadow_blooms
+    max-collectibles: 6
+    respawn-delay: 45
+
+  # Savanna biomes
+  savanna_zones:
+    name: "Savannas"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - SAVANNA
+        - SAVANNA_PLATEAU
+        - WINDSWEPT_SAVANNA
+      dimensions:
+        - NORMAL
+      min-y: 62
+      max-y: 150
+      require-sky: true
+    collections:
+      - savanna_safari
+    max-collectibles: 6
+    respawn-delay: 45
+
+  # ============================================
+  # UNCOMMON TIER ZONES - Require Goggles
+  # ============================================
+
+  # Dark forest biome
+  dark_forest_zones:
+    name: "Dark Forests"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - DARK_FOREST
+      dimensions:
+        - NORMAL
+      min-y: 62
+      max-y: 120
+      require-sky: true
+    collections:
+      - darkwood_specimens
+    max-collectibles: 5
+    respawn-delay: 60
+
+  # Desert and badlands biomes
+  desert_zones:
+    name: "Deserts & Badlands"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - DESERT
+        - BADLANDS
+        - ERODED_BADLANDS
+        - WOODED_BADLANDS
+      dimensions:
+        - NORMAL
+      min-y: 62
+      max-y: 128
+      require-sky: true
+    collections:
+      - desert_antiquities
+    max-collectibles: 6
+    respawn-delay: 60
+
+  # Underground caves (general)
+  cave_zones:
+    name: "Underground Caves"
+    enabled: true
+    world: "world"
+    conditions:
+      dimensions:
+        - NORMAL
+      max-y: 50
+      underground: true
+    collections:
+      - cave_crystals
+    max-collectibles: 6
+    respawn-delay: 75
+
+  # Swamp and mangrove biomes
+  swamp_zones:
+    name: "Swamps & Mangroves"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - SWAMP
+        - MANGROVE_SWAMP
+      dimensions:
+        - NORMAL
+      min-y: 58
+      max-y: 80
+    collections:
+      - swamp_curios
+    max-collectibles: 5
+    respawn-delay: 60
+
+  # Jungle biomes
+  jungle_zones:
+    name: "Jungles"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - JUNGLE
+        - BAMBOO_JUNGLE
+        - SPARSE_JUNGLE
+      dimensions:
+        - NORMAL
+      min-y: 62
+      max-y: 150
+    collections:
+      - jungle_botanicals
+    max-collectibles: 6
+    respawn-delay: 60
+
+  # Mushroom island biome
+  mushroom_zones:
+    name: "Mushroom Islands"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - MUSHROOM_FIELDS
+      dimensions:
+        - NORMAL
+      min-y: 62
+      max-y: 100
+    collections:
+      - mushroom_mysteries
+    max-collectibles: 5
+    respawn-delay: 90
+
+  # Mountain biomes (high altitude)
+  mountain_zones:
+    name: "Mountain Peaks"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - STONY_PEAKS
+        - JAGGED_PEAKS
+        - FROZEN_PEAKS
+        - WINDSWEPT_HILLS
+        - WINDSWEPT_GRAVELLY_HILLS
+        - WINDSWEPT_FOREST
+        - SNOWY_SLOPES
+      dimensions:
+        - NORMAL
+      min-y: 100
+      max-y: 320
+      require-sky: true
+    collections:
+      - mountain_relics
+    max-collectibles: 5
+    respawn-delay: 75
+
+  # Taiga biomes
+  taiga_zones:
+    name: "Taiga Forests"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - TAIGA
+        - OLD_GROWTH_PINE_TAIGA
+        - OLD_GROWTH_SPRUCE_TAIGA
+        - SNOWY_TAIGA
+      dimensions:
+        - NORMAL
+      min-y: 62
+      max-y: 150
+    collections:
+      - taiga_treasures
+    max-collectibles: 6
+    respawn-delay: 60
+
+  # Lush caves biome
+  lush_cave_zones:
+    name: "Lush Caves"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - LUSH_CAVES
+      dimensions:
+        - NORMAL
+      max-y: 50
+    collections:
+      - lush_cave_wonders
+    max-collectibles: 5
+    respawn-delay: 75
+
+  # ============================================
+  # RARE TIER ZONES - Require Master Goggles
+  # ============================================
+
+  # The Nether dimension
+  nether_wastes:
     name: "Nether Wastes"
-    enabled: false
+    enabled: true
     world: "world_nether"
     conditions:
       dimensions:
         - NETHER
-      min-y: 32
+      min-y: 30
       max-y: 120
-    collections: []
-    max-collectibles: 3
+    collections:
+      - nether_relics
+    max-collectibles: 5
     respawn-delay: 120
 
-  # Example: Underground cave zone
-  caves:
-    name: "Underground Caves"
-    enabled: false
+  # The End dimension
+  the_end:
+    name: "The End"
+    enabled: true
+    world: "world_the_end"
+    conditions:
+      dimensions:
+        - THE_END
+      min-y: 0
+      max-y: 128
+    collections:
+      - end_artifacts
+    max-collectibles: 5
+    respawn-delay: 150
+
+  # Deep Dark biome
+  deep_dark_zones:
+    name: "Deep Dark"
+    enabled: true
+    world: "world"
+    conditions:
+      biomes:
+        - DEEP_DARK
+      dimensions:
+        - NORMAL
+      max-y: -20
+      max-light: 1
+    collections:
+      - deep_dark_echoes
+    max-collectibles: 4
+    respawn-delay: 180
+
+  # Deepest underground (negative Y)
+  ancient_depths:
+    name: "Ancient Depths"
+    enabled: true
     world: "world"
     conditions:
       dimensions:
         - NORMAL
-      max-y: 63
-      max-light: 4
-      require-sky: false
+      max-y: -30
       underground: true
-    collections: []
-    max-collectibles: 3
-    respawn-delay: 90
+    collections:
+      - ancient_depths
+    max-collectibles: 4
+    respawn-delay: 180

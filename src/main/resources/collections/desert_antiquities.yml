@@ -1,0 +1,84 @@
+# Desert Antiquities - Uncommon tier collection
+# Found in desert and badlands biomes
+
+id: "desert_antiquities"
+name: "Desert Antiquities"
+description: "Ancient artifacts from the shifting sands"
+tier: UNCOMMON
+
+conditions:
+  biomes:
+    - DESERT
+    - BADLANDS
+    - ERODED_BADLANDS
+    - WOODED_BADLANDS
+  dimensions:
+    - NORMAL
+  min-y: 62
+  max-y: 128
+  require-sky: true
+
+items:
+  scarab_beetle:
+    name: "Scarab Beetle"
+    material: SPIDER_EYE
+    lore:
+      - "&7A sacred insect revered by"
+      - "&7an ancient desert civilization."
+    weight: 25
+
+  pharaohs_coin:
+    name: "Pharaoh's Coin"
+    material: GOLD_NUGGET
+    lore:
+      - "&7Currency from a kingdom"
+      - "&7lost to the sands of time."
+    weight: 20
+
+  sandstone_tablet:
+    name: "Sandstone Tablet"
+    material: SANDSTONE
+    lore:
+      - "&7Inscribed with mysterious"
+      - "&7hieroglyphic symbols."
+    weight: 20
+
+  mummy_wrapping:
+    name: "Mummy Wrapping"
+    material: STRING
+    lore:
+      - "&7Ancient burial cloth, still"
+      - "&7faintly smelling of incense."
+    weight: 15
+
+  sun_disk:
+    name: "Sun Disk"
+    material: SUNFLOWER
+    lore:
+      - "&7A golden amulet representing"
+      - "&7the desert's blazing sun."
+    weight: 10
+    conditions:
+      time: DAY
+
+  desert_rose:
+    name: "Desert Rose Crystal"
+    material: PINK_STAINED_GLASS
+    lore:
+      - "&7A rose-shaped crystal formation"
+      - "&7found only in ancient dunes."
+    weight: 10
+
+rewards:
+  experience: 500
+  items:
+    - material: GOLDEN_HELMET
+      name: "&6Pharaoh's Crown"
+      lore:
+        - "&7Once worn by desert royalty."
+      enchantments:
+        - PROTECTION:2
+        - UNBREAKING:2
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &6Desert Antiquities&7 collection!"

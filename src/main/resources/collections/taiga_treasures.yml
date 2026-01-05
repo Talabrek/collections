@@ -1,0 +1,84 @@
+# Taiga Treasures - Uncommon tier collection
+# Found in taiga and old growth forest biomes
+
+id: "taiga_treasures"
+name: "Taiga Treasures"
+description: "Northern wonders from the evergreen forests"
+tier: UNCOMMON
+
+conditions:
+  biomes:
+    - TAIGA
+    - OLD_GROWTH_PINE_TAIGA
+    - OLD_GROWTH_SPRUCE_TAIGA
+    - SNOWY_TAIGA
+  dimensions:
+    - NORMAL
+  min-y: 62
+  max-y: 150
+
+items:
+  pine_cone:
+    name: "Ancient Pine Cone"
+    material: SPRUCE_SAPLING
+    lore:
+      - "&7From a tree that has stood"
+      - "&7for a thousand winters."
+    weight: 25
+
+  wolf_fang:
+    name: "Wolf Fang"
+    material: BONE
+    lore:
+      - "&7Shed by an alpha wolf"
+      - "&7deep in the taiga."
+    weight: 20
+
+  frost_berry:
+    name: "Frost Berry"
+    material: SWEET_BERRIES
+    lore:
+      - "&7Berries that stay frozen"
+      - "&7even in your warm hands."
+    weight: 20
+
+  fox_whisker:
+    name: "Fox Whisker"
+    material: STRING
+    lore:
+      - "&7From the clever foxes"
+      - "&7that roam these forests."
+    weight: 15
+
+  aurora_shard:
+    name: "Aurora Shard"
+    material: PRISMARINE_SHARD
+    lore:
+      - "&7Crystallized light from"
+      - "&7the northern aurora."
+    weight: 10
+    conditions:
+      time: NIGHT
+    glowing: true
+
+  viking_coin:
+    name: "Viking Coin"
+    material: IRON_NUGGET
+    lore:
+      - "&7Currency from ancient"
+      - "&7northern explorers."
+    weight: 10
+
+rewards:
+  experience: 500
+  items:
+    - material: IRON_AXE
+      name: "&fNorthern Hatchet"
+      lore:
+        - "&7Forged in the frozen north."
+      enchantments:
+        - EFFICIENCY:4
+        - UNBREAKING:3
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &fTaiga Treasures&7 collection!"

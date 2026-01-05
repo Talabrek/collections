@@ -1,0 +1,82 @@
+# Cave Crystals - Uncommon tier collection
+# Found underground in caves and caverns
+
+id: "cave_crystals"
+name: "Cave Crystals"
+description: "Precious gems formed in the depths below"
+tier: UNCOMMON
+
+conditions:
+  dimensions:
+    - NORMAL
+  max-y: 50
+  underground: true
+
+items:
+  quartz_shard:
+    name: "Pure Quartz Shard"
+    material: QUARTZ
+    lore:
+      - "&7A perfectly clear crystal"
+      - "&7formed over millennia."
+    weight: 25
+
+  amethyst_chip:
+    name: "Amethyst Geode Chip"
+    material: AMETHYST_SHARD
+    lore:
+      - "&7A fragment from a massive"
+      - "&7underground amethyst formation."
+    weight: 25
+
+  glow_crystal:
+    name: "Glow Crystal"
+    material: GLOW_BERRIES
+    lore:
+      - "&7A crystal that emits a soft"
+      - "&7ethereal light from within."
+    weight: 20
+
+  deep_sapphire:
+    name: "Deep Sapphire"
+    material: LAPIS_LAZULI
+    lore:
+      - "&7A gem as blue as the"
+      - "&7deepest midnight sky."
+    weight: 15
+    conditions:
+      max-light: 4
+
+  emerald_cluster:
+    name: "Emerald Cluster"
+    material: EMERALD
+    lore:
+      - "&7Multiple emeralds fused"
+      - "&7into a single formation."
+    weight: 10
+
+  void_opal:
+    name: "Void Opal"
+    material: PRISMARINE_SHARD
+    lore:
+      - "&7Swirling darkness within"
+      - "&7suggests depths unknown."
+    weight: 5
+    glowing: true
+    conditions:
+      max-y: 0
+
+rewards:
+  experience: 600
+  items:
+    - material: DIAMOND_PICKAXE
+      name: "&bCrystal Excavator"
+      lore:
+        - "&7Attuned to finding rare gems."
+      enchantments:
+        - FORTUNE:2
+        - EFFICIENCY:3
+        - UNBREAKING:2
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &bCave Crystals&7 collection!"

@@ -1,0 +1,83 @@
+# Mushroom Mysteries - Uncommon tier collection
+# Found exclusively in mushroom island biomes
+
+id: "mushroom_mysteries"
+name: "Mushroom Mysteries"
+description: "Fungal wonders from the mycelium islands"
+tier: UNCOMMON
+
+conditions:
+  biomes:
+    - MUSHROOM_FIELDS
+  dimensions:
+    - NORMAL
+  min-y: 62
+  max-y: 100
+
+items:
+  giant_spore:
+    name: "Giant Mushroom Spore"
+    material: BROWN_MUSHROOM
+    lore:
+      - "&7A spore the size of your fist"
+      - "&7from a massive mushroom."
+    weight: 25
+
+  mycelium_sample:
+    name: "Living Mycelium"
+    material: MYCELIUM
+    lore:
+      - "&7The network that connects"
+      - "&7all fungi on the island."
+    weight: 25
+
+  mooshroom_hair:
+    name: "Mooshroom Hair"
+    material: RED_WOOL
+    lore:
+      - "&7Soft fur from the island's"
+      - "&7unique mushroom cattle."
+    weight: 20
+
+  phosphor_fungus:
+    name: "Phosphor Fungus"
+    material: SHROOMLIGHT
+    lore:
+      - "&7A mushroom that glows with"
+      - "&7an inner bioluminescence."
+    weight: 15
+    glowing: true
+
+  fairy_ring_piece:
+    name: "Fairy Ring Fragment"
+    material: RED_MUSHROOM
+    lore:
+      - "&7From a circle where fairies"
+      - "&7are said to dance at night."
+    weight: 10
+    conditions:
+      time: NIGHT
+
+  truffle_supreme:
+    name: "Supreme Truffle"
+    material: BROWN_MUSHROOM_BLOCK
+    lore:
+      - "&7The rarest and most valuable"
+      - "&7fungus in existence."
+    weight: 5
+    soulbound: true
+
+rewards:
+  experience: 600
+  items:
+    - material: SUSPICIOUS_STEW
+      name: "&dMycologist's Special"
+      lore:
+        - "&7A stew of legendary taste."
+      amount: 5
+  commands:
+    - "lp user %player% permission set collections.title.mycologist true"
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &dMushroom Mysteries&7 collection!"
+    - "&7You've earned the title: &d[Mycologist]"

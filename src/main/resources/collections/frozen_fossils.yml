@@ -1,0 +1,87 @@
+# Frozen Fossils - Common tier collection
+# Found in snowy and icy biomes
+
+id: "frozen_fossils"
+name: "Frozen Fossils"
+description: "Ancient remains preserved in eternal ice"
+tier: COMMON
+
+conditions:
+  biomes:
+    - SNOWY_PLAINS
+    - SNOWY_TAIGA
+    - FROZEN_RIVER
+    - FROZEN_OCEAN
+    - DEEP_FROZEN_OCEAN
+    - ICE_SPIKES
+    - SNOWY_SLOPES
+    - FROZEN_PEAKS
+    - JAGGED_PEAKS
+    - GROVE
+  dimensions:
+    - NORMAL
+  min-y: 62
+  max-y: 200
+
+items:
+  ice_age_bone:
+    name: "Ice Age Bone"
+    material: BONE
+    lore:
+      - "&7A massive bone from a creature"
+      - "&7that roamed during the last ice age."
+    weight: 25
+
+  frozen_flower:
+    name: "Frozen Flower"
+    material: BLUE_ORCHID
+    lore:
+      - "&7A flower perfectly preserved"
+      - "&7in a shell of clear ice."
+    weight: 20
+
+  mammoth_tusk:
+    name: "Mammoth Tusk Fragment"
+    material: POINTED_DRIPSTONE
+    lore:
+      - "&7Part of a curved tusk from"
+      - "&7an ancient woolly mammoth."
+    weight: 15
+
+  prehistoric_amber:
+    name: "Prehistoric Amber"
+    material: YELLOW_STAINED_GLASS
+    lore:
+      - "&7Contains a perfectly preserved"
+      - "&7insect from millions of years ago."
+    weight: 15
+
+  glacial_crystal:
+    name: "Glacial Crystal"
+    material: ICE
+    lore:
+      - "&7Ice so ancient it has become"
+      - "&7harder than stone."
+    weight: 15
+
+  sabertooth_fang:
+    name: "Sabertooth Fang"
+    material: IRON_NUGGET
+    lore:
+      - "&7A curved fang from a fearsome"
+      - "&7prehistoric predator."
+    weight: 10
+
+rewards:
+  experience: 250
+  items:
+    - material: LEATHER_BOOTS
+      name: "&fGlacier Walker Boots"
+      lore:
+        - "&7Never slip on ice again."
+      color: "#E0FFFF"
+      enchantments:
+        - FROST_WALKER:1
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &fFrozen Fossils&7 collection!"

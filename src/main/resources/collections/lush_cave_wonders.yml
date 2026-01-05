@@ -1,0 +1,75 @@
+# Lush Cave Wonders - Uncommon tier collection
+# Found in lush cave biomes
+
+id: "lush_cave_wonders"
+name: "Lush Cave Wonders"
+description: "Vibrant treasures from underground gardens"
+tier: UNCOMMON
+
+conditions:
+  biomes:
+    - LUSH_CAVES
+  dimensions:
+    - NORMAL
+  max-y: 50
+
+items:
+  glow_berry_cluster:
+    name: "Perfect Glow Berry Cluster"
+    material: GLOW_BERRIES
+    lore:
+      - "&7An unusually large cluster"
+      - "&7of bioluminescent berries."
+    weight: 25
+
+  azalea_bloom:
+    name: "Flowering Azalea Bloom"
+    material: FLOWERING_AZALEA
+    lore:
+      - "&7A perfect blossom from"
+      - "&7the underground gardens."
+    weight: 25
+
+  moss_carpet:
+    name: "Living Moss Carpet"
+    material: MOSS_CARPET
+    lore:
+      - "&7Soft moss that seems to"
+      - "&7spread wherever you place it."
+    weight: 20
+
+  axolotl_scale:
+    name: "Axolotl Scale"
+    material: TROPICAL_FISH
+    lore:
+      - "&7A shimmering scale from"
+      - "&7the cave's cute residents."
+    weight: 15
+
+  dripleaf_seed:
+    name: "Giant Dripleaf Seed"
+    material: BIG_DRIPLEAF
+    lore:
+      - "&7Contains the potential for"
+      - "&7a towering plant platform."
+    weight: 10
+
+  spore_blossom_center:
+    name: "Spore Blossom Heart"
+    material: SPORE_BLOSSOM
+    lore:
+      - "&7The precious center of"
+      - "&7the cave's iconic flower."
+    weight: 5
+    glowing: true
+
+rewards:
+  experience: 500
+  items:
+    - material: AXOLOTL_BUCKET
+      name: "&dCave Guardian"
+      lore:
+        - "&7A loyal axolotl companion."
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &dLush Cave Wonders&7 collection!"

@@ -1,0 +1,91 @@
+# Mountain Relics - Uncommon tier collection
+# Found in mountain biomes at high altitudes
+
+id: "mountain_relics"
+name: "Mountain Relics"
+description: "Ancient artifacts from the highest peaks"
+tier: UNCOMMON
+
+conditions:
+  biomes:
+    - STONY_PEAKS
+    - JAGGED_PEAKS
+    - FROZEN_PEAKS
+    - WINDSWEPT_HILLS
+    - WINDSWEPT_GRAVELLY_HILLS
+    - WINDSWEPT_FOREST
+    - SNOWY_SLOPES
+  dimensions:
+    - NORMAL
+  min-y: 100
+  max-y: 320
+  require-sky: true
+
+items:
+  eagles_feather:
+    name: "Giant Eagle Feather"
+    material: FEATHER
+    lore:
+      - "&7From a legendary bird that"
+      - "&7nests on the highest peaks."
+    weight: 25
+
+  mountain_crystal:
+    name: "Mountain Crystal"
+    material: QUARTZ
+    lore:
+      - "&7Formed by extreme pressure"
+      - "&7at great heights."
+    weight: 25
+
+  goat_horn_chip:
+    name: "Mountain Goat Horn"
+    material: GOAT_HORN
+    lore:
+      - "&7Shed by the sure-footed"
+      - "&7climbers of the peaks."
+    weight: 20
+
+  hermits_scroll:
+    name: "Hermit's Scroll"
+    material: PAPER
+    lore:
+      - "&7Ancient wisdom from a sage"
+      - "&7who lived above the clouds."
+    weight: 15
+
+  edelweiss:
+    name: "Edelweiss Flower"
+    material: WHITE_TULIP
+    lore:
+      - "&7A rare alpine flower"
+      - "&7symbolizing noble purity."
+    weight: 10
+    conditions:
+      min-y: 150
+
+  summit_stone:
+    name: "Summit Stone"
+    material: SMOOTH_STONE
+    lore:
+      - "&7Touched by lightning at the"
+      - "&7very peak of the mountain."
+    weight: 5
+    glowing: true
+    conditions:
+      min-y: 200
+
+rewards:
+  experience: 600
+  items:
+    - material: LEATHER_BOOTS
+      name: "&7Mountaineer's Boots"
+      lore:
+        - "&7Grip any surface with ease."
+      color: "#8B4513"
+      enchantments:
+        - FEATHER_FALLING:3
+        - UNBREAKING:3
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &7Mountain Relics&7 collection!"

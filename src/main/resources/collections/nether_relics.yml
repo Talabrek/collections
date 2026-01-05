@@ -1,0 +1,88 @@
+# Nether Relics - Rare tier collection
+# Found throughout the Nether dimension
+
+id: "nether_relics"
+name: "Nether Relics"
+description: "Hellish artifacts from the infernal depths"
+tier: RARE
+
+conditions:
+  dimensions:
+    - NETHER
+  min-y: 30
+  max-y: 120
+
+items:
+  blaze_core:
+    name: "Blaze Core"
+    material: BLAZE_POWDER
+    lore:
+      - "&7The burning heart of a"
+      - "&7vanquished blaze."
+    weight: 25
+
+  soul_fragment:
+    name: "Soul Fragment"
+    material: SOUL_SAND
+    lore:
+      - "&7A piece of crystallized"
+      - "&7tormented essence."
+    weight: 25
+    conditions:
+      biomes:
+        - SOUL_SAND_VALLEY
+
+  wither_bone:
+    name: "Wither Bone"
+    material: BONE
+    lore:
+      - "&7Blackened bone from a"
+      - "&7wither skeleton elite."
+    weight: 20
+    conditions:
+      biomes:
+        - NETHER_WASTES
+
+  ghast_tear_crystal:
+    name: "Ghast Tear Crystal"
+    material: GHAST_TEAR
+    lore:
+      - "&7Crystallized tears, hardened"
+      - "&7by centuries in the heat."
+    weight: 15
+    glowing: true
+
+  crimson_heart:
+    name: "Crimson Heart"
+    material: CRIMSON_FUNGUS
+    lore:
+      - "&7The core of a massive"
+      - "&7crimson fungal growth."
+    weight: 10
+    conditions:
+      biomes:
+        - CRIMSON_FOREST
+
+  ancient_netherite_coin:
+    name: "Ancient Netherite Coin"
+    material: NETHERITE_SCRAP
+    lore:
+      - "&7Currency from a civilization"
+      - "&7that existed before the Nether."
+    weight: 5
+    soulbound: true
+    glowing: true
+
+rewards:
+  experience: 1000
+  items:
+    - material: NETHERITE_INGOT
+      name: "&4Hellforged Ingot"
+      lore:
+        - "&7Purified in the fires below."
+  commands:
+    - "lp user %player% permission set collections.title.hellwalker true"
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &4Nether Relics&7 collection!"
+    - "&7You've earned the title: &4[Hellwalker]"

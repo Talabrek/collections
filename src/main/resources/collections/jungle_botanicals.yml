@@ -1,0 +1,88 @@
+# Jungle Botanicals - Uncommon tier collection
+# Found in jungle biomes
+
+id: "jungle_botanicals"
+name: "Jungle Botanicals"
+description: "Exotic flora from the tropical rainforest"
+tier: UNCOMMON
+
+conditions:
+  biomes:
+    - JUNGLE
+    - BAMBOO_JUNGLE
+    - SPARSE_JUNGLE
+  dimensions:
+    - NORMAL
+  min-y: 62
+  max-y: 150
+
+items:
+  orchid_bloom:
+    name: "Rare Orchid Bloom"
+    material: PINK_PETALS
+    lore:
+      - "&7A magnificent flower that"
+      - "&7blooms once every decade."
+    weight: 25
+
+  parrot_plume:
+    name: "Parrot Plume"
+    material: FEATHER
+    lore:
+      - "&7A vibrant feather in"
+      - "&7brilliant tropical colors."
+    weight: 20
+
+  cocoa_heart:
+    name: "Cocoa Heart"
+    material: COCOA_BEANS
+    lore:
+      - "&7The perfect cocoa pod,"
+      - "&7prized by chocolatiers."
+    weight: 20
+
+  jungle_vine:
+    name: "Living Jungle Vine"
+    material: VINE
+    lore:
+      - "&7Still growing even after"
+      - "&7being harvested."
+    weight: 15
+
+  poison_dart_frog:
+    name: "Poison Dart Frog"
+    material: SLIME_BALL
+    lore:
+      - "&7Handle with extreme care!"
+      - "&7Its skin secretes toxins."
+    weight: 10
+
+  temple_idol:
+    name: "Temple Idol"
+    material: GOLD_INGOT
+    lore:
+      - "&7A golden statue from a"
+      - "&7forgotten jungle temple."
+    weight: 5
+    glowing: true
+
+  ocelot_whisker:
+    name: "Ocelot Whisker"
+    material: STRING
+    lore:
+      - "&7Shed by one of the jungle's"
+      - "&7elusive wild cats."
+    weight: 5
+
+rewards:
+  experience: 600
+  items:
+    - material: ELYTRA
+      name: "&aJungle Glider"
+      lore:
+        - "&7Woven from enchanted vines."
+      enchantments:
+        - UNBREAKING:2
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &aJungle Botanicals&7 collection!"

@@ -1,0 +1,85 @@
+# Forest Specimens - Common tier collection
+# Found in various forest biomes during daytime
+
+id: "forest_specimens"
+name: "Forest Specimens"
+description: "Natural treasures from the woodland realm"
+tier: COMMON
+
+conditions:
+  biomes:
+    - FOREST
+    - BIRCH_FOREST
+    - OLD_GROWTH_BIRCH_FOREST
+    - FLOWER_FOREST
+  dimensions:
+    - NORMAL
+  min-y: 62
+  max-y: 128
+  require-sky: true
+
+items:
+  oak_heartwood:
+    name: "Oak Heartwood"
+    material: OAK_LOG
+    lore:
+      - "&7A perfectly preserved section"
+      - "&7from an ancient oak's core."
+    weight: 25
+
+  acorn_cluster:
+    name: "Acorn Cluster"
+    material: BEETROOT_SEEDS
+    lore:
+      - "&7A cluster of perfectly formed acorns,"
+      - "&7ready to become mighty oaks."
+    weight: 25
+
+  fern_frond:
+    name: "Pristine Fern Frond"
+    material: FERN
+    lore:
+      - "&7An unblemished fern leaf"
+      - "&7with intricate patterns."
+    weight: 20
+
+  wild_berries:
+    name: "Wild Forest Berries"
+    material: SWEET_BERRIES
+    lore:
+      - "&7A handful of the forest's"
+      - "&7sweetest offerings."
+    weight: 20
+
+  songbird_feather:
+    name: "Songbird Feather"
+    material: FEATHER
+    lore:
+      - "&7A delicate feather from"
+      - "&7one of the forest's singers."
+    weight: 15
+    conditions:
+      time: DAY
+
+  amber_dewdrop:
+    name: "Amber Dewdrop"
+    material: HONEY_BOTTLE
+    lore:
+      - "&7Morning dew crystallized"
+      - "&7into precious amber."
+    weight: 10
+    conditions:
+      time: DAY
+
+rewards:
+  experience: 250
+  items:
+    - material: LEATHER_CHESTPLATE
+      name: "&2Forester's Vest"
+      lore:
+        - "&7Worn by those who know"
+        - "&7the forest's secrets."
+      color: "#228B22"
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &2Forest Specimens&7 collection!"

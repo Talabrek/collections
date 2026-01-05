@@ -1,0 +1,83 @@
+# End Artifacts - Rare tier collection
+# Found in the End dimension
+
+id: "end_artifacts"
+name: "End Artifacts"
+description: "Mysterious relics from the void beyond"
+tier: RARE
+
+conditions:
+  dimensions:
+    - THE_END
+  min-y: 0
+  max-y: 128
+
+items:
+  chorus_bloom:
+    name: "Chorus Bloom"
+    material: CHORUS_FLOWER
+    lore:
+      - "&7A flower from the strange"
+      - "&7plants of the outer islands."
+    weight: 25
+
+  shulker_pearl:
+    name: "Shulker Pearl"
+    material: SHULKER_SHELL
+    lore:
+      - "&7Contains the essence of"
+      - "&7a shulker's levitation."
+    weight: 25
+
+  void_essence:
+    name: "Void Essence"
+    material: BLACK_DYE
+    lore:
+      - "&7Pure darkness condensed"
+      - "&7into physical form."
+    weight: 20
+    glowing: true
+
+  ender_eye_fragment:
+    name: "Ender Eye Fragment"
+    material: ENDER_EYE
+    lore:
+      - "&7A broken eye that still"
+      - "&7seeks its destination."
+    weight: 15
+
+  end_crystal_shard:
+    name: "End Crystal Shard"
+    material: END_CRYSTAL
+    lore:
+      - "&7Radiates with the power"
+      - "&7that heals the dragon."
+    weight: 10
+    glowing: true
+
+  dragon_scale:
+    name: "Dragon Scale"
+    material: DRAGON_BREATH
+    lore:
+      - "&7Shed by the Ender Dragon"
+      - "&7herself. Incredibly rare."
+    weight: 5
+    soulbound: true
+    glowing: true
+
+rewards:
+  experience: 1500
+  items:
+    - material: ELYTRA
+      name: "&5Void Wings"
+      lore:
+        - "&7Blessed by the End."
+      enchantments:
+        - UNBREAKING:3
+        - MENDING:1
+  commands:
+    - "lp user %player% permission set collections.title.voidwalker true"
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &5End Artifacts&7 collection!"
+    - "&7You've earned the title: &5[Voidwalker]"

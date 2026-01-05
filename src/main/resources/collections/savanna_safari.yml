@@ -1,0 +1,82 @@
+# Savanna Safari - Common tier collection
+# Found in savanna biomes
+
+id: "savanna_safari"
+name: "Savanna Safari"
+description: "Mementos from the golden grasslands"
+tier: COMMON
+
+conditions:
+  biomes:
+    - SAVANNA
+    - SAVANNA_PLATEAU
+    - WINDSWEPT_SAVANNA
+  dimensions:
+    - NORMAL
+  min-y: 62
+  max-y: 150
+  require-sky: true
+
+items:
+  acacia_blossom:
+    name: "Acacia Blossom"
+    material: ORANGE_TULIP
+    lore:
+      - "&7A fragrant flower from"
+      - "&7the savanna's iconic trees."
+    weight: 25
+
+  lion_mane_grass:
+    name: "Lion's Mane Grass"
+    material: TALL_GRASS
+    lore:
+      - "&7Golden grass that sways"
+      - "&7like a lion's mane."
+    weight: 25
+
+  elephant_tusk_chip:
+    name: "Elephant Tusk Chip"
+    material: BONE_MEAL
+    lore:
+      - "&7A small piece of ancient"
+      - "&7ivory, naturally shed."
+    weight: 20
+
+  safari_feather:
+    name: "Exotic Bird Feather"
+    material: FEATHER
+    lore:
+      - "&7Brilliantly colored plumage"
+      - "&7from a savanna bird."
+    weight: 15
+
+  termite_mound_clay:
+    name: "Termite Mound Clay"
+    material: TERRACOTTA
+    lore:
+      - "&7Clay from an abandoned"
+      - "&7termite cathedral."
+    weight: 10
+
+  sunset_amber:
+    name: "Sunset Amber"
+    material: ORANGE_STAINED_GLASS
+    lore:
+      - "&7Captures the golden hues"
+      - "&7of the savanna sunset."
+    weight: 5
+    conditions:
+      time: DAY
+    glowing: true
+
+rewards:
+  experience: 250
+  items:
+    - material: LEATHER_LEGGINGS
+      name: "&6Safari Pants"
+      lore:
+        - "&7Perfect for savanna expeditions."
+      color: "#D2691E"
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &6Savanna Safari&7 collection!"

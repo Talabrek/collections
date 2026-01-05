@@ -1,0 +1,92 @@
+# Deep Dark Echoes - Rare tier collection
+# Found in the Deep Dark biome
+
+id: "deep_dark_echoes"
+name: "Deep Dark Echoes"
+description: "Terrifying remnants from the sculk depths"
+tier: RARE
+
+conditions:
+  biomes:
+    - DEEP_DARK
+  dimensions:
+    - NORMAL
+  max-y: -20
+  max-light: 1
+
+items:
+  sculk_heart:
+    name: "Sculk Heart"
+    material: SCULK
+    lore:
+      - "&7Pulses with an unnatural"
+      - "&7rhythm in your hands."
+    weight: 25
+
+  echo_shard_pure:
+    name: "Pure Echo Shard"
+    material: ECHO_SHARD
+    lore:
+      - "&7Resonates with sounds"
+      - "&7from ages past."
+    weight: 25
+
+  warden_bone:
+    name: "Warden Bone Fragment"
+    material: BONE
+    lore:
+      - "&7From a creature that should"
+      - "&7never have existed."
+    weight: 15
+    glowing: true
+
+  ancient_city_coin:
+    name: "Ancient City Coin"
+    material: DISC_FRAGMENT_5
+    lore:
+      - "&7Currency from the civilization"
+      - "&7that built the cities below."
+    weight: 15
+
+  silent_bell:
+    name: "Silent Bell"
+    material: BELL
+    lore:
+      - "&7Makes no sound, as if the"
+      - "&7darkness itself silences it."
+    weight: 10
+
+  sculk_catalyst_core:
+    name: "Sculk Catalyst Core"
+    material: SCULK_CATALYST
+    lore:
+      - "&7The source of the sculk's"
+      - "&7terrifying spread."
+    weight: 5
+    soulbound: true
+    glowing: true
+
+  warden_tendril:
+    name: "Warden Tendril"
+    material: SCULK_VEIN
+    lore:
+      - "&7It still twitches slightly"
+      - "&7when exposed to vibrations."
+    weight: 5
+
+rewards:
+  experience: 1500
+  items:
+    - material: NETHERITE_HELMET
+      name: "&8Warden's Visage"
+      lore:
+        - "&7See as the Warden sees."
+      enchantments:
+        - PROTECTION:4
+        - UNBREAKING:3
+  commands:
+    - "lp user %player% permission set collections.title.deepstalker true"
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &8Deep Dark Echoes&7 collection!"
+    - "&7You've earned the title: &8[Deepstalker]"

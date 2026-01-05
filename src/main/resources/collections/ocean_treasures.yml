@@ -1,0 +1,91 @@
+# Ocean Treasures - Common tier collection
+# Found along beaches and in shallow ocean areas
+
+id: "ocean_treasures"
+name: "Ocean Treasures"
+description: "Gifts washed ashore from the deep blue sea"
+tier: COMMON
+
+conditions:
+  biomes:
+    - OCEAN
+    - DEEP_OCEAN
+    - WARM_OCEAN
+    - LUKEWARM_OCEAN
+    - COLD_OCEAN
+    - BEACH
+    - STONY_SHORE
+  dimensions:
+    - NORMAL
+  min-y: 58
+  max-y: 72
+
+items:
+  sea_glass:
+    name: "Sea Glass"
+    material: LIGHT_BLUE_STAINED_GLASS_PANE
+    lore:
+      - "&7Glass smoothed by countless"
+      - "&7years tumbling in the waves."
+    weight: 25
+
+  coral_fragment:
+    name: "Coral Fragment"
+    material: BRAIN_CORAL
+    lore:
+      - "&7A beautiful piece of living reef,"
+      - "&7somehow preserved on land."
+    weight: 20
+
+  nautilus_shell:
+    name: "Nautilus Shell"
+    material: NAUTILUS_SHELL
+    lore:
+      - "&7A perfectly spiraled shell"
+      - "&7from the ocean depths."
+    weight: 15
+
+  message_bottle:
+    name: "Message in a Bottle"
+    material: GLASS_BOTTLE
+    lore:
+      - "&7Contains a faded message"
+      - "&7from a distant shore."
+    weight: 15
+
+  golden_doubloon:
+    name: "Golden Doubloon"
+    material: GOLD_NUGGET
+    lore:
+      - "&7A coin from a long-lost"
+      - "&7shipwreck treasure."
+    weight: 10
+
+  mermaid_tear:
+    name: "Mermaid's Tear"
+    material: PRISMARINE_CRYSTALS
+    lore:
+      - "&7Legend says these form when"
+      - "&7mermaids weep for lost sailors."
+    weight: 8
+
+  kraken_tooth:
+    name: "Kraken Tooth"
+    material: BONE
+    lore:
+      - "&7A massive fang from something"
+      - "&7that lurks in the abyss."
+    weight: 5
+
+rewards:
+  experience: 300
+  items:
+    - material: TURTLE_HELMET
+      name: "&bMariner's Helm"
+      lore:
+        - "&7Blessed by the sea itself."
+      enchantments:
+        - RESPIRATION:1
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &bOcean Treasures&7 collection!"

@@ -1,0 +1,85 @@
+# Swamp Curios - Uncommon tier collection
+# Found in swamp and mangrove biomes
+
+id: "swamp_curios"
+name: "Swamp Curios"
+description: "Strange relics from the murky wetlands"
+tier: UNCOMMON
+
+conditions:
+  biomes:
+    - SWAMP
+    - MANGROVE_SWAMP
+  dimensions:
+    - NORMAL
+  min-y: 58
+  max-y: 80
+
+items:
+  witchs_wart:
+    name: "Witch's Wart"
+    material: NETHER_WART
+    lore:
+      - "&7A fungal growth used in"
+      - "&7ancient swamp rituals."
+    weight: 25
+
+  frog_charm:
+    name: "Frog Charm"
+    material: SLIME_BALL
+    lore:
+      - "&7A carved jade frog,"
+      - "&7symbol of transformation."
+    weight: 20
+
+  will_o_wisp:
+    name: "Will-o'-Wisp Essence"
+    material: GLOW_BERRIES
+    lore:
+      - "&7Captured light from the"
+      - "&7mysterious swamp lights."
+    weight: 15
+    conditions:
+      time: NIGHT
+    glowing: true
+
+  gator_tooth:
+    name: "Gator Tooth"
+    material: IRON_NUGGET
+    lore:
+      - "&7From a massive reptile"
+      - "&7lurking in the murky depths."
+    weight: 15
+
+  voodoo_doll:
+    name: "Tattered Voodoo Doll"
+    material: LEATHER
+    lore:
+      - "&7An unsettling artifact from"
+      - "&7a swamp witch's hut."
+    weight: 10
+    conditions:
+      time: NIGHT
+
+  lotus_blossom:
+    name: "Black Lotus Blossom"
+    material: LILY_PAD
+    lore:
+      - "&7An extremely rare flower"
+      - "&7with potent magical properties."
+    weight: 5
+    glowing: true
+    soulbound: true
+
+rewards:
+  experience: 500
+  items:
+    - material: SPLASH_POTION
+      name: "&5Swamp Witch's Brew"
+      lore:
+        - "&7Effects unknown..."
+      potion-type: LUCK
+      amount: 3
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &5Swamp Curios&7 collection!"

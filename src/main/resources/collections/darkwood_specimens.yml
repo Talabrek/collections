@@ -1,0 +1,86 @@
+# Darkwood Specimens - Uncommon tier collection
+# Found in dark forest biomes, some items only at night
+
+id: "darkwood_specimens"
+name: "Darkwood Specimens"
+description: "Botanical samples from the darkest forests"
+tier: UNCOMMON
+
+conditions:
+  biomes:
+    - DARK_FOREST
+  dimensions:
+    - NORMAL
+  min-y: 62
+  max-y: 120
+  require-sky: true
+
+items:
+  witherwood_bark:
+    name: "Witherwood Bark"
+    material: DARK_OAK_LOG
+    lore:
+      - "&7A fragment of bark from a"
+      - "&7tree that never sees sunlight."
+    weight: 25
+
+  gloomcap_spores:
+    name: "Gloomcap Spores"
+    material: BROWN_MUSHROOM
+    lore:
+      - "&7Phosphorescent fungal spores"
+      - "&7that glow faintly in darkness."
+    weight: 25
+
+  shadowmoss_sample:
+    name: "Shadowmoss Sample"
+    material: MOSS_BLOCK
+    lore:
+      - "&7Moss that grows only in"
+      - "&7complete darkness."
+    weight: 20
+
+  ravens_feather:
+    name: "Raven's Feather"
+    material: FEATHER
+    lore:
+      - "&7Black as midnight, from the"
+      - "&7forest's ominous guardians."
+    weight: 15
+    glowing: true
+
+  nightbloom_petal:
+    name: "Nightbloom Petal"
+    material: PINK_PETALS
+    lore:
+      - "&7A rare flower that blooms"
+      - "&7only under the new moon."
+    weight: 10
+    conditions:
+      time: NIGHT
+      max-light: 7
+
+  ancient_amber:
+    name: "Ancient Amber"
+    material: ORANGE_STAINED_GLASS
+    lore:
+      - "&7Fossilized tree resin containing"
+      - "&7a perfectly preserved moth."
+    weight: 5
+    soulbound: true
+    glowing: true
+
+rewards:
+  experience: 500
+  items:
+    - material: CHEST
+      name: "&5Botanist's Satchel"
+      lore:
+        - "&7A bag that seems to hold"
+        - "&7more than it should."
+  commands:
+    - "lp user %player% permission set collections.title.botanist true"
+  messages:
+    - "&a&lCollection Complete!"
+    - "&7You've mastered the &5Darkwood Specimens&7 collection!"
+    - "&7You've earned the title: &5[Botanist]"
