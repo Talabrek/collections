@@ -37,6 +37,9 @@ public class SpawnManager {
     // Active collectibles tracked by ID
     private final Map<UUID, Collectible> activeCollectibles = new ConcurrentHashMap<>();
 
+    // Entity UUID to Collectible ID index for O(1) lookup
+    private final Map<UUID, UUID> entityToCollectible = new ConcurrentHashMap<>();
+
     // Count of collectibles per zone
     private final Map<String, Integer> collectibleCountByZone = new ConcurrentHashMap<>();
 
@@ -351,10 +354,17 @@ public class SpawnManager {
 
         // Track it
         activeCollectibles.put(collectibleId, collectible);
+        entityToCollectible.put(hitbox.getUniqueId(), collectibleId);
         collectibleCountByZone.merge(zone.id(), 1, Integer::sum);
 
         // Save to database
         storage.saveCollectible(collectible);
+
+        // Setup visibility for players (hide from those without proper goggles)
+        GoggleManager goggleManager = plugin.getGoggleManager();
+        if (goggleManager != null) {
+            goggleManager.setupInitialVisibility(collectible);
+        }
 
         if (plugin.getConfigManager().isDebugMode()) {
             plugin.getLogger().info("Spawned collectible " + collectibleId +
@@ -388,6 +398,11 @@ public class SpawnManager {
     public void despawnCollectible(UUID collectibleId, boolean removeFromDatabase) {
         Collectible collectible = activeCollectibles.remove(collectibleId);
         if (collectible == null) return;
+
+        // Remove from entity-to-collectible index
+        if (collectible.hitboxId() != null) {
+            entityToCollectible.remove(collectible.hitboxId());
+        }
 
         // Decrement zone count
         collectibleCountByZone.computeIfPresent(collectible.zoneId(), (k, v) -> Math.max(0, v - 1));
@@ -456,6 +471,12 @@ public class SpawnManager {
             pdc.set(TIER_KEY, PersistentDataType.STRING, tier.name());
         });
 
+        // Update the entity-to-collectible index (remove old, add new)
+        if (collectible.hitboxId() != null) {
+            entityToCollectible.remove(collectible.hitboxId());
+        }
+        entityToCollectible.put(hitbox.getUniqueId(), collectible.id());
+
         // Update the collectible with new hitbox ID
         Collectible updated = collectible.withHitbox(hitbox.getUniqueId());
         activeCollectibles.put(updated.id(), updated);
@@ -468,6 +489,32 @@ public class SpawnManager {
         removeCollectibleEntities(collectible);
         Collectible updated = collectible.withSpawned(false);
         activeCollectibles.put(updated.id(), updated);
+    }
+
+    /**
+     * Handle entity removal from external source (EntityRemoveEvent).
+     * Distinguishes between UNLOAD (temporary) and other causes (permanent).
+     *
+     * @param entityId The UUID of the removed entity
+     * @param isUnload True if removal was due to chunk unload (temporary)
+     */
+    public void handleEntityRemoved(UUID entityId, boolean isUnload) {
+        UUID collectibleId = entityToCollectible.get(entityId);
+        if (collectibleId == null) return;
+
+        Collectible collectible = activeCollectibles.get(collectibleId);
+        if (collectible == null) {
+            entityToCollectible.remove(entityId);
+            return;
+        }
+
+        if (isUnload) {
+            // Chunk unload - mark unspawned but keep in tracking
+            markUnspawned(collectible);
+        } else {
+            // True removal (/kill, plugin, despawn rules) - clean up fully
+            despawnCollectible(collectibleId, true);
+        }
     }
 
     /**
@@ -535,14 +582,18 @@ public class SpawnManager {
 
     /**
      * Get a collectible by entity UUID (hitbox).
+     * Uses O(1) index lookup instead of O(n) iteration.
      */
     public Collectible getCollectibleByEntity(UUID entityId) {
-        for (Collectible collectible : activeCollectibles.values()) {
-            if (entityId.equals(collectible.hitboxId())) {
-                return collectible;
-            }
+        UUID collectibleId = entityToCollectible.get(entityId);
+        if (collectibleId == null) return null;
+
+        Collectible collectible = activeCollectibles.get(collectibleId);
+        if (collectible == null) {
+            // Index desync - clean up stale entry
+            entityToCollectible.remove(entityId);
         }
-        return null;
+        return collectible;
     }
 
     /**
