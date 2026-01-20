@@ -48,12 +48,12 @@ Plans:
   3. All scheduler usage is Folia-compatible
   4. Concurrent map operations use atomic methods
   5. PlayerProgress internal state is thread-safe
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: Fix getProgress() race condition and add load-blocking gate
-- [ ] 02-02: Migrate BukkitScheduler to Folia-compatible schedulers
-- [ ] 02-03: Audit ConcurrentHashMap operations and PlayerProgress thread safety
+- [ ] 02-01-PLAN.md — Fix getProgress() race condition and add load-blocking gate (CONC-01, CONC-02)
+- [ ] 02-02-PLAN.md — Migrate BukkitScheduler to Folia-compatible schedulers (CONC-03)
+- [ ] 02-03-PLAN.md — Make PlayerProgress internal state thread-safe (CONC-04, CONC-05)
 
 ### Phase 3: GUI Safety
 **Goal**: GUI interactions cannot duplicate items or corrupt state
@@ -179,7 +179,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Data Integrity Hardening | 3/3 | Complete | 2026-01-21 |
-| 2. Concurrency Safety | 0/3 | Not started | - |
+| 2. Concurrency Safety | 0/3 | Ready to execute | - |
 | 3. GUI Safety | 0/3 | Not started | - |
 | 4. Memory Management | 0/3 | Not started | - |
 | 5. Entity Management | 0/2 | Not started | - |
