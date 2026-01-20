@@ -21,6 +21,12 @@ import java.util.logging.Level;
 
 /**
  * SQLite implementation of the Storage interface using HikariCP connection pooling.
+ *
+ * <p>Exception handling policy:</p>
+ * <ul>
+ *   <li>SEVERE: Player data mutations that could cause data loss (savePlayer, saveCollectedItem, updateCollectionStatus)</li>
+ *   <li>WARNING: Reads (return defaults), admin operations (retriable), collectible data (non-critical)</li>
+ * </ul>
  */
 public class SQLiteStorage implements Storage {
 
