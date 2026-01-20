@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** Phase 5 - Entity Management
+**Current focus:** Phase 5 - Entity Management (COMPLETE)
 
 ## Current Position
 
-Phase: 5 of 9 (Entity Management)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-01-21 - Completed 05-01-PLAN.md (Entity Removal Tracking)
+Phase: 5 of 9 (Entity Management) - COMPLETE
+Plan: 2 of 2 in current phase
+Status: Phase complete
+Last activity: 2026-01-21 - Completed 05-02-PLAN.md (Chunk Edge Cases)
 
-Progress: [█████░░░░░] 48%
+Progress: [██████░░░░] 52%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 13
 - Average duration: 6 min
-- Total execution time: 73 min
+- Total execution time: 77 min
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [█████░░░░░] 48%
 | 02-concurrency-safety | 3 | 21 min | 7 min |
 | 03-gui-safety | 3 | 7 min | 2 min |
 | 04-memory-management | 2 | 7 min | 3.5 min |
-| 05-entity-management | 1 | 6 min | 6 min |
+| 05-entity-management | 2 | 10 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 2 min, 4 min, 4 min, 3 min, 6 min
+- Last 5 plans: 4 min, 4 min, 3 min, 6 min, 4 min
 - Trend: Fast execution (verification and audit tasks are quick)
 
 *Updated after each plan completion*
@@ -75,6 +75,10 @@ Recent decisions affecting current work:
 - **MONITOR priority for EntityRemoveListener:** Observe without interfering with other handlers
 - **PDC fast-fail check:** Check PersistentDataContainer before map lookup for non-collectible entities
 - **UNLOAD vs permanent removal:** UNLOAD marks unspawned but keeps tracking, other causes trigger full despawn
+- **Re-fetch before action pattern:** In delayed tasks, re-fetch entity state since it may have changed
+- **Intentional dual chunk unload handling:** Both ChunkListener and EntityRemoveListener handle unload for robustness
+- **Bukkit.getEntity() in validity task:** Acceptable due to infrequent execution (minutes, not seconds)
+- **Safety net validation:** Periodic check catches what events miss (orphaned tracking entries)
 
 ### Pending Todos
 
@@ -92,5 +96,5 @@ New from execution:
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 05-01-PLAN.md, ready for 05-02
+Stopped at: Completed 05-02-PLAN.md, Phase 5 complete, ready for Phase 6
 Resume file: None
