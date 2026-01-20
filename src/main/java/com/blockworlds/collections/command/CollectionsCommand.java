@@ -216,7 +216,7 @@ public class CollectionsCommand {
 
             // Show progress if sender is a player
             if (sender instanceof Player player) {
-                PlayerProgress playerProgress = playerDataManager.getProgress(player.getUniqueId());
+                PlayerProgress playerProgress = playerDataManager.getProgressBlocking(player.getUniqueId());
                 if (playerProgress != null) {
                     int collected = playerProgress.getCollectedCount(collection.id());
                     progress = " (" + collected + "/" + itemCount + ")";
@@ -272,7 +272,7 @@ public class CollectionsCommand {
             return Command.SINGLE_SUCCESS;
         }
 
-        PlayerProgress progress = playerDataManager.getProgress(player.getUniqueId());
+        PlayerProgress progress = playerDataManager.getProgressBlocking(player.getUniqueId());
 
         player.sendMessage(Component.text()
                 .append(Component.text("=== ", NamedTextColor.GOLD))
