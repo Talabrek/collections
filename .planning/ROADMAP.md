@@ -15,7 +15,7 @@ This audit systematically hardens the Collections plugin for multi-server networ
 - [x] **Phase 3: GUI Safety** - Prevent click exploits and state corruption
 - [x] **Phase 4: Memory Management** - Fix leaks and cleanup on quit/disable
 - [x] **Phase 5: Entity Management** - Correct chunk load/unload entity handling
-- [ ] **Phase 6: Performance Optimization** - Optimize particle systems and database operations
+- [x] **Phase 6: Performance Optimization** - Optimize particle systems and database operations
 - [ ] **Phase 7: Code Quality** - Remove dead code, extract utilities, add validation
 - [ ] **Phase 8: MySQL Implementation** - Add MySQL storage backend for multi-server
 - [ ] **Phase 9: Testing & Verification** - Add tests and verify all changes work
@@ -119,9 +119,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Add chunk-based spatial index and optimize particle task (PERF-01)
-- [ ] 06-02-PLAN.md — Implement batch database inserts (PERF-03)
-- [ ] 06-03-PLAN.md — Replace grid point allocation with lazy iteration (PERF-04)
+- [x] 06-01-PLAN.md — Add chunk-based spatial index and optimize particle task (PERF-01)
+- [x] 06-02-PLAN.md — Implement batch database inserts (PERF-03)
+- [x] 06-03-PLAN.md — Replace grid point allocation with lazy iteration (PERF-04)
 
 **Note:** PERF-02 (entity UUID index) completed in Phase 5 as part of ENT-03 (entityToCollectible dual-index).
 
@@ -187,7 +187,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 3. GUI Safety | 3/3 | Complete | 2026-01-21 |
 | 4. Memory Management | 2/2 | Complete | 2026-01-21 |
 | 5. Entity Management | 2/2 | Complete | 2026-01-21 |
-| 6. Performance Optimization | 0/3 | Not started | - |
+| 6. Performance Optimization | 3/3 | Complete | 2026-01-21 |
 | 7. Code Quality | 0/3 | Not started | - |
 | 8. MySQL Implementation | 0/4 | Not started | - |
 | 9. Testing & Verification | 0/3 | Not started | - |

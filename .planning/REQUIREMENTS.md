@@ -34,10 +34,10 @@ Requirements for this audit cycle. Each maps to roadmap phases.
 
 ### Performance
 
-- [ ] **PERF-01**: Optimize particle task from O(players x collectibles) to chunk-based lookup
+- [x] **PERF-01**: Optimize particle task from O(players x collectibles) to chunk-based lookup
 - [x] **PERF-02**: Add Map<UUID, UUID> index for entityId -> collectibleId lookup (completed in Phase 5)
-- [ ] **PERF-03**: Implement batch inserts for database writes
-- [ ] **PERF-04**: Replace pre-allocated grid points with lazy iteration in AdaptiveSpawnFinder
+- [x] **PERF-03**: Implement batch inserts for database writes
+- [x] **PERF-04**: Replace pre-allocated grid points with lazy iteration in AdaptiveSpawnFinder
 
 ### Memory
 
@@ -115,10 +115,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GUI-03 | Phase 3 | Complete |
 | GUI-04 | Phase 3 | Complete |
 | GUI-05 | Phase 3 | Complete |
-| PERF-01 | Phase 6 | Pending |
+| PERF-01 | Phase 6 | Complete |
 | PERF-02 | Phase 5 | Complete |
-| PERF-03 | Phase 6 | Pending |
-| PERF-04 | Phase 6 | Pending |
+| PERF-03 | Phase 6 | Complete |
+| PERF-04 | Phase 6 | Complete |
 | MEM-01 | Phase 4 | Complete |
 | MEM-02 | Phase 4 | Complete |
 | MEM-03 | Phase 4 | Complete |
@@ -142,4 +142,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-21 after Phase 5 completion*
+*Last updated: 2026-01-21 after Phase 6 completion*
