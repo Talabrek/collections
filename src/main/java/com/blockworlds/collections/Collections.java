@@ -5,6 +5,7 @@ import com.blockworlds.collections.config.ConfigManager;
 import com.blockworlds.collections.gui.GUIManager;
 import com.blockworlds.collections.listener.BlockDropListener;
 import com.blockworlds.collections.listener.ChunkListener;
+import com.blockworlds.collections.listener.EntityRemoveListener;
 import com.blockworlds.collections.listener.CollectibleInteractListener;
 import com.blockworlds.collections.listener.FishingDropListener;
 import com.blockworlds.collections.listener.GUIListener;
@@ -130,6 +131,7 @@ public class Collections extends JavaPlugin {
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new ChunkListener(this), this);
+        getServer().getPluginManager().registerEvents(new EntityRemoveListener(this), this);
         this.collectibleInteractListener = new CollectibleInteractListener(this);
         getServer().getPluginManager().registerEvents(collectibleInteractListener, this);
         getServer().getPluginManager().registerEvents(new ItemModifyListener(this), this);
