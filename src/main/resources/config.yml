@@ -154,6 +154,7 @@ messages:
   # GUI
   add-cancelled: "<yellow>Item kept in inventory.</yellow>"
   collection-incomplete: "<red>You haven't completed <collection> yet.</red>"
+  progress-changed: "<red>Your collection progress has changed. Please check and try again.</red>"
 
 # Sound Effects
 sounds:
