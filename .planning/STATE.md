@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-01-20)
 ## Current Position
 
 Phase: 6 of 9 (Performance Optimization)
-Plan: 3 of 3 in current phase
+Plan: 3 of 3 in current phase (all complete)
 Status: Phase complete
-Last activity: 2026-01-21 - Completed 06-03-PLAN.md (Lazy Grid Iteration)
+Last activity: 2026-01-21 - Completed 06-01-PLAN.md (Particle Task Optimization)
 
 Progress: [████████░░] 63% (15/24 plans estimated)
 
@@ -84,6 +84,10 @@ Recent decisions affecting current work:
 - **Reservoir sampling:** Select random subset from iterator without materializing full collection
 - **int[] over Location:** Use lightweight int[] for coordinates, Location only when needed for API calls
 - **ThreadLocalRandom:** Thread-safe random with better performance than shared Random
+- **Bit-packed chunk key:** high 32 bits = chunkX, low 32 bits = chunkZ for unique long key
+- **Keep unspawned collectibles in chunk index:** For chunk load lookup without re-indexing
+- **Unindex only on permanent removal:** despawn with removeFromDatabase=true triggers unindex
+- **PARTICLE_CHUNK_RADIUS = 2:** 5x5 chunk grid (25 lookups) covers 80x80 block area
 
 ### Pending Todos
 
