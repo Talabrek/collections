@@ -16,6 +16,18 @@ import java.util.List;
 
 /**
  * Handles chunk load/unload events to manage collectible entity lifecycle.
+ *
+ * <p>COORDINATION WITH EntityRemoveListener:</p>
+ * <p>Both ChunkListener and EntityRemoveListener may handle the same events:
+ * <ul>
+ *   <li>Chunk unload: ChunkUnloadEvent fires here, EntityRemoveEvent (UNLOAD cause) fires in EntityRemoveListener</li>
+ *   <li>Chunk load: ChunkLoadEvent fires here to recreate entities</li>
+ * </ul>
+ * All operations are designed to be idempotent - safe to run multiple times for the same collectible.
+ * </p>
+ *
+ * <p>FUTURE IMPROVEMENT: Consider using EntitiesLoadEvent instead of ChunkLoadEvent + delay,
+ * as it fires when entities are guaranteed to be loaded with the chunk.</p>
  */
 public class ChunkListener implements Listener {
 
@@ -33,17 +45,27 @@ public class ChunkListener implements Listener {
         World world = chunk.getWorld();
 
         // Use region scheduler for Folia compatibility
+        // 5-tick delay ensures chunk is fully loaded (entities may not be available immediately)
         Bukkit.getRegionScheduler().runDelayed(plugin, chunk.getBlock(8, 64, 8).getLocation(), task -> {
             List<Collectible> collectibles = spawnManager.getCollectiblesInChunk(
                     world, chunk.getX(), chunk.getZ());
 
             for (Collectible collectible : collectibles) {
-                if (!collectible.spawned()) {
-                    spawnManager.recreateEntities(collectible);
+                // Re-fetch current state - EntityRemoveListener may have already processed this collectible
+                // during the delay period (e.g., if entity was removed by /kill while chunk was loading)
+                Collectible current = spawnManager.getCollectible(collectible.id());
+                if (current == null) {
+                    // Collectible was fully removed during delay - skip
+                    continue;
+                }
+
+                // Only recreate if still unspawned (idempotent check)
+                if (!current.spawned()) {
+                    spawnManager.recreateEntities(current);
 
                     if (plugin.getConfigManager().isDebugMode()) {
-                        plugin.getLogger().info("Recreated collectible entities in chunk " +
-                                chunk.getX() + "," + chunk.getZ());
+                        plugin.getLogger().info("Recreated collectible " + current.id() +
+                                " entities in chunk " + chunk.getX() + "," + chunk.getZ());
                     }
                 }
             }
