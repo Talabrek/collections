@@ -34,8 +34,8 @@ Requirements for this audit cycle. Each maps to roadmap phases.
 
 ### Performance
 
-- [ ] **PERF-01**: Optimize particle task from O(players × collectibles) to chunk-based lookup
-- [ ] **PERF-02**: Add Map<UUID, UUID> index for entityId → collectibleId lookup
+- [ ] **PERF-01**: Optimize particle task from O(players x collectibles) to chunk-based lookup
+- [ ] **PERF-02**: Add Map<UUID, UUID> index for entityId -> collectibleId lookup
 - [ ] **PERF-03**: Implement batch inserts for database writes
 - [ ] **PERF-04**: Replace pre-allocated grid points with lazy iteration in AdaptiveSpawnFinder
 
@@ -99,47 +99,47 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-01 | TBD | Pending |
-| DATA-02 | TBD | Pending |
-| DATA-03 | TBD | Pending |
-| DATA-04 | TBD | Pending |
-| DATA-05 | TBD | Pending |
-| DATA-06 | TBD | Pending |
-| CONC-01 | TBD | Pending |
-| CONC-02 | TBD | Pending |
-| CONC-03 | TBD | Pending |
-| CONC-04 | TBD | Pending |
-| CONC-05 | TBD | Pending |
-| GUI-01 | TBD | Pending |
-| GUI-02 | TBD | Pending |
-| GUI-03 | TBD | Pending |
-| GUI-04 | TBD | Pending |
-| GUI-05 | TBD | Pending |
-| PERF-01 | TBD | Pending |
-| PERF-02 | TBD | Pending |
-| PERF-03 | TBD | Pending |
-| PERF-04 | TBD | Pending |
-| MEM-01 | TBD | Pending |
-| MEM-02 | TBD | Pending |
-| MEM-03 | TBD | Pending |
-| MEM-04 | TBD | Pending |
-| ENT-01 | TBD | Pending |
-| ENT-02 | TBD | Pending |
-| ENT-03 | TBD | Pending |
-| CODE-01 | TBD | Pending |
-| CODE-02 | TBD | Pending |
-| CODE-03 | TBD | Pending |
-| CODE-04 | TBD | Pending |
-| CODE-05 | TBD | Pending |
-| TEST-01 | TBD | Pending |
-| TEST-02 | TBD | Pending |
-| TEST-03 | TBD | Pending |
+| DATA-01 | Phase 1 | Pending |
+| DATA-02 | Phase 1 | Pending |
+| DATA-03 | Phase 1 | Pending |
+| DATA-04 | Phase 1 | Pending |
+| DATA-05 | Phase 8 | Pending |
+| DATA-06 | Phase 8 | Pending |
+| CONC-01 | Phase 2 | Pending |
+| CONC-02 | Phase 2 | Pending |
+| CONC-03 | Phase 2 | Pending |
+| CONC-04 | Phase 2 | Pending |
+| CONC-05 | Phase 2 | Pending |
+| GUI-01 | Phase 3 | Pending |
+| GUI-02 | Phase 3 | Pending |
+| GUI-03 | Phase 3 | Pending |
+| GUI-04 | Phase 3 | Pending |
+| GUI-05 | Phase 3 | Pending |
+| PERF-01 | Phase 6 | Pending |
+| PERF-02 | Phase 6 | Pending |
+| PERF-03 | Phase 6 | Pending |
+| PERF-04 | Phase 6 | Pending |
+| MEM-01 | Phase 4 | Pending |
+| MEM-02 | Phase 4 | Pending |
+| MEM-03 | Phase 4 | Pending |
+| MEM-04 | Phase 4 | Pending |
+| ENT-01 | Phase 5 | Pending |
+| ENT-02 | Phase 5 | Pending |
+| ENT-03 | Phase 5 | Pending |
+| CODE-01 | Phase 7 | Pending |
+| CODE-02 | Phase 7 | Pending |
+| CODE-03 | Phase 7 | Pending |
+| CODE-04 | Phase 7 | Pending |
+| CODE-05 | Phase 7 | Pending |
+| TEST-01 | Phase 9 | Pending |
+| TEST-02 | Phase 9 | Pending |
+| TEST-03 | Phase 9 | Pending |
 
 **Coverage:**
 - v1 requirements: 33 total
-- Mapped to phases: 0
-- Unmapped: 33 (pending roadmap)
+- Mapped to phases: 33
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-20 after initial definition*
+*Last updated: 2026-01-21 after roadmap creation*
