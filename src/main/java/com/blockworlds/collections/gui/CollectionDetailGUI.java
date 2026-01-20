@@ -432,7 +432,8 @@ public class CollectionDetailGUI implements GUIHolder {
      * Attempt to claim the reward for this collection.
      */
     private void attemptClaimReward() {
-        PlayerProgress progress = playerDataManager.getProgress(player.getUniqueId());
+        // Re-fetch fresh progress data, not cached/stale data from when GUI was opened
+        PlayerProgress progress = playerDataManager.getProgressBlocking(player.getUniqueId());
 
         if (progress == null) {
             player.sendMessage(configManager.getMessage("no-permission"));
@@ -454,17 +455,10 @@ public class CollectionDetailGUI implements GUIHolder {
             return;
         }
 
-        // Use RewardManager to check space and give rewards
-        RewardManager rewardManager = plugin.getRewardManager();
-        Collection.CollectionRewards rewards = collection.rewards();
-
-        if (!rewardManager.hasInventorySpace(player, rewards)) {
-            player.sendMessage(configManager.getMessage("inventory-full"));
-            guiManager.playErrorSound(player);
-            return;
-        }
-
         // Give rewards via RewardManager
+        // Note: RewardManager.giveItems() handles inventory overflow by dropping items
+        // at the player's feet and sending the "inventory-full" message only when needed
+        RewardManager rewardManager = plugin.getRewardManager();
         rewardManager.giveRewards(player, collection);
 
         // Mark as claimed
