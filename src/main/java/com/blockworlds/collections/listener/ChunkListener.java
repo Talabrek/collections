@@ -72,6 +72,19 @@ public class ChunkListener implements Listener {
         }, 5L); // Small delay to ensure chunk is fully loaded
     }
 
+    /**
+     * Handles chunk unload by marking collectibles as unspawned.
+     *
+     * <p>REDUNDANCY NOTE: Both this handler and EntityRemoveListener (UNLOAD cause) process
+     * chunk unload scenarios. This is intentional - dual handling ensures robustness:
+     * <ul>
+     *   <li>EntityRemoveListener catches the entity being removed</li>
+     *   <li>This handler catches any entities that might have been missed</li>
+     * </ul>
+     * Both markUnspawned() and handleEntityRemoved() are idempotent - calling them
+     * multiple times for the same collectible is safe and has no adverse effects.
+     * </p>
+     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChunkUnload(ChunkUnloadEvent event) {
         Chunk chunk = event.getChunk();
@@ -81,13 +94,17 @@ public class ChunkListener implements Listener {
                 world, chunk.getX(), chunk.getZ());
 
         for (Collectible collectible : collectibles) {
-            if (collectible.spawned()) {
-                spawnManager.markUnspawned(collectible);
+            // Skip already unspawned - may have been handled by EntityRemoveListener
+            // or a previous iteration. This check makes the operation idempotent.
+            if (!collectible.spawned()) {
+                continue;
+            }
 
-                if (plugin.getConfigManager().isDebugMode()) {
-                    plugin.getLogger().info("Marked collectible unspawned in chunk " +
-                            chunk.getX() + "," + chunk.getZ());
-                }
+            spawnManager.markUnspawned(collectible);
+
+            if (plugin.getConfigManager().isDebugMode()) {
+                plugin.getLogger().info("Marked collectible " + collectible.id() +
+                        " unspawned in chunk " + chunk.getX() + "," + chunk.getZ());
             }
         }
     }
