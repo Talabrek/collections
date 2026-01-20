@@ -19,9 +19,9 @@ Progress: [████░░░░░░] 30%
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: 8 min
-- Total execution time: 54 min
+- Total plans completed: 8
+- Average duration: 7 min
+- Total execution time: 56 min
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [████░░░░░░] 30%
 |-------|-------|-------|----------|
 | 01-data-integrity-hardening | 3 | 32 min | 11 min |
 | 02-concurrency-safety | 3 | 21 min | 7 min |
-| 03-gui-safety | 1 | 1 min | 1 min |
+| 03-gui-safety | 2 | 3 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 12 min, 8 min, 10 min, 3 min, 1 min
+- Last 5 plans: 8 min, 10 min, 3 min, 1 min, 2 min
 - Trend: Fast execution
 
 *Updated after each plan completion*
@@ -62,6 +62,8 @@ Recent decisions affecting current work:
 - **Cancel event before routing:** Ensures all click types blocked regardless of slot position
 - **rawSlot bounds checking:** Use `rawSlot < topSize` to distinguish GUI from player inventory
 - **Check all drag slots:** Iterate `getRawSlots()` to catch cross-inventory drags
+- **getProgressBlocking() for GUI mutations:** Re-fetch fresh progress data before reward claims, not cached data
+- **No inventory pre-check for claims:** Let RewardManager handle overflow by dropping items at feet
 
 ### Pending Todos
 
@@ -78,6 +80,6 @@ New from execution:
 
 ## Session Continuity
 
-Last session: 2026-01-20
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-01-21
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None
