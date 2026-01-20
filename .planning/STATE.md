@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-20)
 ## Current Position
 
 Phase: 3 of 9 (GUI Safety)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-01-21 - Completed Phase 2 (Concurrency Safety)
+Plan: 2 of 3 in current phase
+Status: In progress
+Last activity: 2026-01-21 - Completed 03-02-PLAN.md
 
-Progress: [██░░░░░░░░] 22%
+Progress: [████░░░░░░] 30%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 9 min
-- Total execution time: 53 min
+- Total plans completed: 7
+- Average duration: 8 min
+- Total execution time: 54 min
 
 **By Phase:**
 
@@ -29,9 +29,10 @@ Progress: [██░░░░░░░░] 22%
 |-------|-------|-------|----------|
 | 01-data-integrity-hardening | 3 | 32 min | 11 min |
 | 02-concurrency-safety | 3 | 21 min | 7 min |
+| 03-gui-safety | 1 | 1 min | 1 min |
 
 **Recent Trend:**
-- Last 5 plans: 12 min, 12 min, 8 min, 10 min, 3 min
+- Last 5 plans: 12 min, 8 min, 10 min, 3 min, 1 min
 - Trend: Fast execution
 
 *Updated after each plan completion*
@@ -58,6 +59,9 @@ Recent decisions affecting current work:
 - **ConcurrentHashMap.newKeySet() for CollectionProgress.collectedItems:** Thread-safe add/contains operations
 - **EntityScheduler over RegionScheduler for players:** Follows entity across regions, handles validity via retired callback
 - **Null retired callback pattern:** Task silently cancels when entity gone - correct behavior for player logout
+- **Cancel event before routing:** Ensures all click types blocked regardless of slot position
+- **rawSlot bounds checking:** Use `rawSlot < topSize` to distinguish GUI from player inventory
+- **Check all drag slots:** Iterate `getRawSlots()` to catch cross-inventory drags
 
 ### Pending Todos
 
@@ -74,6 +78,6 @@ New from execution:
 
 ## Session Continuity
 
-Last session: 2026-01-21
-Stopped at: Completed Phase 2 (Concurrency Safety)
+Last session: 2026-01-20
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None

@@ -68,7 +68,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Cancel all click types in InventoryClickEvent handlers (GUI-01)
+- [x] 03-01-PLAN.md — Cancel all click types in InventoryClickEvent handlers (GUI-01)
 - [ ] 03-02-PLAN.md — Re-fetch progress before mutations and handle inventory full (GUI-02, GUI-03)
 - [ ] 03-03-PLAN.md — Add state versioning and double-claim prevention (GUI-04, GUI-05)
 
@@ -180,7 +180,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 |-------|----------------|--------|-----------|
 | 1. Data Integrity Hardening | 3/3 | Complete | 2026-01-21 |
 | 2. Concurrency Safety | 3/3 | Complete | 2026-01-21 |
-| 3. GUI Safety | 0/3 | Ready | - |
+| 3. GUI Safety | 1/3 | In progress | - |
 | 4. Memory Management | 0/3 | Not started | - |
 | 5. Entity Management | 0/2 | Not started | - |
 | 6. Performance Optimization | 0/4 | Not started | - |
