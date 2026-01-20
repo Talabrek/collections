@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 
 /**
@@ -75,6 +77,45 @@ public class PlayerDataManager {
      */
     public PlayerProgress getProgress(UUID playerId) {
         return cache.get(playerId);
+    }
+
+    /**
+     * Get player progress, blocking if load is in progress.
+     * Fast path: returns instantly if data is cached.
+     * Slow path: waits up to 5 seconds if async load is pending.
+     *
+     * @param playerId The player's UUID
+     * @return The player's progress, or null if not loaded/timed out
+     */
+    public PlayerProgress getProgressBlocking(UUID playerId) {
+        // Fast path: check cache first - no blocking if already loaded
+        PlayerProgress cached = cache.get(playerId);
+        if (cached != null) {
+            return cached;
+        }
+
+        // Check if load is pending
+        CompletableFuture<PlayerProgress> pending = pendingLoads.get(playerId);
+        if (pending != null) {
+            try {
+                // Block-wait for pending load to complete (up to 5 seconds)
+                return pending.get(5, TimeUnit.SECONDS);
+            } catch (TimeoutException e) {
+                plugin.getLogger().log(Level.WARNING,
+                        "Timed out waiting for player data load: " + playerId);
+                return null;
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return null;
+            } catch (ExecutionException e) {
+                plugin.getLogger().log(Level.WARNING,
+                        "Error waiting for player data load: " + playerId, e.getCause());
+                return null;
+            }
+        }
+
+        // Not cached and not pending - player data never loaded
+        return null;
     }
 
     /**
