@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
 /**
@@ -82,20 +83,23 @@ public class AdaptiveSpawnFinder {
         boolean debug = configManager.isDebugMode();
 
         while (radius <= maxRadius) {
-            List<Location> gridPoints = generateGridPoints(center, radius, gridSpacing, zone);
-            Collections.shuffle(gridPoints);
+            // Use lazy iterator with reservoir sampling instead of pre-allocating full List
+            GridPointIterator iterator = new GridPointIterator(
+                    center.getBlockX(), center.getBlockZ(), radius, gridSpacing, zone);
 
-            int limit = Math.min(gridPoints.size(), maxPerPass);
+            // Reservoir sample to get random subset
+            List<int[]> sampledPoints = reservoirSample(iterator, maxPerPass, ThreadLocalRandom.current());
 
             if (debug) {
-                logger.info("Spawn search: radius=" + radius + ", points=" + gridPoints.size() + ", limit=" + limit);
+                logger.info("Spawn search: radius=" + radius + ", sampled=" + sampledPoints.size());
             }
 
-            for (int i = 0; i < limit; i++) {
-                Location loc = gridPoints.get(i);
+            for (int[] point : sampledPoints) {
+                int x = point[0];
+                int z = point[1];
 
                 // Find standable surface at this X,Z
-                Location surfaceLoc = findSurfaceLocation(world, loc.getBlockX(), loc.getBlockZ(), conditions);
+                Location surfaceLoc = findSurfaceLocation(world, x, z, conditions);
                 if (surfaceLoc == null) {
                     stats.recordFailure("no-surface");
                     continue;
@@ -172,8 +176,44 @@ public class AdaptiveSpawnFinder {
     }
 
     /**
-     * Generate grid points within the specified radius.
+     * Reservoir sampling: select k random elements from an iterator without knowing size upfront.
+     * This provides randomness without materializing the full iterator into a List.
+     *
+     * @param iterator Source iterator
+     * @param k Maximum number of elements to select
+     * @param random Random source
+     * @return List of randomly selected elements (up to k)
      */
+    private List<int[]> reservoirSample(Iterator<int[]> iterator, int k, java.util.Random random) {
+        List<int[]> reservoir = new ArrayList<>(k);
+        int count = 0;
+
+        while (iterator.hasNext()) {
+            int[] item = iterator.next();
+            count++;
+
+            if (reservoir.size() < k) {
+                // Fill reservoir
+                reservoir.add(item);
+            } else {
+                // Randomly replace elements with decreasing probability
+                int j = random.nextInt(count);
+                if (j < k) {
+                    reservoir.set(j, item);
+                }
+            }
+        }
+
+        // Shuffle the reservoir for additional randomness in iteration order
+        Collections.shuffle(reservoir, random);
+        return reservoir;
+    }
+
+    /**
+     * Generate grid points within the specified radius.
+     * @deprecated Use {@link GridPointIterator} with {@link #reservoirSample} instead for reduced memory allocation.
+     */
+    @Deprecated
     private List<Location> generateGridPoints(Location center, int radius, int spacing, SpawnZone zone) {
         List<Location> points = new ArrayList<>();
         World world = center.getWorld();
