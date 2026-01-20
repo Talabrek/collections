@@ -7,8 +7,11 @@ import com.blockworlds.collections.manager.RewardManager;
 import com.blockworlds.collections.model.Collection;
 import com.blockworlds.collections.model.CollectionItem;
 import com.blockworlds.collections.model.PlayerProgress;
+import com.blockworlds.collections.model.SpawnConditions;
+import org.bukkit.block.Biome;
 import com.blockworlds.collections.util.ItemBuilder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Detail view GUI for a single collection.
@@ -67,8 +71,22 @@ public class CollectionDetailGUI implements GUIHolder {
 
     /**
      * Open the GUI for the player.
+     * Gates on data load - if data not ready, retries after 1 second.
      */
     public void open() {
+        // Gate on data load - ensure player data is available
+        if (playerDataManager.getProgressBlocking(player.getUniqueId()) == null) {
+            // Data not ready - send message and retry
+            player.sendMessage(Component.text("Loading your collection data...", NamedTextColor.YELLOW));
+            // Schedule retry using EntityScheduler (Folia-compatible)
+            player.getScheduler().runDelayed(plugin, task -> {
+                if (player.isOnline()) {
+                    open();
+                }
+            }, null, 20L);
+            return;
+        }
+
         populateInventory();
         guiManager.registerGUI(player.getUniqueId(), this);
         player.openInventory(inventory);
@@ -88,13 +106,15 @@ public class CollectionDetailGUI implements GUIHolder {
         }
 
         PlayerProgress progress = playerDataManager.getProgress(player.getUniqueId());
+        int collectedCount = progress != null ? progress.getCollectedCount(collection.id()) : 0;
+        boolean hasProgress = collectedCount > 0;
 
         // Populate collection items
         List<CollectionItem> items = collection.items();
         for (int i = 0; i < ITEM_SLOTS.length && i < items.size(); i++) {
             CollectionItem item = items.get(i);
             boolean collected = progress != null && progress.hasItem(collection.id(), item.id());
-            inventory.setItem(ITEM_SLOTS[i], createItemIcon(item, collected));
+            inventory.setItem(ITEM_SLOTS[i], createItemIcon(item, collected, hasProgress));
         }
 
         // Clear unused item slots
@@ -119,8 +139,12 @@ public class CollectionDetailGUI implements GUIHolder {
 
     /**
      * Create an icon for a collection item.
+     *
+     * @param item        The collection item
+     * @param collected   Whether this specific item has been collected
+     * @param hasProgress Whether the player has collected at least 1 item in this collection
      */
-    private ItemStack createItemIcon(CollectionItem item, boolean collected) {
+    private ItemStack createItemIcon(CollectionItem item, boolean collected, boolean hasProgress) {
         if (collected) {
             // Show the actual item
             List<String> lore = new ArrayList<>();
@@ -137,24 +161,144 @@ public class CollectionDetailGUI implements GUIHolder {
                     .name("<gold>" + item.name() + "</gold>")
                     .lore(lore)
                     .build();
+        } else if (hasProgress) {
+            // Player has some progress - show name and hints
+            List<String> lore = new ArrayList<>();
+            lore.add("<gray>─────────────────</gray>");
+            lore.add("<red>✗ Not yet found</red>");
+            lore.add("");
+
+            // Add hints based on spawn conditions
+            List<String> hints = generateHints(item);
+            lore.addAll(hints);
+
+            return ItemBuilder.of(Material.GRAY_STAINED_GLASS_PANE)
+                    .name("<yellow>" + item.name() + "</yellow>")
+                    .lore(lore)
+                    .build();
         } else {
-            // Show a mystery item
+            // No progress - show mystery item
             List<String> lore = new ArrayList<>();
             lore.add("<gray>─────────────────</gray>");
             lore.add("<gray>??? Not yet found</gray>");
             lore.add("");
-
-            // Add zone hint
-            if (!collection.allowedZones().isEmpty()) {
-                String zones = String.join(", ", collection.allowedZones());
-                lore.add("<gray>Found in: " + zones + "</gray>");
-            }
+            lore.add("<dark_gray>Collect an item from this</dark_gray>");
+            lore.add("<dark_gray>collection to reveal hints.</dark_gray>");
 
             return ItemBuilder.of(Material.GRAY_STAINED_GLASS_PANE)
                     .name("<gray>???</gray>")
                     .lore(lore)
                     .build();
         }
+    }
+
+    /**
+     * Generate vague hints for an uncollected item based on its spawn conditions.
+     */
+    private List<String> generateHints(CollectionItem item) {
+        List<String> hints = new ArrayList<>();
+
+        // Get effective conditions (item-level or collection-level)
+        SpawnConditions conditions = item.spawnConditions();
+        if (conditions == null) {
+            conditions = collection.spawnConditions();
+        }
+
+        // Check if item has drop sources (mob drops)
+        if (item.hasDropSources()) {
+            hints.add("<aqua>Hint:</aqua> <gray>Dropped by creatures</gray>");
+        }
+
+        if (conditions != null) {
+            // Biome hints (vague)
+            if (conditions.biomes() != null && !conditions.biomes().isEmpty()) {
+                String biomeHint = getBiomeAreaHint(conditions.biomes());
+                if (biomeHint != null) {
+                    hints.add("<aqua>Hint:</aqua> <gray>" + biomeHint + "</gray>");
+                }
+            }
+
+            // Time hints
+            if (conditions.time() == SpawnConditions.TimeCondition.NIGHT) {
+                hints.add("<aqua>Hint:</aqua> <gray>Only appears at night</gray>");
+            } else if (conditions.time() == SpawnConditions.TimeCondition.DAY) {
+                hints.add("<aqua>Hint:</aqua> <gray>Only appears during the day</gray>");
+            }
+
+            // Underground hint
+            if (conditions.underground()) {
+                hints.add("<aqua>Hint:</aqua> <gray>Found beneath the surface</gray>");
+            }
+
+            // Sky hint
+            if (conditions.requireSky()) {
+                hints.add("<aqua>Hint:</aqua> <gray>Found under open sky</gray>");
+            }
+
+            // Light level hints
+            if (conditions.maxLight() <= 3) {
+                hints.add("<aqua>Hint:</aqua> <gray>Found in darkness</gray>");
+            }
+
+            // Depth hints
+            if (conditions.maxY() < 0) {
+                hints.add("<aqua>Hint:</aqua> <gray>Found in the deepest depths</gray>");
+            } else if (conditions.maxY() <= 40 && !conditions.underground()) {
+                hints.add("<aqua>Hint:</aqua> <gray>Found deep underground</gray>");
+            } else if (conditions.minY() >= 100) {
+                hints.add("<aqua>Hint:</aqua> <gray>Found at high altitudes</gray>");
+            }
+        }
+
+        // If no hints generated, add a generic one
+        if (hints.isEmpty()) {
+            hints.add("<aqua>Hint:</aqua> <gray>Search the " + collection.name() + " area</gray>");
+        }
+
+        return hints;
+    }
+
+    /**
+     * Get a vague biome area hint from a set of biomes.
+     */
+    private String getBiomeAreaHint(Set<Biome> biomes) {
+        // Categorize biomes into area types
+        boolean hasForest = false, hasDesert = false, hasOcean = false;
+        boolean hasNether = false, hasEnd = false, hasCold = false;
+        boolean hasJungle = false, hasSwamp = false, hasMountain = false;
+        boolean hasCave = false, hasBadlands = false;
+
+        for (Biome biome : biomes) {
+            String name = biome.name();
+            if (name.contains("FOREST") || name.contains("TAIGA") || name.contains("GROVE")) hasForest = true;
+            if (name.contains("DESERT") || name.contains("BADLANDS")) hasDesert = true;
+            if (name.contains("OCEAN") || name.contains("BEACH") || name.contains("RIVER")) hasOcean = true;
+            if (name.contains("NETHER") || name.contains("CRIMSON") || name.contains("WARPED") ||
+                    name.contains("SOUL") || name.contains("BASALT")) hasNether = true;
+            if (name.contains("END")) hasEnd = true;
+            if (name.contains("SNOWY") || name.contains("FROZEN") || name.contains("ICE") ||
+                    name.contains("COLD")) hasCold = true;
+            if (name.contains("JUNGLE") || name.contains("BAMBOO")) hasJungle = true;
+            if (name.contains("SWAMP") || name.contains("MANGROVE")) hasSwamp = true;
+            if (name.contains("MOUNTAIN") || name.contains("PEAK") || name.contains("HILL")) hasMountain = true;
+            if (name.contains("CAVE") || name.contains("DEEP_DARK") || name.contains("DRIPSTONE") ||
+                    name.contains("LUSH")) hasCave = true;
+            if (name.contains("BADLANDS")) hasBadlands = true;
+        }
+
+        // Return vague hint based on detected categories
+        if (hasNether) return "Found in the hellish Nether";
+        if (hasEnd) return "Found in the mysterious End";
+        if (hasCave) return "Found in underground caves";
+        if (hasOcean) return "Found near water";
+        if (hasForest) return "Found in forested areas";
+        if (hasDesert || hasBadlands) return "Found in arid lands";
+        if (hasCold) return "Found in frozen regions";
+        if (hasJungle) return "Found in tropical jungles";
+        if (hasSwamp) return "Found in murky swamps";
+        if (hasMountain) return "Found in mountain regions";
+
+        return null;
     }
 
     /**

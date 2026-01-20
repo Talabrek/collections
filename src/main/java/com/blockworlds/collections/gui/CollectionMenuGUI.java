@@ -37,8 +37,8 @@ public class CollectionMenuGUI implements GUIHolder {
     private final Inventory inventory;
 
     private int currentPage = 0;
-    private SortType sortType = SortType.ALPHABETICAL;
-    private FilterType filterType = FilterType.ALL;
+    private SortType sortType = SortType.PROGRESS;
+    private FilterType filterType = FilterType.DISCOVERED;
 
     // Layout constants
     private static final int INVENTORY_SIZE = 54;  // 6 rows
@@ -88,6 +88,7 @@ public class CollectionMenuGUI implements GUIHolder {
      * Filter types for collections.
      */
     public enum FilterType {
+        DISCOVERED("Discovered"),
         ALL("All"),
         IN_PROGRESS("In Progress"),
         COMPLETE("Complete"),
@@ -123,8 +124,22 @@ public class CollectionMenuGUI implements GUIHolder {
 
     /**
      * Open the GUI for the player.
+     * Gates on data load - if data not ready, retries after 1 second.
      */
     public void open() {
+        // Gate on data load - ensure player data is available
+        if (playerDataManager.getProgressBlocking(player.getUniqueId()) == null) {
+            // Data not ready - send message and retry
+            player.sendMessage(Component.text("Loading your collection data...", NamedTextColor.YELLOW));
+            // Schedule retry using EntityScheduler (Folia-compatible)
+            player.getScheduler().runDelayed(plugin, task -> {
+                if (player.isOnline()) {
+                    open();
+                }
+            }, null, 20L);
+            return;
+        }
+
         populateInventory();
         guiManager.registerGUI(player.getUniqueId(), this);
         player.openInventory(inventory);
@@ -246,8 +261,13 @@ public class CollectionMenuGUI implements GUIHolder {
             lore.add("<yellow>Click to view details</yellow>");
         }
 
-        // Build item
-        Material iconMaterial = collection.icon();
+        // Build item - use first item's material as icon
+        Material iconMaterial;
+        if (!collection.items().isEmpty()) {
+            iconMaterial = collection.items().get(0).material();
+        } else {
+            iconMaterial = collection.icon(); // Fallback to collection icon
+        }
         // Show locked icon if meta requirements not met
         if (isMetaCollection && !metaRequirementsMet && !complete) {
             iconMaterial = Material.BARRIER;
@@ -277,6 +297,11 @@ public class CollectionMenuGUI implements GUIHolder {
         for (Collection collection : allCollections) {
             boolean include = switch (filterType) {
                 case ALL -> true;
+                case DISCOVERED -> {
+                    if (progress == null) yield false;
+                    int collected = progress.getCollectedCount(collection.id());
+                    yield collected > 0; // Has at least 1 item (includes completed)
+                }
                 case IN_PROGRESS -> {
                     if (progress == null) yield false;
                     int collected = progress.getCollectedCount(collection.id());
