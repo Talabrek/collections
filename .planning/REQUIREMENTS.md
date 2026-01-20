@@ -41,10 +41,10 @@ Requirements for this audit cycle. Each maps to roadmap phases.
 
 ### Memory
 
-- [ ] **MEM-01**: Fix cooldown map memory leak (verify cleanup on all quit paths)
-- [ ] **MEM-02**: Verify all scheduled tasks cancelled in onDisable()
-- [ ] **MEM-03**: Verify all per-player Maps cleaned on PlayerQuitEvent
-- [ ] **MEM-04**: Audit for Player object retention (should use UUID instead)
+- [x] **MEM-01**: Fix cooldown map memory leak (verify cleanup on all quit paths)
+- [x] **MEM-02**: Verify all scheduled tasks cancelled in onDisable()
+- [x] **MEM-03**: Verify all per-player Maps cleaned on PlayerQuitEvent
+- [x] **MEM-04**: Audit for Player object retention (should use UUID instead)
 
 ### Entity Management
 
@@ -119,10 +119,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERF-02 | Phase 6 | Pending |
 | PERF-03 | Phase 6 | Pending |
 | PERF-04 | Phase 6 | Pending |
-| MEM-01 | Phase 4 | Pending |
-| MEM-02 | Phase 4 | Pending |
-| MEM-03 | Phase 4 | Pending |
-| MEM-04 | Phase 4 | Pending |
+| MEM-01 | Phase 4 | Complete |
+| MEM-02 | Phase 4 | Complete |
+| MEM-03 | Phase 4 | Complete |
+| MEM-04 | Phase 4 | Complete |
 | ENT-01 | Phase 5 | Pending |
 | ENT-02 | Phase 5 | Pending |
 | ENT-03 | Phase 5 | Pending |
@@ -142,4 +142,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-21 after Phase 3 completion*
+*Last updated: 2026-01-21 after Phase 4 completion*
