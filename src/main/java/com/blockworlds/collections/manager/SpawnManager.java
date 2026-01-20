@@ -519,6 +519,17 @@ public class SpawnManager {
 
     /**
      * Validate all active collectibles and remove invalid/expired ones.
+     *
+     * <p>This task serves as a safety net for edge cases that events may miss:
+     * <ul>
+     *   <li>Entity existence check: Catches orphaned entries where entity was removed but tracking wasn't updated</li>
+     *   <li>Despawn timeout: Removes collectibles that have been around too long</li>
+     *   <li>Location validity: Removes collectibles in invalid locations (zone deleted, etc.)</li>
+     * </ul>
+     * </p>
+     *
+     * <p>Note: This task runs infrequently (configured interval, default is minutes not seconds),
+     * so using Bukkit.getEntity() here is acceptable despite being a relatively expensive operation.</p>
      */
     private void validateActiveCollectibles() {
         int despawnMinutes = plugin.getConfigManager().getDespawnAfterMinutes();
@@ -530,6 +541,21 @@ public class SpawnManager {
 
         for (Collectible collectible : activeCollectibles.values()) {
             if (!collectible.spawned()) continue;
+
+            // SAFETY NET: Check if entity still exists
+            // This catches orphaned entries that EntityRemoveEvent missed (edge cases, timing issues)
+            if (collectible.hitboxId() != null) {
+                Entity entity = Bukkit.getEntity(collectible.hitboxId());
+                if (entity == null || entity.isDead()) {
+                    // Entity is gone but we thought it was spawned - orphaned tracking entry
+                    toDespawn.add(collectible.id());
+                    if (debug) {
+                        plugin.getLogger().info("Removing orphaned collectible " + collectible.id() +
+                                " in zone " + collectible.zoneId() + " - entity no longer exists");
+                    }
+                    continue; // Skip other checks - entity is gone
+                }
+            }
 
             // Check despawn timeout (if enabled)
             if (despawnMinutes > 0) {
