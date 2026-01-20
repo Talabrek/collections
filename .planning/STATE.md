@@ -10,28 +10,29 @@ See: .planning/PROJECT.md (updated 2026-01-20)
 ## Current Position
 
 Phase: 2 of 9 (Concurrency Safety)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-01-21 - Completed Phase 1 (Data Integrity Hardening)
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-01-21 - Completed 02-03-PLAN.md (PlayerProgress Thread-Safe Collections)
 
-Progress: [█░░░░░░░░░] 11%
+Progress: [██░░░░░░░░] 22%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 11 min
-- Total execution time: 32 min
+- Total plans completed: 6
+- Average duration: 9 min
+- Total execution time: 53 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-data-integrity-hardening | 3 | 32 min | 11 min |
+| 02-concurrency-safety | 3 | 21 min | 7 min |
 
 **Recent Trend:**
-- Last 5 plans: 8 min, 12 min, 12 min
-- Trend: Consistent execution
+- Last 5 plans: 12 min, 12 min, 8 min, 10 min, 3 min
+- Trend: Fast execution
 
 *Updated after each plan completion*
 
@@ -53,6 +54,8 @@ Recent decisions affecting current work:
 - **SEVERE for player data mutations, WARNING for reads/admin/collectibles:** Exception handling policy
 - **CRITICAL: prefix in log messages:** For grep-able log filtering
 - **Propagate SQLException as RuntimeException:** Surface exceptions in CompletableFuture chain
+- **ConcurrentHashMap for PlayerProgress.collections:** Atomic computeIfAbsent, better concurrent read performance
+- **ConcurrentHashMap.newKeySet() for CollectionProgress.collectedItems:** Thread-safe add/contains operations
 
 ### Pending Todos
 
@@ -70,5 +73,5 @@ New from execution:
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed Phase 1 (Data Integrity Hardening)
+Stopped at: Completed Phase 2 (Concurrency Safety)
 Resume file: None
