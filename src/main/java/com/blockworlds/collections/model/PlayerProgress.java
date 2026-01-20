@@ -1,10 +1,9 @@
 package com.blockworlds.collections.model;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Represents a player's collection progress.
@@ -20,7 +19,7 @@ public class PlayerProgress {
 
     public PlayerProgress(UUID playerId) {
         this.playerId = playerId;
-        this.collections = new HashMap<>();
+        this.collections = new ConcurrentHashMap<>();
         this.totalCollectiblesCollected = 0;
         this.totalCollectionsCompleted = 0;
         this.firstCollectionDate = 0;
