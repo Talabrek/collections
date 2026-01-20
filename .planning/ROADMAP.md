@@ -81,12 +81,15 @@ Plans:
   2. All scheduled tasks are cancelled in onDisable()
   3. No per-player data remains in memory after quit
   4. No Player object references stored (UUIDs only)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: Audit and fix cooldown map cleanup
-- [ ] 04-02: Verify task cancellation in onDisable and player quit
-- [ ] 04-03: Audit all per-player maps and Player object references
+- [ ] 04-01-PLAN.md — Verify and fix collectLocks map cleanup (MEM-01)
+- [ ] 04-02-PLAN.md — Add onDisable shutdown methods for listener and GUI manager (MEM-03)
+
+**Research findings:**
+- MEM-02 (task cancellation): Already COMPLIANT - all ScheduledTask instances properly cancelled
+- MEM-04 (Player object retention): ACCEPTABLE - GUI classes properly clean up on close/quit
 
 ### Phase 5: Entity Management
 **Goal**: Collectible entities are correctly tracked across chunk events
@@ -181,7 +184,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 1. Data Integrity Hardening | 3/3 | Complete | 2026-01-21 |
 | 2. Concurrency Safety | 3/3 | Complete | 2026-01-21 |
 | 3. GUI Safety | 3/3 | Complete | 2026-01-21 |
-| 4. Memory Management | 0/3 | Not started | - |
+| 4. Memory Management | 0/2 | Not started | - |
 | 5. Entity Management | 0/2 | Not started | - |
 | 6. Performance Optimization | 0/4 | Not started | - |
 | 7. Code Quality | 0/3 | Not started | - |
