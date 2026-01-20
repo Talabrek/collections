@@ -28,6 +28,8 @@ public class GUIListener implements Listener {
 
     /**
      * Handle inventory click events.
+     * Cancels ALL click types when our GUI is open to prevent shift-click,
+     * number key, double-click, and drag exploits.
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryClick(InventoryClickEvent event) {
@@ -40,13 +42,19 @@ public class GUIListener implements Listener {
             return;
         }
 
-        // Only handle clicks in our GUI inventory
-        if (!event.getInventory().equals(holder.getInventory())) {
+        // Cancel ALL clicks when our GUI is open - prevents item movement
+        // This must happen before any other checks to block shift-click,
+        // number keys, double-click, and drag exploits in player inventory
+        event.setCancelled(true);
+
+        // Only route clicks actually in GUI slots to handler, not player inventory
+        int topSize = holder.getInventory().getSize();
+        int rawSlot = event.getRawSlot();
+
+        // Click outside inventory bounds or in player inventory section
+        if (rawSlot < 0 || rawSlot >= topSize) {
             return;
         }
-
-        // Cancel the event to prevent item movement
-        event.setCancelled(true);
 
         // Route to the GUI handler
         holder.handleClick(event);
@@ -80,6 +88,7 @@ public class GUIListener implements Listener {
 
     /**
      * Handle inventory drag events (prevent dragging in our GUIs).
+     * Checks ALL affected slots to catch drags that span player inventory and GUI.
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryDrag(InventoryDragEvent event) {
@@ -92,9 +101,14 @@ public class GUIListener implements Listener {
             return;
         }
 
-        // Cancel dragging in our GUIs
-        if (event.getInventory().equals(holder.getInventory())) {
-            event.setCancelled(true);
+        // Cancel if ANY drag slot is in GUI inventory
+        // This catches drags that start in player inventory but extend into GUI
+        int topSize = holder.getInventory().getSize();
+        for (int slot : event.getRawSlots()) {
+            if (slot >= 0 && slot < topSize) {
+                event.setCancelled(true);
+                return;
+            }
         }
     }
 
