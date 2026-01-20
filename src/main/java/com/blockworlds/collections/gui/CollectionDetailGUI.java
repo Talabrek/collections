@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Detail view GUI for a single collection.
@@ -38,6 +39,9 @@ public class CollectionDetailGUI implements GUIHolder {
     private final Player player;
     private final Collection collection;
     private final Inventory inventory;
+
+    // Prevents double-claim race from rapid clicks
+    private final AtomicBoolean claiming = new AtomicBoolean(false);
 
     // Layout constants
     private static final int INVENTORY_SIZE = 54;  // 6 rows
@@ -432,44 +436,53 @@ public class CollectionDetailGUI implements GUIHolder {
      * Attempt to claim the reward for this collection.
      */
     private void attemptClaimReward() {
-        // Re-fetch fresh progress data, not cached/stale data from when GUI was opened
-        PlayerProgress progress = playerDataManager.getProgressBlocking(player.getUniqueId());
-
-        if (progress == null) {
-            player.sendMessage(configManager.getMessage("no-permission"));
-            guiManager.playErrorSound(player);
-            return;
+        // Prevent double-click race - only one claim attempt at a time
+        if (!claiming.compareAndSet(false, true)) {
+            return;  // Another claim already in progress
         }
 
-        if (!progress.hasCompleted(collection.id())) {
-            player.sendMessage(configManager.getMessage("collection-incomplete",
+        try {
+            // Re-fetch fresh progress data, not cached/stale data from when GUI was opened
+            PlayerProgress progress = playerDataManager.getProgressBlocking(player.getUniqueId());
+
+            if (progress == null) {
+                player.sendMessage(configManager.getMessage("no-permission"));
+                guiManager.playErrorSound(player);
+                return;
+            }
+
+            if (!progress.hasCompleted(collection.id())) {
+                player.sendMessage(configManager.getMessage("collection-incomplete",
+                        "collection", collection.name()));
+                guiManager.playErrorSound(player);
+                return;
+            }
+
+            if (progress.hasClaimedReward(collection.id())) {
+                player.sendMessage(configManager.getMessage("reward-already-claimed",
+                        "collection", collection.name()));
+                guiManager.playErrorSound(player);
+                return;
+            }
+
+            // Give rewards via RewardManager
+            // Note: RewardManager.giveItems() handles inventory overflow by dropping items
+            // at the player's feet and sending the "inventory-full" message only when needed
+            RewardManager rewardManager = plugin.getRewardManager();
+            rewardManager.giveRewards(player, collection);
+
+            // Mark as claimed
+            playerDataManager.claimReward(player.getUniqueId(), collection.id());
+
+            // Send success message
+            player.sendMessage(configManager.getMessage("reward-claimed",
                     "collection", collection.name()));
-            guiManager.playErrorSound(player);
-            return;
+
+            // Refresh the GUI
+            populateInventory();
+        } finally {
+            claiming.set(false);
         }
-
-        if (progress.hasClaimedReward(collection.id())) {
-            player.sendMessage(configManager.getMessage("reward-already-claimed",
-                    "collection", collection.name()));
-            guiManager.playErrorSound(player);
-            return;
-        }
-
-        // Give rewards via RewardManager
-        // Note: RewardManager.giveItems() handles inventory overflow by dropping items
-        // at the player's feet and sending the "inventory-full" message only when needed
-        RewardManager rewardManager = plugin.getRewardManager();
-        rewardManager.giveRewards(player, collection);
-
-        // Mark as claimed
-        playerDataManager.claimReward(player.getUniqueId(), collection.id());
-
-        // Send success message
-        player.sendMessage(configManager.getMessage("reward-claimed",
-                "collection", collection.name()));
-
-        // Refresh the GUI
-        populateInventory();
     }
 
     /**
