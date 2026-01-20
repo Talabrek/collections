@@ -116,13 +116,12 @@ Plans:
   2. Entity ID to collectible lookup is O(1), not O(n)
   3. Bulk database operations use batch inserts
   4. Spawn finder does not allocate thousands of temporary Location objects
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 06-01: Optimize particle iteration to chunk-based lookup
-- [ ] 06-02: Add entity UUID to collectible ID index
-- [ ] 06-03: Implement batch database inserts
-- [ ] 06-04: Replace grid point allocation with lazy iteration
+- [ ] 06-01-PLAN.md — Add chunk-based spatial index and optimize particle task (PERF-01)
+- [ ] 06-02-PLAN.md — Implement batch database inserts (PERF-03)
+- [ ] 06-03-PLAN.md — Replace grid point allocation with lazy iteration (PERF-04)
 
 **Note:** PERF-02 (entity UUID index) completed in Phase 5 as part of ENT-03 (entityToCollectible dual-index).
 
@@ -188,7 +187,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 3. GUI Safety | 3/3 | Complete | 2026-01-21 |
 | 4. Memory Management | 2/2 | Complete | 2026-01-21 |
 | 5. Entity Management | 2/2 | Complete | 2026-01-21 |
-| 6. Performance Optimization | 0/4 | Not started | - |
+| 6. Performance Optimization | 0/3 | Not started | - |
 | 7. Code Quality | 0/3 | Not started | - |
 | 8. MySQL Implementation | 0/4 | Not started | - |
 | 9. Testing & Verification | 0/3 | Not started | - |
