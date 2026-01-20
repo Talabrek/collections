@@ -43,6 +43,9 @@ public class SpawnManager {
     // Count of collectibles per zone
     private final Map<String, Integer> collectibleCountByZone = new ConcurrentHashMap<>();
 
+    // Chunk-based spatial index: packed(chunkX, chunkZ) -> collectible IDs in that chunk
+    private final Map<Long, Set<UUID>> collectiblesByChunk = new ConcurrentHashMap<>();
+
     // Respawn timers per zone (zone ID -> next spawn time)
     private final Map<String, Long> respawnTimers = new ConcurrentHashMap<>();
 
@@ -100,6 +103,67 @@ public class SpawnManager {
         }
     }
 
+    // ========== Chunk-based Spatial Index ==========
+
+    /**
+     * Pack chunk coordinates into a single long key.
+     * Standard bit-packing: high 32 bits = chunkX, low 32 bits = chunkZ
+     */
+    private static long chunkKey(int chunkX, int chunkZ) {
+        return ((long) chunkX << 32) | (chunkZ & 0xFFFFFFFFL);
+    }
+
+    /**
+     * Add a collectible to the chunk spatial index.
+     */
+    private void indexCollectible(Collectible c) {
+        long key = chunkKey(c.getChunkX(), c.getChunkZ());
+        collectiblesByChunk.computeIfAbsent(key, k -> ConcurrentHashMap.newKeySet())
+                .add(c.id());
+    }
+
+    /**
+     * Remove a collectible from the chunk spatial index.
+     */
+    private void unindexCollectible(Collectible c) {
+        long key = chunkKey(c.getChunkX(), c.getChunkZ());
+        Set<UUID> set = collectiblesByChunk.get(key);
+        if (set != null) {
+            set.remove(c.id());
+            if (set.isEmpty()) {
+                collectiblesByChunk.remove(key);
+            }
+        }
+    }
+
+    /**
+     * Get all spawned collectibles within a chunk radius of the given chunk.
+     * Used by ParticleTask for efficient nearby collectible lookup.
+     *
+     * @param centerChunkX Center chunk X coordinate
+     * @param centerChunkZ Center chunk Z coordinate
+     * @param radiusChunks Number of chunks in each direction to search
+     * @return List of spawned collectibles within the chunk radius
+     */
+    public List<Collectible> getCollectiblesNearChunk(int centerChunkX, int centerChunkZ, int radiusChunks) {
+        List<Collectible> result = new ArrayList<>();
+        for (int dx = -radiusChunks; dx <= radiusChunks; dx++) {
+            for (int dz = -radiusChunks; dz <= radiusChunks; dz++) {
+                long key = chunkKey(centerChunkX + dx, centerChunkZ + dz);
+                Set<UUID> ids = collectiblesByChunk.get(key);
+                if (ids != null) {
+                    for (UUID id : ids) {
+                        Collectible c = activeCollectibles.get(id);
+                        if (c != null && c.spawned()) {
+                            result.add(c);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * Load existing collectibles from the database.
      *
@@ -111,6 +175,7 @@ public class SpawnManager {
                     for (Collectible collectible : collectibles) {
                         activeCollectibles.put(collectible.id(), collectible);
                         collectibleCountByZone.merge(collectible.zoneId(), 1, Integer::sum);
+                        indexCollectible(collectible);
                     }
                     plugin.getLogger().info("Loaded " + collectibles.size() + " collectibles from database");
                 })
@@ -356,6 +421,7 @@ public class SpawnManager {
         activeCollectibles.put(collectibleId, collectible);
         entityToCollectible.put(hitbox.getUniqueId(), collectibleId);
         collectibleCountByZone.merge(zone.id(), 1, Integer::sum);
+        indexCollectible(collectible);
 
         // Save to database
         storage.saveCollectible(collectible);
@@ -419,6 +485,7 @@ public class SpawnManager {
 
         if (removeFromDatabase) {
             storage.removeCollectible(collectibleId);
+            unindexCollectible(collectible);
         }
 
         if (plugin.getConfigManager().isDebugMode()) {
