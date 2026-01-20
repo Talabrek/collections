@@ -166,6 +166,16 @@ public class Collections extends JavaPlugin {
             spawnManager.shutdown();
         }
 
+        // Clean up listener state
+        if (collectibleInteractListener != null) {
+            collectibleInteractListener.shutdown();
+        }
+
+        // Clean up GUI manager state
+        if (guiManager != null) {
+            guiManager.shutdown();
+        }
+
         // Save all player data before shutdown
         if (playerDataManager != null) {
             try {
