@@ -5,32 +5,32 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** Phase 1 - Data Integrity Hardening
+**Current focus:** Phase 1 - Data Integrity Hardening (COMPLETE)
 
 ## Current Position
 
 Phase: 1 of 9 (Data Integrity Hardening)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-01-21 - Completed 01-02-PLAN.md (SQLite concurrent access and transactions)
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-01-21 - Completed 01-03-PLAN.md (Exception handler audit)
 
-Progress: [##________] 7%
+Progress: [###_______] 11%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 10 min
-- Total execution time: 20 min
+- Total plans completed: 3
+- Average duration: 11 min
+- Total execution time: 32 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-data-integrity-hardening | 2 | 20 min | 10 min |
+| 01-data-integrity-hardening | 3 | 32 min | 11 min |
 
 **Recent Trend:**
-- Last 5 plans: 8 min, 12 min
+- Last 5 plans: 8 min, 12 min, 12 min
 - Trend: Consistent execution
 
 *Updated after each plan completion*
@@ -50,6 +50,9 @@ Recent decisions affecting current work:
 - **NORMAL synchronous mode:** Balances durability with performance (FULL excessive for game data)
 - **SEVERE logging for database errors:** Critical data loss events need operator visibility
 - **Transaction wrapping for savePlayer:** All-or-nothing saves prevent inconsistent state
+- **SEVERE for player data mutations, WARNING for reads/admin/collectibles:** Exception handling policy
+- **CRITICAL: prefix in log messages:** For grep-able log filtering
+- **Propagate SQLException as RuntimeException:** Surface exceptions in CompletableFuture chain
 
 ### Pending Todos
 
@@ -67,5 +70,5 @@ New from execution:
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 01-02-PLAN.md
+Stopped at: Completed Phase 1 (Data Integrity Hardening)
 Resume file: None
