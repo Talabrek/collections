@@ -31,12 +31,12 @@ This audit systematically hardens the Collections plugin for multi-server networ
   2. All async database errors are logged at SEVERE level with full stack traces
   3. SQLite busy errors do not occur under normal concurrent access
   4. Partial saves cannot leave player data in inconsistent state
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Player quit save blocking and timeout handling
-- [ ] 01-02: SQLite WAL mode, busy timeout, and transaction wrapping
-- [ ] 01-03: CompletableFuture exception handler audit
+- [ ] 01-01-PLAN.md — Player quit save blocking and timeout handling (DATA-01)
+- [ ] 01-02-PLAN.md — SQLite WAL mode, busy timeout, and transaction wrapping (DATA-02, DATA-03)
+- [ ] 01-03-PLAN.md — CompletableFuture exception handler audit (DATA-04)
 
 ### Phase 2: Concurrency Safety
 **Goal**: Player data access is race-free from join to quit
@@ -178,7 +178,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Data Integrity Hardening | 0/3 | Not started | - |
+| 1. Data Integrity Hardening | 0/3 | Planned | - |
 | 2. Concurrency Safety | 0/3 | Not started | - |
 | 3. GUI Safety | 0/3 | Not started | - |
 | 4. Memory Management | 0/3 | Not started | - |
