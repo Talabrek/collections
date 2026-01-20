@@ -13,6 +13,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
 
 /**
  * Handles player join/quit for data loading and saving.
@@ -64,7 +67,7 @@ public class PlayerListener implements Listener {
         }, 20L); // 1 second delay
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
@@ -75,12 +78,21 @@ public class PlayerListener implements Listener {
             interactListener.cleanupPlayer(playerId);
         }
 
-        // Save and unload player data
-        playerDataManager.saveAndUnload(playerId)
-                .thenRun(() -> {
-                    if (plugin.getConfigManager().isDebugMode()) {
-                        plugin.getLogger().info("Saved and unloaded data for " + player.getName());
-                    }
-                });
+        // CRITICAL: Block until save completes to prevent data loss on rapid quit-rejoin.
+        // 5-second timeout prevents server hang if database is unresponsive.
+        try {
+            playerDataManager.saveAndUnload(playerId)
+                .get(5, TimeUnit.SECONDS);
+
+            if (plugin.getConfigManager().isDebugMode()) {
+                plugin.getLogger().info("Saved and unloaded data for " + player.getName());
+            }
+        } catch (TimeoutException e) {
+            plugin.getLogger().log(Level.SEVERE,
+                "Save timed out for player " + playerId + " - data may be lost");
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.SEVERE,
+                "Save failed for player " + playerId, e);
+        }
     }
 }
