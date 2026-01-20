@@ -56,6 +56,8 @@ Recent decisions affecting current work:
 - **Propagate SQLException as RuntimeException:** Surface exceptions in CompletableFuture chain
 - **ConcurrentHashMap for PlayerProgress.collections:** Atomic computeIfAbsent, better concurrent read performance
 - **ConcurrentHashMap.newKeySet() for CollectionProgress.collectedItems:** Thread-safe add/contains operations
+- **EntityScheduler over RegionScheduler for players:** Follows entity across regions, handles validity via retired callback
+- **Null retired callback pattern:** Task silently cancels when entity gone - correct behavior for player logout
 
 ### Pending Todos
 
