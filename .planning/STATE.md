@@ -4,34 +4,34 @@
 
 See: .planning/PROJECT.md (updated 2026-01-20)
 
-**Core value:** Every player interaction must work correctly — collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
+**Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
 **Current focus:** Phase 1 - Data Integrity Hardening
 
 ## Current Position
 
 Phase: 1 of 9 (Data Integrity Hardening)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-01-21 - Completed 01-01-PLAN.md (Blocking Quit Saves)
+Last activity: 2026-01-21 - Completed 01-02-PLAN.md (SQLite concurrent access and transactions)
 
-Progress: [█░░░░░░░░░] ~3%
+Progress: [##________] 7%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 8 min
-- Total execution time: 8 min
+- Total plans completed: 2
+- Average duration: 10 min
+- Total execution time: 20 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-data-integrity-hardening | 1 | 8 min | 8 min |
+| 01-data-integrity-hardening | 2 | 20 min | 10 min |
 
 **Recent Trend:**
-- Last 5 plans: 8 min
-- Trend: Not established (need more data)
+- Last 5 plans: 8 min, 12 min
+- Trend: Consistent execution
 
 *Updated after each plan completion*
 
@@ -45,6 +45,11 @@ Recent decisions affecting current work:
 - **5-second timeout for quit saves:** Chosen as safety margin (normal saves <100ms) - prevents indefinite blocking
 - **HIGHEST priority for quit handler:** Ensures save runs before other plugins' handlers
 - **Blocking .get() pattern:** Use CompletableFuture.get(timeout) for critical saves on quit
+- **SQLite WAL mode:** Enables concurrent readers during writes
+- **30-second busy_timeout:** Prevents SQLITE_BUSY errors under concurrent access
+- **NORMAL synchronous mode:** Balances durability with performance (FULL excessive for game data)
+- **SEVERE logging for database errors:** Critical data loss events need operator visibility
+- **Transaction wrapping for savePlayer:** All-or-nothing saves prevent inconsistent state
 
 ### Pending Todos
 
@@ -62,5 +67,5 @@ New from execution:
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 01-01-PLAN.md
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
