@@ -410,4 +410,11 @@ public class GUIManager {
     public void cleanupPlayer(UUID playerId) {
         openGuis.remove(playerId);
     }
+
+    /**
+     * Clear all tracked GUIs. Called on plugin disable.
+     */
+    public void shutdown() {
+        openGuis.clear();
+    }
 }
