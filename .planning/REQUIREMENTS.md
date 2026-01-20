@@ -26,11 +26,11 @@ Requirements for this audit cycle. Each maps to roadmap phases.
 
 ### GUI
 
-- [ ] **GUI-01**: Cancel all click types in GUIs (shift-click, number keys, drag, double-click)
-- [ ] **GUI-02**: Re-fetch player progress before any mutation in GUI handlers
-- [ ] **GUI-03**: Handle inventory full edge case when claiming rewards
-- [ ] **GUI-04**: Prevent reward claiming if progress changed since GUI opened
-- [ ] **GUI-05**: Verify GUI state consistency after async operations
+- [x] **GUI-01**: Cancel all click types in GUIs (shift-click, number keys, drag, double-click)
+- [x] **GUI-02**: Re-fetch player progress before any mutation in GUI handlers
+- [x] **GUI-03**: Handle inventory full edge case when claiming rewards
+- [x] **GUI-04**: Prevent reward claiming if progress changed since GUI opened
+- [x] **GUI-05**: Verify GUI state consistency after async operations
 
 ### Performance
 
@@ -110,11 +110,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONC-03 | Phase 2 | Complete |
 | CONC-04 | Phase 2 | Complete |
 | CONC-05 | Phase 2 | Complete |
-| GUI-01 | Phase 3 | Pending |
-| GUI-02 | Phase 3 | Pending |
-| GUI-03 | Phase 3 | Pending |
-| GUI-04 | Phase 3 | Pending |
-| GUI-05 | Phase 3 | Pending |
+| GUI-01 | Phase 3 | Complete |
+| GUI-02 | Phase 3 | Complete |
+| GUI-03 | Phase 3 | Complete |
+| GUI-04 | Phase 3 | Complete |
+| GUI-05 | Phase 3 | Complete |
 | PERF-01 | Phase 6 | Pending |
 | PERF-02 | Phase 6 | Pending |
 | PERF-03 | Phase 6 | Pending |
@@ -142,4 +142,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-21 after Phase 2 completion*
+*Last updated: 2026-01-21 after Phase 3 completion*
