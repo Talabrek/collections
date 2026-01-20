@@ -43,6 +43,10 @@ public class CollectionDetailGUI implements GUIHolder {
     // Prevents double-claim race from rapid clicks
     private final AtomicBoolean claiming = new AtomicBoolean(false);
 
+    // State snapshot from when GUI was opened - for staleness detection
+    private final boolean wasCompleteOnOpen;
+    private final boolean wasClaimedOnOpen;
+
     // Layout constants
     private static final int INVENTORY_SIZE = 54;  // 6 rows
 
@@ -71,6 +75,11 @@ public class CollectionDetailGUI implements GUIHolder {
 
         Component title = configManager.parse("<gold>" + collection.name() + "</gold>");
         this.inventory = Bukkit.createInventory(this, INVENTORY_SIZE, title);
+
+        // Capture completion state at open time for staleness detection
+        PlayerProgress openProgress = playerDataManager.getProgress(player.getUniqueId());
+        this.wasCompleteOnOpen = openProgress != null && openProgress.hasCompleted(collection.id());
+        this.wasClaimedOnOpen = openProgress != null && openProgress.hasClaimedReward(collection.id());
     }
 
     /**
@@ -448,6 +457,17 @@ public class CollectionDetailGUI implements GUIHolder {
             if (progress == null) {
                 player.sendMessage(configManager.getMessage("no-permission"));
                 guiManager.playErrorSound(player);
+                return;
+            }
+
+            // Detect if state changed since GUI was opened
+            boolean nowComplete = progress.hasCompleted(collection.id());
+            boolean nowClaimed = progress.hasClaimedReward(collection.id());
+
+            if (nowComplete != wasCompleteOnOpen || nowClaimed != wasClaimedOnOpen) {
+                player.sendMessage(configManager.getMessage("progress-changed"));
+                guiManager.playErrorSound(player);
+                populateInventory();  // Refresh GUI to show current state
                 return;
             }
 
