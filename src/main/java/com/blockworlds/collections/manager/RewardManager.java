@@ -180,8 +180,10 @@ public class RewardManager {
             fw.setFireworkMeta(meta);
         });
 
-        // Detonate after a short delay
-        Bukkit.getScheduler().runTaskLater(plugin, firework::detonate, 10L);
+        // Detonate after a short delay using EntityScheduler for Folia compatibility
+        firework.getScheduler().runDelayed(plugin, task -> {
+            firework.detonate();
+        }, null, 10L);
     }
 
     /**
