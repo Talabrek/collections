@@ -242,8 +242,22 @@ public class CollectibleInteractListener implements Listener {
 
     /**
      * Clean up cooldown data for a player (call on quit).
+     *
+     * Note: collectLocks map is NOT per-player data - it's keyed by collectible UUID
+     * and entries are removed in finally block of handleInteraction(). No cleanup needed here.
      */
     public void cleanupPlayer(UUID playerId) {
         lastCollectTime.remove(playerId);
+    }
+
+    /**
+     * Clear all player data. Called on plugin disable.
+     *
+     * Note: collectLocks.clear() is defensive - normally entries are removed in finally block,
+     * but clearing on shutdown handles any edge case where an exception prevented cleanup.
+     */
+    public void shutdown() {
+        lastCollectTime.clear();
+        collectLocks.clear();  // Defensive clear for edge cases
     }
 }
