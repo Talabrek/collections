@@ -35,7 +35,7 @@ Requirements for this audit cycle. Each maps to roadmap phases.
 ### Performance
 
 - [ ] **PERF-01**: Optimize particle task from O(players x collectibles) to chunk-based lookup
-- [ ] **PERF-02**: Add Map<UUID, UUID> index for entityId -> collectibleId lookup
+- [x] **PERF-02**: Add Map<UUID, UUID> index for entityId -> collectibleId lookup (completed in Phase 5)
 - [ ] **PERF-03**: Implement batch inserts for database writes
 - [ ] **PERF-04**: Replace pre-allocated grid points with lazy iteration in AdaptiveSpawnFinder
 
@@ -48,9 +48,9 @@ Requirements for this audit cycle. Each maps to roadmap phases.
 
 ### Entity Management
 
-- [ ] **ENT-01**: Verify chunk load/unload correctly recreates/tracks entity state
-- [ ] **ENT-02**: Handle entities despawning without notification
-- [ ] **ENT-03**: Ensure collectible tracking map stays in sync with world entities
+- [x] **ENT-01**: Verify chunk load/unload correctly recreates/tracks entity state
+- [x] **ENT-02**: Handle entities despawning without notification
+- [x] **ENT-03**: Ensure collectible tracking map stays in sync with world entities
 
 ### Code Quality
 
@@ -116,16 +116,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GUI-04 | Phase 3 | Complete |
 | GUI-05 | Phase 3 | Complete |
 | PERF-01 | Phase 6 | Pending |
-| PERF-02 | Phase 6 | Pending |
+| PERF-02 | Phase 5 | Complete |
 | PERF-03 | Phase 6 | Pending |
 | PERF-04 | Phase 6 | Pending |
 | MEM-01 | Phase 4 | Complete |
 | MEM-02 | Phase 4 | Complete |
 | MEM-03 | Phase 4 | Complete |
 | MEM-04 | Phase 4 | Complete |
-| ENT-01 | Phase 5 | Pending |
-| ENT-02 | Phase 5 | Pending |
-| ENT-03 | Phase 5 | Pending |
+| ENT-01 | Phase 5 | Complete |
+| ENT-02 | Phase 5 | Complete |
+| ENT-03 | Phase 5 | Complete |
 | CODE-01 | Phase 7 | Pending |
 | CODE-02 | Phase 7 | Pending |
 | CODE-03 | Phase 7 | Pending |
@@ -142,4 +142,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-21 after Phase 4 completion*
+*Last updated: 2026-01-21 after Phase 5 completion*
