@@ -10,7 +10,7 @@ This audit systematically hardens the Collections plugin for multi-server networ
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Data Integrity Hardening** - Fix critical data loss vectors (saves, exceptions, SQLite config)
+- [x] **Phase 1: Data Integrity Hardening** - Fix critical data loss vectors (saves, exceptions, SQLite config)
 - [ ] **Phase 2: Concurrency Safety** - Eliminate race conditions in player data access
 - [ ] **Phase 3: GUI Safety** - Prevent click exploits and state corruption
 - [ ] **Phase 4: Memory Management** - Fix leaks and cleanup on quit/disable
@@ -34,9 +34,9 @@ This audit systematically hardens the Collections plugin for multi-server networ
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Player quit save blocking and timeout handling (DATA-01)
-- [ ] 01-02-PLAN.md — SQLite WAL mode, busy timeout, and transaction wrapping (DATA-02, DATA-03)
-- [ ] 01-03-PLAN.md — CompletableFuture exception handler audit (DATA-04)
+- [x] 01-01-PLAN.md — Player quit save blocking and timeout handling (DATA-01)
+- [x] 01-02-PLAN.md — SQLite WAL mode, busy timeout, and transaction wrapping (DATA-02, DATA-03)
+- [x] 01-03-PLAN.md — CompletableFuture exception handler audit (DATA-04)
 
 ### Phase 2: Concurrency Safety
 **Goal**: Player data access is race-free from join to quit
@@ -178,7 +178,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Data Integrity Hardening | 0/3 | Planned | - |
+| 1. Data Integrity Hardening | 3/3 | Complete | 2026-01-21 |
 | 2. Concurrency Safety | 0/3 | Not started | - |
 | 3. GUI Safety | 0/3 | Not started | - |
 | 4. Memory Management | 0/3 | Not started | - |
