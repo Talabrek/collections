@@ -18,11 +18,11 @@ Requirements for this audit cycle. Each maps to roadmap phases.
 
 ### Concurrency
 
-- [ ] **CONC-01**: Fix race condition where getProgress() returns null for recently joined players
-- [ ] **CONC-02**: Verify player data load completes before any feature access
-- [ ] **CONC-03**: Migrate all BukkitScheduler usage to Folia-compatible schedulers
-- [ ] **CONC-04**: Ensure all ConcurrentHashMap operations use atomic methods (computeIfAbsent, etc.)
-- [ ] **CONC-05**: Verify PlayerProgress internal HashMap thread safety
+- [x] **CONC-01**: Fix race condition where getProgress() returns null for recently joined players
+- [x] **CONC-02**: Verify player data load completes before any feature access
+- [x] **CONC-03**: Migrate all BukkitScheduler usage to Folia-compatible schedulers
+- [x] **CONC-04**: Ensure all ConcurrentHashMap operations use atomic methods (computeIfAbsent, etc.)
+- [x] **CONC-05**: Verify PlayerProgress internal HashMap thread safety
 
 ### GUI
 
@@ -105,11 +105,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-04 | Phase 1 | Complete |
 | DATA-05 | Phase 8 | Pending |
 | DATA-06 | Phase 8 | Pending |
-| CONC-01 | Phase 2 | Pending |
-| CONC-02 | Phase 2 | Pending |
-| CONC-03 | Phase 2 | Pending |
-| CONC-04 | Phase 2 | Pending |
-| CONC-05 | Phase 2 | Pending |
+| CONC-01 | Phase 2 | Complete |
+| CONC-02 | Phase 2 | Complete |
+| CONC-03 | Phase 2 | Complete |
+| CONC-04 | Phase 2 | Complete |
+| CONC-05 | Phase 2 | Complete |
 | GUI-01 | Phase 3 | Pending |
 | GUI-02 | Phase 3 | Pending |
 | GUI-03 | Phase 3 | Pending |
@@ -142,4 +142,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-21 after Phase 1 completion*
+*Last updated: 2026-01-21 after Phase 2 completion*

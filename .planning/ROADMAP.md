@@ -11,7 +11,7 @@ This audit systematically hardens the Collections plugin for multi-server networ
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
 - [x] **Phase 1: Data Integrity Hardening** - Fix critical data loss vectors (saves, exceptions, SQLite config)
-- [ ] **Phase 2: Concurrency Safety** - Eliminate race conditions in player data access
+- [x] **Phase 2: Concurrency Safety** - Eliminate race conditions in player data access
 - [ ] **Phase 3: GUI Safety** - Prevent click exploits and state corruption
 - [ ] **Phase 4: Memory Management** - Fix leaks and cleanup on quit/disable
 - [ ] **Phase 5: Entity Management** - Correct chunk load/unload entity handling
@@ -51,9 +51,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Fix getProgress() race condition and add load-blocking gate (CONC-01, CONC-02)
-- [ ] 02-02-PLAN.md — Migrate BukkitScheduler to Folia-compatible schedulers (CONC-03)
-- [ ] 02-03-PLAN.md — Make PlayerProgress internal state thread-safe (CONC-04, CONC-05)
+- [x] 02-01-PLAN.md — Fix getProgress() race condition and add load-blocking gate (CONC-01, CONC-02)
+- [x] 02-02-PLAN.md — Migrate BukkitScheduler to Folia-compatible schedulers (CONC-03)
+- [x] 02-03-PLAN.md — Make PlayerProgress internal state thread-safe (CONC-04, CONC-05)
 
 ### Phase 3: GUI Safety
 **Goal**: GUI interactions cannot duplicate items or corrupt state
@@ -179,7 +179,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Data Integrity Hardening | 3/3 | Complete | 2026-01-21 |
-| 2. Concurrency Safety | 0/3 | Ready to execute | - |
+| 2. Concurrency Safety | 3/3 | Complete | 2026-01-21 |
 | 3. GUI Safety | 0/3 | Not started | - |
 | 4. Memory Management | 0/3 | Not started | - |
 | 5. Entity Management | 0/2 | Not started | - |
