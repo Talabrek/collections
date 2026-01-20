@@ -8,7 +8,10 @@ import com.blockworlds.collections.model.CollectibleTier;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 
 /**
@@ -16,6 +19,9 @@ import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
  * Particles are only sent to players who can see the collectible.
  */
 public class ParticleTask {
+
+    // 2 chunks = 32 blocks, matching typical particle visibility
+    private static final int PARTICLE_CHUNK_RADIUS = 2;
 
     private final Collections plugin;
     private final SpawnManager spawnManager;
@@ -56,34 +62,43 @@ public class ParticleTask {
     }
 
     /**
-     * Spawn particles for all active collectibles.
+     * Spawn particles for all active collectibles visible to each player.
+     * Uses chunk-based lookup for O(players x nearby_chunks) instead of O(players x all_collectibles).
      */
     private void spawnParticles() {
-        for (Collectible collectible : spawnManager.getActiveCollectibles()) {
-            if (!collectible.spawned()) continue;
+        // Get particle offset for floating effect (same for all collectibles this tick)
+        double time = System.currentTimeMillis() / 1000.0;
+        double yOffset = 0.5 + Math.sin(time * 2) * 0.1;
 
-            Location loc = collectible.location();
-            if (loc.getWorld() == null) continue;
+        // O(players) outer loop
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Location playerLoc = player.getLocation();
+            World world = playerLoc.getWorld();
+            if (world == null) continue;
 
-            CollectibleTier tier = collectible.tier();
-            Particle particle = tier.getParticle();
+            int playerChunkX = playerLoc.getBlockX() >> 4;
+            int playerChunkZ = playerLoc.getBlockZ() >> 4;
 
-            // Get particle offset for a floating effect
-            double time = System.currentTimeMillis() / 1000.0;
-            double yOffset = 0.5 + Math.sin(time * 2) * 0.1; // Gentle bobbing
+            // O(1) chunk lookup per radius (typically 5x5 = 25 lookups)
+            List<Collectible> nearby = spawnManager.getCollectiblesNearChunk(
+                    playerChunkX, playerChunkZ, PARTICLE_CHUNK_RADIUS);
 
-            Location particleLoc = loc.clone().add(0, yOffset, 0);
+            // O(nearby collectibles) - much smaller than O(all collectibles)
+            for (Collectible collectible : nearby) {
+                // Skip if different world
+                if (!world.equals(collectible.location().getWorld())) continue;
 
-            // Send particles only to nearby players who can see this collectible
-            for (Player player : loc.getWorld().getPlayers()) {
-                if (player.getLocation().distanceSquared(loc) > particleDistance * particleDistance) {
+                // Distance check (finer than chunk granularity)
+                if (playerLoc.distanceSquared(collectible.location()) > particleDistance * particleDistance) {
                     continue;
                 }
 
-                // Check goggle visibility
-                if (canPlayerSee(player, collectible)) {
-                    spawnParticleForPlayer(player, particleLoc, particle, tier);
-                }
+                // Goggle visibility check
+                if (!canPlayerSee(player, collectible)) continue;
+
+                // Spawn particles using ParticleBuilder
+                Location particleLoc = collectible.location().clone().add(0, yOffset, 0);
+                spawnParticleForPlayer(player, particleLoc, collectible.tier().getParticle(), collectible.tier());
             }
         }
     }
@@ -101,14 +116,19 @@ public class ParticleTask {
     }
 
     /**
-     * Spawn particles for a specific player.
+     * Spawn particles for a specific player using Paper's ParticleBuilder.
      */
     private void spawnParticleForPlayer(Player player, Location location, Particle particle, CollectibleTier tier) {
         // Different particle patterns based on tier
         switch (tier) {
             case COMMON -> {
                 // Simple sparkle effect
-                player.spawnParticle(particle, location, particleCount, 0.2, 0.2, 0.2, 0);
+                particle.builder()
+                        .location(location)
+                        .count(particleCount)
+                        .offset(0.2, 0.2, 0.2)
+                        .receivers(player)
+                        .spawn();
             }
             case UNCOMMON -> {
                 // Enchant spiral effect
@@ -116,35 +136,53 @@ public class ParticleTask {
                     double angle = (System.currentTimeMillis() / 50.0 + i * 120) * Math.PI / 180;
                     double x = Math.cos(angle) * 0.3;
                     double z = Math.sin(angle) * 0.3;
-                    player.spawnParticle(particle, location.clone().add(x, 0, z), 1, 0, 0.1, 0, 0);
+                    particle.builder()
+                            .location(location.clone().add(x, 0, z))
+                            .count(1)
+                            .offset(0, 0.1, 0)
+                            .receivers(player)
+                            .spawn();
                 }
             }
             case RARE -> {
                 // Elegant rising particles
-                player.spawnParticle(particle, location, particleCount + 2, 0.15, 0.3, 0.15, 0.01);
+                particle.builder()
+                        .location(location)
+                        .count(particleCount + 2)
+                        .offset(0.15, 0.3, 0.15)
+                        .extra(0.01)
+                        .receivers(player)
+                        .spawn();
             }
             case EVENT -> {
                 // Celebratory burst
-                player.spawnParticle(particle, location, particleCount + 3, 0.25, 0.25, 0.25, 0.02);
+                particle.builder()
+                        .location(location)
+                        .count(particleCount + 3)
+                        .offset(0.25, 0.25, 0.25)
+                        .extra(0.02)
+                        .receivers(player)
+                        .spawn();
             }
         }
     }
 
     /**
      * Spawn a collection effect when a collectible is collected.
+     * Uses ParticleBuilder with radius-based receivers for efficiency.
      */
     public void spawnCollectionEffect(Location location, CollectibleTier tier) {
         if (location.getWorld() == null) return;
 
-        // Burst of particles when collected
         Particle particle = tier.getParticle();
 
-        // Send to all nearby players
-        for (Player player : location.getWorld().getPlayers()) {
-            if (player.getLocation().distanceSquared(location) <= particleDistance * particleDistance) {
-                player.spawnParticle(particle, location.clone().add(0, 0.5, 0),
-                        15, 0.3, 0.3, 0.3, 0.05);
-            }
-        }
+        // Send to all nearby players using ParticleBuilder with radius
+        particle.builder()
+                .location(location.clone().add(0, 0.5, 0))
+                .count(15)
+                .offset(0.3, 0.3, 0.3)
+                .extra(0.05)
+                .receivers(particleDistance, false) // false = cubic distance check
+                .spawn();
     }
 }
