@@ -101,11 +101,11 @@ Plans:
   3. Entity despawn (any cause) correctly updates tracking map
   4. No orphaned tracking entries (entity gone but tracked)
   5. No orphaned entities (entity exists but not tracked)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: Audit chunk load/unload handlers and entity tracking sync
-- [ ] 05-02: Handle entity despawn without notification
+- [ ] 05-01-PLAN.md — Add EntityRemoveEvent listener and entity-to-collectible index (ENT-02, ENT-03)
+- [ ] 05-02-PLAN.md — Audit chunk load/unload edge cases and validity task (ENT-01)
 
 ### Phase 6: Performance Optimization
 **Goal**: Plugin performs well at network scale (50+ concurrent players)
@@ -123,6 +123,8 @@ Plans:
 - [ ] 06-02: Add entity UUID to collectible ID index
 - [ ] 06-03: Implement batch database inserts
 - [ ] 06-04: Replace grid point allocation with lazy iteration
+
+**Note:** PERF-02 (entity UUID index) will be completed in Phase 5 as part of ENT-03.
 
 ### Phase 7: Code Quality
 **Goal**: Codebase is clean and maintainable
@@ -185,7 +187,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 2. Concurrency Safety | 3/3 | Complete | 2026-01-21 |
 | 3. GUI Safety | 3/3 | Complete | 2026-01-21 |
 | 4. Memory Management | 2/2 | Complete | 2026-01-21 |
-| 5. Entity Management | 0/2 | Not started | - |
+| 5. Entity Management | 0/2 | Planned | - |
 | 6. Performance Optimization | 0/4 | Not started | - |
 | 7. Code Quality | 0/3 | Not started | - |
 | 8. MySQL Implementation | 0/4 | Not started | - |
