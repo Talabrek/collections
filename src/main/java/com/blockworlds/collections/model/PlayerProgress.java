@@ -215,7 +215,7 @@ public class PlayerProgress {
 
         public CollectionProgress(String collectionId) {
             this.collectionId = collectionId;
-            this.collectedItems = new HashSet<>();
+            this.collectedItems = ConcurrentHashMap.newKeySet();
             this.complete = false;
             this.rewardClaimed = false;
             this.completedDate = 0;
