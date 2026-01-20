@@ -4,7 +4,6 @@ import com.blockworlds.collections.Collections;
 import com.blockworlds.collections.manager.GoggleManager;
 import com.blockworlds.collections.manager.PlayerDataManager;
 import com.blockworlds.collections.recipe.GoggleRecipeManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -46,25 +45,22 @@ public class PlayerListener implements Listener {
                     if (progress.getTotalCollectiblesCollected() > 0) {
                         GoggleRecipeManager recipeManager = plugin.getGoggleRecipeManager();
                         if (recipeManager != null && !recipeManager.hasDiscoveredRecipes(player)) {
-                            // Run on main thread since discoverRecipe needs it
-                            Bukkit.getScheduler().runTask(plugin, () -> {
-                                if (player.isOnline()) {
-                                    recipeManager.unlockRecipesForPlayer(player);
-                                }
-                            });
+                            // Run on main thread using EntityScheduler for Folia compatibility
+                            player.getScheduler().run(plugin, task -> {
+                                recipeManager.unlockRecipesForPlayer(player);
+                            }, null);  // null = retired callback (player logged out)
                         }
                     }
                 });
 
         // Schedule visibility refresh after a short delay to allow chunks to load
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            if (player.isOnline()) {
-                GoggleManager goggleManager = plugin.getGoggleManager();
-                if (goggleManager != null) {
-                    goggleManager.refreshVisibilityForPlayer(player);
-                }
+        // Using EntityScheduler for Folia compatibility - follows player across regions
+        player.getScheduler().runDelayed(plugin, task -> {
+            GoggleManager goggleManager = plugin.getGoggleManager();
+            if (goggleManager != null) {
+                goggleManager.refreshVisibilityForPlayer(player);
             }
-        }, 20L); // 1 second delay
+        }, null, 20L);  // retired callback, 1 second delay
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
