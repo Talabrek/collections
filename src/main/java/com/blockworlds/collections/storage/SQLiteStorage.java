@@ -316,59 +316,85 @@ public class SQLiteStorage implements Storage {
     public CompletableFuture<Void> savePlayer(PlayerProgress progress) {
         return CompletableFuture.runAsync(() -> {
             try (Connection conn = dataSource.getConnection()) {
-                // Upsert player base data
-                try (PreparedStatement stmt = conn.prepareStatement("""
-                        INSERT OR REPLACE INTO players
-                        (uuid, total_collectibles_collected, total_collections_completed, first_collection_date, last_activity_date)
-                        VALUES (?, ?, ?, ?, ?)
-                        """)) {
-                    stmt.setString(1, progress.getPlayerId().toString());
-                    stmt.setInt(2, progress.getTotalCollectiblesCollected());
-                    stmt.setInt(3, progress.getTotalCollectionsCompleted());
-                    stmt.setLong(4, progress.getFirstCollectionDate());
-                    stmt.setLong(5, progress.getLastActivityDate());
-                    stmt.executeUpdate();
-                }
+                conn.setAutoCommit(false);
 
-                // Save each collection progress
-                for (var entry : progress.getAllProgress().entrySet()) {
-                    PlayerProgress.CollectionProgress colProgress = entry.getValue();
+                try {
+                    // Upsert player base data
+                    savePlayerBase(conn, progress);
 
-                    try (PreparedStatement stmt = conn.prepareStatement("""
-                            INSERT OR REPLACE INTO collection_progress
-                            (uuid, collection_id, reward_claimed, completed_date)
-                            VALUES (?, ?, ?, ?)
-                            """)) {
-                        stmt.setString(1, progress.getPlayerId().toString());
-                        stmt.setString(2, colProgress.getCollectionId());
-                        stmt.setBoolean(3, colProgress.isRewardClaimed());
-                        stmt.setLong(4, colProgress.getCompletedDate());
-                        stmt.executeUpdate();
+                    // Save each collection progress
+                    for (var entry : progress.getAllProgress().entrySet()) {
+                        PlayerProgress.CollectionProgress colProgress = entry.getValue();
+                        saveCollectionProgress(conn, progress.getPlayerId(), colProgress);
+                        saveCollectedItems(conn, progress.getPlayerId(), colProgress);
                     }
 
-                    // Save collected items
-                    for (String itemId : colProgress.getCollectedItems()) {
-                        try (PreparedStatement stmt = conn.prepareStatement("""
-                                INSERT OR IGNORE INTO collected_items
-                                (uuid, collection_id, item_id, collected_date)
-                                VALUES (?, ?, ?, ?)
-                                """)) {
-                            stmt.setString(1, progress.getPlayerId().toString());
-                            stmt.setString(2, colProgress.getCollectionId());
-                            stmt.setString(3, itemId);
-                            stmt.setLong(4, System.currentTimeMillis());
-                            stmt.executeUpdate();
-                        }
-                    }
+                    conn.commit();
+
+                } catch (SQLException e) {
+                    conn.rollback();
+                    throw e;
+                } finally {
+                    conn.setAutoCommit(true);
                 }
 
             } catch (SQLException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to save player data: " + progress.getPlayerId(), e);
+                plugin.getLogger().log(Level.SEVERE,
+                    "Failed to save player data: " + progress.getPlayerId(), e);
+                throw new RuntimeException(e);
             }
         }).orTimeout(30, TimeUnit.SECONDS).exceptionally(throwable -> {
-            plugin.getLogger().log(Level.WARNING, "Timeout saving player data: " + progress.getPlayerId(), throwable);
+            plugin.getLogger().log(Level.SEVERE,
+                "Timeout or error saving player data: " + progress.getPlayerId(), throwable);
             return null;
         });
+    }
+
+    private void savePlayerBase(Connection conn, PlayerProgress progress) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement("""
+                INSERT OR REPLACE INTO players
+                (uuid, total_collectibles_collected, total_collections_completed, first_collection_date, last_activity_date)
+                VALUES (?, ?, ?, ?, ?)
+                """)) {
+            stmt.setString(1, progress.getPlayerId().toString());
+            stmt.setInt(2, progress.getTotalCollectiblesCollected());
+            stmt.setInt(3, progress.getTotalCollectionsCompleted());
+            stmt.setLong(4, progress.getFirstCollectionDate());
+            stmt.setLong(5, progress.getLastActivityDate());
+            stmt.executeUpdate();
+        }
+    }
+
+    private void saveCollectionProgress(Connection conn, UUID playerId,
+            PlayerProgress.CollectionProgress colProgress) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement("""
+                INSERT OR REPLACE INTO collection_progress
+                (uuid, collection_id, reward_claimed, completed_date)
+                VALUES (?, ?, ?, ?)
+                """)) {
+            stmt.setString(1, playerId.toString());
+            stmt.setString(2, colProgress.getCollectionId());
+            stmt.setBoolean(3, colProgress.isRewardClaimed());
+            stmt.setLong(4, colProgress.getCompletedDate());
+            stmt.executeUpdate();
+        }
+    }
+
+    private void saveCollectedItems(Connection conn, UUID playerId,
+            PlayerProgress.CollectionProgress colProgress) throws SQLException {
+        for (String itemId : colProgress.getCollectedItems()) {
+            try (PreparedStatement stmt = conn.prepareStatement("""
+                    INSERT OR IGNORE INTO collected_items
+                    (uuid, collection_id, item_id, collected_date)
+                    VALUES (?, ?, ?, ?)
+                    """)) {
+                stmt.setString(1, playerId.toString());
+                stmt.setString(2, colProgress.getCollectionId());
+                stmt.setString(3, itemId);
+                stmt.setLong(4, System.currentTimeMillis());
+                stmt.executeUpdate();
+            }
+        }
     }
 
     @Override
