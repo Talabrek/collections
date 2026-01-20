@@ -77,8 +77,44 @@ public class SQLiteStorage implements Storage {
 
         dataSource = new HikariDataSource(config);
 
+        // Configure SQLite for concurrent access
+        configureSQLitePragmas();
+
         createTables();
-        plugin.getLogger().info("SQLite storage initialized");
+        plugin.getLogger().info("SQLite storage initialized with WAL mode");
+    }
+
+    /**
+     * Configure SQLite PRAGMA settings for concurrent access safety.
+     * WAL mode allows concurrent reads during writes.
+     * busy_timeout prevents SQLITE_BUSY errors under concurrent access.
+     */
+    private void configureSQLitePragmas() {
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            // WAL mode allows concurrent reads during writes
+            stmt.execute("PRAGMA journal_mode=WAL");
+
+            // Wait up to 30 seconds if database is locked
+            stmt.execute("PRAGMA busy_timeout=30000");
+
+            // Balance between safety and performance
+            stmt.execute("PRAGMA synchronous=NORMAL");
+
+            // Verify WAL mode was applied
+            try (ResultSet rs = stmt.executeQuery("PRAGMA journal_mode")) {
+                if (rs.next()) {
+                    String mode = rs.getString(1);
+                    if (!"wal".equalsIgnoreCase(mode)) {
+                        plugin.getLogger().warning("Failed to enable WAL mode, got: " + mode);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to configure SQLite pragmas", e);
+        }
     }
 
     private void createTables() {
@@ -350,8 +386,13 @@ public class SQLiteStorage implements Storage {
                 stmt.setLong(4, System.currentTimeMillis());
                 stmt.executeUpdate();
             } catch (SQLException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to save collected item", e);
+                throw new RuntimeException(e);
             }
+        }).orTimeout(30, TimeUnit.SECONDS).exceptionally(throwable -> {
+            plugin.getLogger().log(Level.SEVERE,
+                "CRITICAL: Failed to save collected item '" + itemId +
+                "' for collection '" + collectionId + "' for player " + playerId, throwable);
+            return null;
         });
     }
 
@@ -370,8 +411,13 @@ public class SQLiteStorage implements Storage {
                 stmt.setLong(4, complete ? System.currentTimeMillis() : 0);
                 stmt.executeUpdate();
             } catch (SQLException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to update collection status", e);
+                throw new RuntimeException(e);
             }
+        }).orTimeout(30, TimeUnit.SECONDS).exceptionally(throwable -> {
+            plugin.getLogger().log(Level.SEVERE,
+                "CRITICAL: Failed to update collection status for '" + collectionId +
+                "' for player " + playerId + " (complete=" + complete + ", rewardClaimed=" + rewardClaimed + ")", throwable);
+            return null;
         });
     }
 
