@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** Phase 3 - GUI Safety
+**Current focus:** Phase 3 complete - Ready for Phase 4
 
 ## Current Position
 
 Phase: 3 of 9 (GUI Safety)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-01-21 - Completed 03-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-01-21 - Completed 03-03-PLAN.md
 
-Progress: [████░░░░░░] 30%
+Progress: [████░░░░░░] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 9
 - Average duration: 7 min
-- Total execution time: 56 min
+- Total execution time: 60 min
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [████░░░░░░] 30%
 |-------|-------|-------|----------|
 | 01-data-integrity-hardening | 3 | 32 min | 11 min |
 | 02-concurrency-safety | 3 | 21 min | 7 min |
-| 03-gui-safety | 2 | 3 min | 2 min |
+| 03-gui-safety | 3 | 7 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 8 min, 10 min, 3 min, 1 min, 2 min
+- Last 5 plans: 10 min, 3 min, 1 min, 2 min, 4 min
 - Trend: Fast execution
 
 *Updated after each plan completion*
@@ -64,6 +64,8 @@ Recent decisions affecting current work:
 - **Check all drag slots:** Iterate `getRawSlots()` to catch cross-inventory drags
 - **getProgressBlocking() for GUI mutations:** Re-fetch fresh progress data before reward claims, not cached data
 - **No inventory pre-check for claims:** Let RewardManager handle overflow by dropping items at feet
+- **AtomicBoolean claiming lock with try-finally:** Prevents double-click exploits via compareAndSet pattern
+- **State snapshot on open for staleness detection:** Capture completion state in constructor, compare before claim
 
 ### Pending Todos
 
@@ -81,5 +83,5 @@ New from execution:
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 03-02-PLAN.md
+Stopped at: Completed 03-03-PLAN.md (Phase 3 complete)
 Resume file: None
