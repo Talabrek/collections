@@ -13,7 +13,7 @@ This audit systematically hardens the Collections plugin for multi-server networ
 - [x] **Phase 1: Data Integrity Hardening** - Fix critical data loss vectors (saves, exceptions, SQLite config)
 - [x] **Phase 2: Concurrency Safety** - Eliminate race conditions in player data access
 - [x] **Phase 3: GUI Safety** - Prevent click exploits and state corruption
-- [ ] **Phase 4: Memory Management** - Fix leaks and cleanup on quit/disable
+- [x] **Phase 4: Memory Management** - Fix leaks and cleanup on quit/disable
 - [ ] **Phase 5: Entity Management** - Correct chunk load/unload entity handling
 - [ ] **Phase 6: Performance Optimization** - Optimize particle systems and database operations
 - [ ] **Phase 7: Code Quality** - Remove dead code, extract utilities, add validation
@@ -84,8 +84,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Verify and fix collectLocks map cleanup (MEM-01)
-- [ ] 04-02-PLAN.md — Add onDisable shutdown methods for listener and GUI manager (MEM-03)
+- [x] 04-01-PLAN.md — Verify and fix collectLocks map cleanup (MEM-01) - FALSE POSITIVE confirmed
+- [x] 04-02-PLAN.md — Add onDisable shutdown methods for listener and GUI manager (MEM-03)
 
 **Research findings:**
 - MEM-02 (task cancellation): Already COMPLIANT - all ScheduledTask instances properly cancelled
@@ -184,7 +184,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 1. Data Integrity Hardening | 3/3 | Complete | 2026-01-21 |
 | 2. Concurrency Safety | 3/3 | Complete | 2026-01-21 |
 | 3. GUI Safety | 3/3 | Complete | 2026-01-21 |
-| 4. Memory Management | 0/2 | Not started | - |
+| 4. Memory Management | 2/2 | Complete | 2026-01-21 |
 | 5. Entity Management | 0/2 | Not started | - |
 | 6. Performance Optimization | 0/4 | Not started | - |
 | 7. Code Quality | 0/3 | Not started | - |
