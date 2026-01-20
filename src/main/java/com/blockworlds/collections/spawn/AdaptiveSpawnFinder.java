@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -370,5 +371,77 @@ public class AdaptiveSpawnFinder {
 
     private boolean getAllowConditionRelaxation() {
         return configManager.getBoolean("spawn.allow-condition-relaxation", DEFAULT_ALLOW_RELAXATION);
+    }
+
+    /**
+     * Lazy iterator over grid points - generates X,Z coordinates on demand.
+     * Avoids allocating thousands of Location objects upfront.
+     */
+    private static class GridPointIterator implements Iterator<int[]> {
+        private final int minX, maxX, minZ, maxZ, spacing;
+        private int currentX, currentZ;
+        private boolean hasNext;
+
+        GridPointIterator(int centerX, int centerZ, int radius, int spacing, SpawnZone zone) {
+            this.spacing = spacing;
+
+            // Calculate bounds
+            int calcMinX = centerX - radius;
+            int calcMaxX = centerX + radius;
+            int calcMinZ = centerZ - radius;
+            int calcMaxZ = centerZ + radius;
+
+            // Constrain to zone bounds if specified
+            if (zone.bounds() != null) {
+                SpawnZone.Bounds bounds = zone.bounds();
+                calcMinX = Math.max(calcMinX, bounds.minX());
+                calcMaxX = Math.min(calcMaxX, bounds.maxX());
+                calcMinZ = Math.max(calcMinZ, bounds.minZ());
+                calcMaxZ = Math.min(calcMaxZ, bounds.maxZ());
+            }
+
+            this.minX = calcMinX;
+            this.maxX = calcMaxX;
+            this.minZ = calcMinZ;
+            this.maxZ = calcMaxZ;
+
+            this.currentX = this.minX;
+            this.currentZ = this.minZ;
+            this.hasNext = currentX <= maxX && currentZ <= maxZ;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return hasNext;
+        }
+
+        @Override
+        public int[] next() {
+            if (!hasNext) {
+                throw new java.util.NoSuchElementException();
+            }
+
+            int[] result = new int[] { currentX, currentZ };
+
+            // Advance to next point
+            currentX += spacing;
+            if (currentX > maxX) {
+                currentX = minX;
+                currentZ += spacing;
+            }
+            hasNext = currentZ <= maxZ;
+
+            return result;
+        }
+
+        /**
+         * Get the total number of points this iterator will produce.
+         * Used for reservoir sampling.
+         */
+        int totalPoints() {
+            int countX = (maxX - minX) / spacing + 1;
+            int countZ = (maxZ - minZ) / spacing + 1;
+            return Math.max(0, countX * countZ);
+        }
     }
 }
