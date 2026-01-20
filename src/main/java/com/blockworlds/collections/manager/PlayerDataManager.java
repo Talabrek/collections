@@ -154,8 +154,9 @@ public class PlayerDataManager {
             storage.saveCollectedItem(playerId, collectionId, itemId)
                     .orTimeout(30, TimeUnit.SECONDS)
                     .exceptionally(throwable -> {
-                        plugin.getLogger().log(Level.WARNING,
-                                "Failed to save collected item for " + playerId, throwable);
+                        plugin.getLogger().log(Level.SEVERE,
+                                "CRITICAL: Failed to persist collected item '" + itemId +
+                                "' for collection '" + collectionId + "' for player " + playerId, throwable);
                         return null;
                     });
         }
@@ -181,8 +182,9 @@ public class PlayerDataManager {
         storage.updateCollectionStatus(playerId, collectionId, true, false)
                 .orTimeout(30, TimeUnit.SECONDS)
                 .exceptionally(throwable -> {
-                    plugin.getLogger().log(Level.WARNING,
-                            "Failed to save collection completion for " + playerId, throwable);
+                    plugin.getLogger().log(Level.SEVERE,
+                            "CRITICAL: Failed to persist collection completion for '" + collectionId +
+                            "' for player " + playerId, throwable);
                     return null;
                 });
     }
@@ -206,8 +208,9 @@ public class PlayerDataManager {
                         progress.hasCompleted(collectionId), true)
                 .orTimeout(30, TimeUnit.SECONDS)
                 .exceptionally(throwable -> {
-                    plugin.getLogger().log(Level.WARNING,
-                            "Failed to save reward claim for " + playerId, throwable);
+                    plugin.getLogger().log(Level.SEVERE,
+                            "CRITICAL: Failed to persist reward claim for '" + collectionId +
+                            "' for player " + playerId, throwable);
                     return null;
                 });
     }
