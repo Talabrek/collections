@@ -386,20 +386,36 @@ public class SQLiteStorage implements Storage {
         }
     }
 
+    /**
+     * Save collected items using batch insert.
+     * Note: For SQLite, transaction wrapping (already in place) provides the main
+     * performance benefit. Batch syntax is cleaner for bulk operations.
+     */
     private void saveCollectedItems(Connection conn, UUID playerId,
             PlayerProgress.CollectionProgress colProgress) throws SQLException {
-        for (String itemId : colProgress.getCollectedItems()) {
-            try (PreparedStatement stmt = conn.prepareStatement("""
-                    INSERT OR IGNORE INTO collected_items
-                    (uuid, collection_id, item_id, collected_date)
-                    VALUES (?, ?, ?, ?)
-                    """)) {
-                stmt.setString(1, playerId.toString());
-                stmt.setString(2, colProgress.getCollectionId());
+        var items = colProgress.getCollectedItems();
+        if (items.isEmpty()) {
+            return;
+        }
+
+        try (PreparedStatement stmt = conn.prepareStatement("""
+                INSERT OR IGNORE INTO collected_items
+                (uuid, collection_id, item_id, collected_date)
+                VALUES (?, ?, ?, ?)
+                """)) {
+            long timestamp = System.currentTimeMillis();
+            String playerIdStr = playerId.toString();
+            String collectionId = colProgress.getCollectionId();
+
+            for (String itemId : items) {
+                stmt.setString(1, playerIdStr);
+                stmt.setString(2, collectionId);
                 stmt.setString(3, itemId);
-                stmt.setLong(4, System.currentTimeMillis());
-                stmt.executeUpdate();
+                stmt.setLong(4, timestamp);
+                stmt.addBatch();
             }
+
+            stmt.executeBatch();
         }
     }
 
