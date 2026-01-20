@@ -172,7 +172,7 @@ public class ConfirmAddGUI implements GUIHolder {
         }
 
         // Check if this was the first collection - unlock recipes
-        PlayerProgress progress = playerDataManager.getProgress(player.getUniqueId());
+        PlayerProgress progress = playerDataManager.getProgressBlocking(player.getUniqueId());
         if (progress != null && progress.getTotalCollectiblesCollected() == 1) {
             GoggleRecipeManager recipeManager = plugin.getGoggleRecipeManager();
             if (recipeManager != null) {
@@ -224,7 +224,7 @@ public class ConfirmAddGUI implements GUIHolder {
      * Check if the collection is complete after adding this item.
      */
     private void checkCollectionComplete() {
-        PlayerProgress progress = playerDataManager.getProgress(player.getUniqueId());
+        PlayerProgress progress = playerDataManager.getProgressBlocking(player.getUniqueId());
         if (progress == null) {
             return;
         }
