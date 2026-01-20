@@ -3,12 +3,10 @@ package com.blockworlds.collections.listener;
 import com.blockworlds.collections.Collections;
 import com.blockworlds.collections.manager.GoggleManager;
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.EquipmentSlot;
 
 /**
  * Listens for armor changes to refresh collectible visibility
@@ -36,16 +34,15 @@ public class ArmorChangeListener implements Listener {
             return;
         }
 
-        // Schedule the visibility refresh for next tick using region scheduler for Folia compatibility
-        Bukkit.getRegionScheduler().run(plugin, player.getLocation(), task -> {
-            if (player.isOnline()) {
-                goggleManager.refreshVisibilityForPlayer(player);
+        // Schedule the visibility refresh for next tick using EntityScheduler for Folia compatibility
+        // EntityScheduler follows the entity across regions; no need for isOnline() check
+        player.getScheduler().run(plugin, task -> {
+            goggleManager.refreshVisibilityForPlayer(player);
 
-                if (plugin.getConfigManager().isDebugMode()) {
-                    plugin.getLogger().info("Refreshed collectible visibility for " + player.getName() +
-                            " after helmet change");
-                }
+            if (plugin.getConfigManager().isDebugMode()) {
+                plugin.getLogger().info("Refreshed collectible visibility for " + player.getName() +
+                        " after helmet change");
             }
-        });
+        }, null);
     }
 }
