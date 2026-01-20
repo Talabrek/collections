@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-20)
 ## Current Position
 
 Phase: 5 of 9 (Entity Management)
-Plan: 0 of 2 in current phase
-Status: Ready to plan
-Last activity: 2026-01-21 - Completed Phase 4 (Memory Management)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-01-21 - Completed 05-01-PLAN.md (Entity Removal Tracking)
 
-Progress: [█████░░░░░] 44%
+Progress: [█████░░░░░] 48%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: 6 min
-- Total execution time: 67 min
+- Total execution time: 73 min
 
 **By Phase:**
 
@@ -31,9 +31,10 @@ Progress: [█████░░░░░] 44%
 | 02-concurrency-safety | 3 | 21 min | 7 min |
 | 03-gui-safety | 3 | 7 min | 2 min |
 | 04-memory-management | 2 | 7 min | 3.5 min |
+| 05-entity-management | 1 | 6 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 1 min, 2 min, 4 min, 4 min, 3 min
+- Last 5 plans: 2 min, 4 min, 4 min, 3 min, 6 min
 - Trend: Fast execution (verification and audit tasks are quick)
 
 *Updated after each plan completion*
@@ -70,6 +71,10 @@ Recent decisions affecting current work:
 - **MEM-01 is FALSE POSITIVE:** collectLocks is transient (keyed by collectible UUID), not per-player memory leak
 - **Defensive collectLocks.clear() on shutdown:** Even though entries are removed in finally block, clearing handles edge cases
 - **Player object retention in GUI acceptable:** Short-lived GUIs with proper cleanup on close/quit
+- **Dual-index tracking:** entityToCollectible ConcurrentHashMap provides O(1) reverse lookup
+- **MONITOR priority for EntityRemoveListener:** Observe without interfering with other handlers
+- **PDC fast-fail check:** Check PersistentDataContainer before map lookup for non-collectible entities
+- **UNLOAD vs permanent removal:** UNLOAD marks unspawned but keeps tracking, other causes trigger full despawn
 
 ### Pending Todos
 
@@ -87,5 +92,5 @@ New from execution:
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed Phase 4, ready for Phase 5
+Stopped at: Completed 05-01-PLAN.md, ready for 05-02
 Resume file: None
