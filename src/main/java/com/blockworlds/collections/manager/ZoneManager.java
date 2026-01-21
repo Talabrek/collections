@@ -2,11 +2,11 @@ package com.blockworlds.collections.manager;
 
 import com.blockworlds.collections.model.SpawnConditions;
 import com.blockworlds.collections.model.SpawnZone;
+import com.blockworlds.collections.util.LocationUtils;
+import com.blockworlds.collections.util.SpawnConditionParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -109,58 +109,14 @@ public class ZoneManager {
 
     /**
      * Parse spawn conditions from configuration.
-     * This method is public so it can be used by CollectionManager as well.
      *
      * @param section The configuration section containing conditions
      * @return Parsed SpawnConditions, or NONE if section is null
+     * @deprecated Use {@link SpawnConditionParser#parse(ConfigurationSection, java.util.logging.Logger)} directly
      */
+    @Deprecated
     public SpawnConditions parseSpawnConditions(ConfigurationSection section) {
-        if (section == null) {
-            return SpawnConditions.NONE;
-        }
-
-        // Parse biomes
-        List<String> biomeNames = section.getStringList("biomes");
-        Set<Biome> biomes = new HashSet<>();
-        for (String biomeName : biomeNames) {
-            try {
-                biomes.add(Biome.valueOf(biomeName.toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("Unknown biome: " + biomeName);
-            }
-        }
-
-        // Parse dimensions
-        List<String> dimensionNames = section.getStringList("dimensions");
-        Set<World.Environment> dimensions = new HashSet<>();
-        for (String dimName : dimensionNames) {
-            try {
-                dimensions.add(World.Environment.valueOf(dimName.toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("Unknown dimension: " + dimName);
-            }
-        }
-
-        // Parse time condition
-        SpawnConditions.TimeCondition time = SpawnConditions.TimeCondition.ALWAYS;
-        String timeStr = section.getString("time", "ALWAYS");
-        try {
-            time = SpawnConditions.TimeCondition.valueOf(timeStr.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            plugin.getLogger().warning("Unknown time condition: " + timeStr);
-        }
-
-        return new SpawnConditions(
-                biomes.isEmpty() ? null : biomes,
-                dimensions.isEmpty() ? null : dimensions,
-                section.getInt("min-y", Integer.MIN_VALUE),
-                section.getInt("max-y", Integer.MAX_VALUE),
-                section.getInt("min-light", 0),
-                section.getInt("max-light", 15),
-                section.getBoolean("require-sky", false),
-                section.getBoolean("underground", false),
-                time
-        );
+        return SpawnConditionParser.parse(section, plugin.getLogger());
     }
 
     /**
@@ -246,61 +202,14 @@ public class ZoneManager {
      * Find the surface location at X,Z coordinates.
      */
     private Location findSurfaceLocation(World world, int x, int z, SpawnConditions conditions) {
-        int minY = Math.max(conditions.minY(), world.getMinHeight());
-        int maxY = Math.min(conditions.maxY(), world.getMaxHeight() - 1);
-
-        if (conditions.underground()) {
-            // Search from bottom up for underground locations
-            for (int y = minY; y <= maxY; y++) {
-                Location loc = new Location(world, x + 0.5, y, z + 0.5);
-                if (isStandableLocation(loc) && hasBlockAbove(loc)) {
-                    return loc;
-                }
-            }
-        } else if (conditions.requireSky()) {
-            // Get highest block with sky access
-            int highestY = world.getHighestBlockYAt(x, z);
-            if (highestY >= minY && highestY <= maxY) {
-                return new Location(world, x + 0.5, highestY + 1, z + 0.5);
-            }
-        } else {
-            // Search from top down
-            for (int y = maxY; y >= minY; y--) {
-                Location loc = new Location(world, x + 0.5, y, z + 0.5);
-                if (isStandableLocation(loc)) {
-                    return loc;
-                }
-            }
-        }
-
-        return null;
+        return LocationUtils.findSurfaceLocation(world, x, z, conditions);
     }
 
     /**
      * Check if a location is standable (solid block below, air at location).
      */
     private boolean isStandableLocation(Location loc) {
-        if (!loc.getBlock().getType().isAir()) {
-            return false;
-        }
-        Location below = loc.clone().subtract(0, 1, 0);
-        Material blockBelow = below.getBlock().getType();
-        // Barrier blocks should be treated as air (not a valid spawn surface)
-        return blockBelow.isSolid() && blockBelow != Material.BARRIER;
-    }
-
-    /**
-     * Check if there's a solid block above (for underground check).
-     */
-    private boolean hasBlockAbove(Location loc) {
-        for (int y = loc.getBlockY() + 1; y < loc.getWorld().getMaxHeight(); y++) {
-            Material blockType = loc.getWorld().getBlockAt(loc.getBlockX(), y, loc.getBlockZ()).getType();
-            // Barrier blocks should not count as solid ceiling
-            if (blockType.isSolid() && blockType != Material.BARRIER) {
-                return true;
-            }
-        }
-        return false;
+        return LocationUtils.isStandableLocation(loc);
     }
 
     /**

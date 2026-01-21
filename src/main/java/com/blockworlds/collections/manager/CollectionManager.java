@@ -9,6 +9,7 @@ import com.blockworlds.collections.model.FishingDropSource;
 import com.blockworlds.collections.model.LootDropSource;
 import com.blockworlds.collections.model.MobDropSource;
 import com.blockworlds.collections.model.SpawnConditions;
+import com.blockworlds.collections.util.SpawnConditionParser;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.World;
@@ -267,52 +268,7 @@ public class CollectionManager {
      * @return Parsed SpawnConditions, or null if section is null (no restrictions)
      */
     private SpawnConditions parseSpawnConditions(ConfigurationSection section) {
-        if (section == null) {
-            return null; // No conditions specified = no restrictions at this level
-        }
-
-        // Parse biomes
-        List<String> biomeNames = section.getStringList("biomes");
-        Set<Biome> biomes = new HashSet<>();
-        for (String biomeName : biomeNames) {
-            try {
-                biomes.add(Biome.valueOf(biomeName.toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("Unknown biome: " + biomeName);
-            }
-        }
-
-        // Parse dimensions
-        List<String> dimensionNames = section.getStringList("dimensions");
-        Set<World.Environment> dimensions = new HashSet<>();
-        for (String dimName : dimensionNames) {
-            try {
-                dimensions.add(World.Environment.valueOf(dimName.toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("Unknown dimension: " + dimName);
-            }
-        }
-
-        // Parse time condition
-        SpawnConditions.TimeCondition time = SpawnConditions.TimeCondition.ALWAYS;
-        String timeStr = section.getString("time", "ALWAYS");
-        try {
-            time = SpawnConditions.TimeCondition.valueOf(timeStr.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            plugin.getLogger().warning("Unknown time condition: " + timeStr);
-        }
-
-        return new SpawnConditions(
-                biomes.isEmpty() ? null : biomes,
-                dimensions.isEmpty() ? null : dimensions,
-                section.getInt("min-y", Integer.MIN_VALUE),
-                section.getInt("max-y", Integer.MAX_VALUE),
-                section.getInt("min-light", 0),
-                section.getInt("max-light", 15),
-                section.getBoolean("require-sky", false),
-                section.getBoolean("underground", false),
-                time
-        );
+        return SpawnConditionParser.parseOrNull(section, plugin.getLogger());
     }
 
     /**

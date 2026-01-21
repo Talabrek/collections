@@ -3,9 +3,9 @@ package com.blockworlds.collections.spawn;
 import com.blockworlds.collections.config.ConfigManager;
 import com.blockworlds.collections.model.SpawnConditions;
 import com.blockworlds.collections.model.SpawnZone;
+import com.blockworlds.collections.util.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
@@ -246,62 +246,21 @@ public class AdaptiveSpawnFinder {
      * Find the surface location at X,Z coordinates.
      */
     private Location findSurfaceLocation(World world, int x, int z, SpawnConditions conditions) {
-        int minY = Math.max(conditions.minY(), world.getMinHeight());
-        int maxY = Math.min(conditions.maxY(), world.getMaxHeight() - 1);
-
-        if (conditions.underground()) {
-            // Search from bottom up for underground locations
-            for (int y = minY; y <= maxY; y++) {
-                Location loc = new Location(world, x + 0.5, y, z + 0.5);
-                if (isStandableLocation(loc) && hasBlockAbove(loc)) {
-                    return loc;
-                }
-            }
-        } else if (conditions.requireSky()) {
-            // Get highest block with sky access
-            int highestY = world.getHighestBlockYAt(x, z);
-            if (highestY >= minY && highestY <= maxY) {
-                return new Location(world, x + 0.5, highestY + 1, z + 0.5);
-            }
-        } else {
-            // Search from top down for any valid surface
-            for (int y = maxY; y >= minY; y--) {
-                Location loc = new Location(world, x + 0.5, y, z + 0.5);
-                if (isStandableLocation(loc)) {
-                    return loc;
-                }
-            }
-        }
-
-        return null;
+        return LocationUtils.findSurfaceLocation(world, x, z, conditions);
     }
 
     /**
      * Check if a location is standable (solid block below, air at location).
      */
     private boolean isStandableLocation(Location loc) {
-        if (!loc.getBlock().getType().isAir()) {
-            return false;
-        }
-        Location below = loc.clone().subtract(0, 1, 0);
-        Material blockBelow = below.getBlock().getType();
-        return blockBelow.isSolid() && blockBelow != Material.BARRIER;
+        return LocationUtils.isStandableLocation(loc);
     }
 
     /**
      * Check if there's a solid block above (for underground check).
      */
     private boolean hasBlockAbove(Location loc) {
-        World world = loc.getWorld();
-        if (world == null) return false;
-
-        for (int y = loc.getBlockY() + 1; y < world.getMaxHeight(); y++) {
-            Material blockType = world.getBlockAt(loc.getBlockX(), y, loc.getBlockZ()).getType();
-            if (blockType.isSolid() && blockType != Material.BARRIER) {
-                return true;
-            }
-        }
-        return false;
+        return LocationUtils.hasBlockAbove(loc);
     }
 
     /**
