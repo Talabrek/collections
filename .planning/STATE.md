@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-01-20)
 Phase: 7 of 9 (Code Quality)
 Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-01-21 - Completed 07-02-PLAN.md (ID Validation)
+Last activity: 2026-01-21 - Completed 07-01-PLAN.md (Code Cleanup)
 
 Progress: [████████░░] 77%
 
@@ -91,6 +91,8 @@ Recent decisions affecting current work:
 - **PARTICLE_CHUNK_RADIUS = 2:** 5x5 chunk grid (25 lookups) covers 80x80 block area
 - **Pattern ^[a-z][a-z0-9_]*$ for valid IDs:** Lowercase letter start, alphanumeric/underscore only
 - **ValidationUtils centralized validation:** isValidId() for checking, requireValidId() for fail-fast validation
+- **JarFile enumeration for dynamic resource discovery:** Enumerate JAR entries to find bundled YAML files
+- **plugin.saveResource() preserves user modifications:** Check existence before extraction
 
 ### Pending Todos
 
@@ -108,5 +110,5 @@ New from execution:
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 07-02-PLAN.md (ID Validation)
+Stopped at: Completed 07-01-PLAN.md (Code Cleanup)
 Resume file: None
