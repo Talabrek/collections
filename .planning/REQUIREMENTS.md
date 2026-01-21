@@ -54,11 +54,11 @@ Requirements for this audit cycle. Each maps to roadmap phases.
 
 ### Code Quality
 
-- [ ] **CODE-01**: Remove dead stub file at com.example.collections package
-- [ ] **CODE-02**: Fix saveDefaultCollections() to extract all collection YAML files
-- [ ] **CODE-03**: Add alphanumeric validation for collection/item IDs
-- [ ] **CODE-04**: Extract duplicated spawn condition parsing to shared utility
-- [ ] **CODE-05**: Extract duplicated surface location finding to LocationUtils
+- [x] **CODE-01**: Remove dead stub file at com.example.collections package
+- [x] **CODE-02**: Fix saveDefaultCollections() to extract all collection YAML files
+- [x] **CODE-03**: Add alphanumeric validation for collection/item IDs
+- [x] **CODE-04**: Extract duplicated spawn condition parsing to shared utility
+- [x] **CODE-05**: Extract duplicated surface location finding to LocationUtils
 
 ### Testing
 
@@ -126,11 +126,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENT-01 | Phase 5 | Complete |
 | ENT-02 | Phase 5 | Complete |
 | ENT-03 | Phase 5 | Complete |
-| CODE-01 | Phase 7 | Pending |
-| CODE-02 | Phase 7 | Pending |
-| CODE-03 | Phase 7 | Pending |
-| CODE-04 | Phase 7 | Pending |
-| CODE-05 | Phase 7 | Pending |
+| CODE-01 | Phase 7 | Complete |
+| CODE-02 | Phase 7 | Complete |
+| CODE-03 | Phase 7 | Complete |
+| CODE-04 | Phase 7 | Complete |
+| CODE-05 | Phase 7 | Complete |
 | TEST-01 | Phase 9 | Pending |
 | TEST-02 | Phase 9 | Pending |
 | TEST-03 | Phase 9 | Pending |
@@ -142,4 +142,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-21 after Phase 6 completion*
+*Last updated: 2026-01-21 after Phase 7 completion*
