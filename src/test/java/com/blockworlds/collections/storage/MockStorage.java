@@ -9,15 +9,23 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * In-memory mock implementation of Storage for testing.
  * Uses ConcurrentHashMap for thread-safe operations.
+ *
+ * Uses async execution to avoid recursive ConcurrentHashMap updates
+ * when PlayerDataManager's computeIfAbsent completion callbacks execute.
  */
 public class MockStorage implements Storage {
 
     private final Map<UUID, PlayerProgress> playerData = new ConcurrentHashMap<>();
     private final Map<UUID, Collectible> collectibles = new ConcurrentHashMap<>();
+
+    // Executor for async operations - avoids recursive update in ConcurrentHashMap
+    private final Executor executor = Executors.newCachedThreadPool();
 
     // Track method calls for verification
     private int loadCount = 0;
@@ -81,12 +89,23 @@ public class MockStorage implements Storage {
     @Override
     public CompletableFuture<PlayerProgress> loadPlayer(UUID playerId) {
         loadCount++;
-        PlayerProgress progress = playerData.get(playerId);
-        if (progress == null) {
-            progress = new PlayerProgress(playerId);
-            playerData.put(playerId, progress);
-        }
-        return CompletableFuture.completedFuture(progress);
+        // Use supplyAsync with a small delay to ensure the future doesn't complete
+        // while still inside PlayerDataManager's computeIfAbsent operation
+        // This avoids recursive ConcurrentHashMap update when completion callbacks execute
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                // Brief yield to ensure we exit computeIfAbsent before completing
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            PlayerProgress progress = playerData.get(playerId);
+            if (progress == null) {
+                progress = new PlayerProgress(playerId);
+                playerData.put(playerId, progress);
+            }
+            return progress;
+        }, executor);
     }
 
     @Override
