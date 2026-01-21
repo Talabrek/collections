@@ -13,8 +13,8 @@ Requirements for this audit cycle. Each maps to roadmap phases.
 - [x] **DATA-02**: SQLite must use WAL mode and busy_timeout for concurrent access
 - [x] **DATA-03**: Player data saves must be wrapped in transactions
 - [x] **DATA-04**: All CompletableFuture chains must have exception handlers that log at SEVERE level
-- [ ] **DATA-05**: Implement MySQL storage option for multi-server networks
-- [ ] **DATA-06**: Add configuration to switch between SQLite and MySQL storage backends
+- [x] **DATA-05**: Implement MySQL storage option for multi-server networks
+- [x] **DATA-06**: Add configuration to switch between SQLite and MySQL storage backends
 
 ### Concurrency
 
@@ -103,8 +103,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-02 | Phase 1 | Complete |
 | DATA-03 | Phase 1 | Complete |
 | DATA-04 | Phase 1 | Complete |
-| DATA-05 | Phase 8 | Pending |
-| DATA-06 | Phase 8 | Pending |
+| DATA-05 | Phase 8 | Complete |
+| DATA-06 | Phase 8 | Complete |
 | CONC-01 | Phase 2 | Complete |
 | CONC-02 | Phase 2 | Complete |
 | CONC-03 | Phase 2 | Complete |
@@ -142,4 +142,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-21 after Phase 7 completion*
+*Last updated: 2026-01-21 after Phase 8 completion*
