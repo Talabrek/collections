@@ -167,12 +167,12 @@ Plans:
   2. PlayerDataManager lifecycle unit tests pass
   3. All existing tests pass
   4. Manual verification checklist completed on dev server
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 09-01: Add SpawnConditions and PlayerDataManager unit tests
-- [ ] 09-02: Run full test suite and fix any failures
-- [ ] 09-03: Manual verification on dev server
+- [ ] 09-01-PLAN.md — Fix compilation blocker and verify existing tests pass (TEST-03)
+- [ ] 09-02-PLAN.md — Add SpawnConditions unit tests (TEST-01)
+- [ ] 09-03-PLAN.md — Add PlayerDataManager lifecycle tests and manual verification (TEST-02)
 
 ## Progress
 
