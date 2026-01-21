@@ -93,7 +93,7 @@ public class ConfigManager {
 
         // Database settings
         databaseType = config.getString("database.type", "sqlite");
-        databasePath = config.getString("database.path", "plugins/Collections/data.db");
+        databasePath = config.getString("database.sqlite.path", "plugins/Collections/collections.db");
 
         // Spawn finder settings
         spawnGridSpacing = config.getInt("spawn.grid-spacing", 8);
