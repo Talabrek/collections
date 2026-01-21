@@ -54,13 +54,22 @@ public class SQLiteStorage implements Storage {
     public void initialize() {
         File dbFile;
         if (databasePath != null) {
+            // Custom path from test constructor
             dbFile = new File(databasePath);
         } else {
-            File dataFolder = plugin.getDataFolder();
-            if (!dataFolder.exists()) {
-                dataFolder.mkdirs();
+            // Get path from config
+            String configPath = plugin.getConfigManager().getDatabasePath();
+            if (configPath.startsWith("plugins/")) {
+                // Relative to server root
+                dbFile = new File(configPath);
+            } else {
+                // Relative to plugin data folder
+                File dataFolder = plugin.getDataFolder();
+                if (!dataFolder.exists()) {
+                    dataFolder.mkdirs();
+                }
+                dbFile = new File(dataFolder, configPath);
             }
-            dbFile = new File(dataFolder, "collections.db");
         }
 
         // Ensure parent directory exists
