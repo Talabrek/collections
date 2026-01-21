@@ -135,12 +135,12 @@ Plans:
   3. Invalid collection/item IDs rejected with clear error message
   4. Spawn condition parsing exists in one location
   5. Surface location finding exists in one location
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 07-01: Remove dead stub file
-- [ ] 07-02: Fix saveDefaultCollections to extract all YAML files
-- [ ] 07-03: Add ID validation and extract duplicated utilities
+- [ ] 07-01-PLAN.md — Remove dead stub file and fix dynamic resource extraction (CODE-01, CODE-02)
+- [ ] 07-02-PLAN.md — Add alphanumeric ID validation (CODE-03)
+- [ ] 07-03-PLAN.md — Extract duplicated utilities (CODE-04, CODE-05)
 
 ### Phase 8: MySQL Implementation
 **Goal**: Plugin supports MySQL for multi-server network deployment
