@@ -151,13 +151,12 @@ Plans:
   2. Configuration clearly switches between SQLite and MySQL
   3. Connection pool handles network-scale load (50+ concurrent)
   4. Existing SQLite data can be migrated to MySQL (documented process)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 08-01: Design storage abstraction layer
-- [ ] 08-02: Implement MySQL storage backend
-- [ ] 08-03: Add configuration and connection pooling
-- [ ] 08-04: Document migration process
+- [ ] 08-01-PLAN.md — Create MySQLStorage implementing Storage interface (DATA-05)
+- [ ] 08-02-PLAN.md — Add StorageFactory and MySQL driver, wire into plugin (DATA-05, DATA-06)
+- [ ] 08-03-PLAN.md — Enhance config documentation for MySQL settings (DATA-06)
 
 ### Phase 9: Testing & Verification
 **Goal**: All changes are verified working
@@ -189,5 +188,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 5. Entity Management | 2/2 | Complete | 2026-01-21 |
 | 6. Performance Optimization | 3/3 | Complete | 2026-01-21 |
 | 7. Code Quality | 3/3 | Complete | 2026-01-21 |
-| 8. MySQL Implementation | 0/4 | Not started | - |
+| 8. MySQL Implementation | 0/3 | Not started | - |
 | 9. Testing & Verification | 0/3 | Not started | - |
