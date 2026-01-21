@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-20)
 ## Current Position
 
 Phase: 8 of 9 (MySQL Implementation)
-Plan: 2 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-01-21 - Completed 08-02-PLAN.md (Storage Factory Integration)
+Last activity: 2026-01-21 - Completed 08-03-PLAN.md (Config Documentation)
 
-Progress: [████████░░] 87%
+Progress: [█████████░] 91%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
+- Total plans completed: 21
 - Average duration: 5 min
-- Total execution time: 100 min
+- Total execution time: 105 min
 
 **By Phase:**
 
@@ -34,10 +34,10 @@ Progress: [████████░░] 87%
 | 05-entity-management | 2 | 10 min | 5 min |
 | 06-performance-optimization | 3 | 7 min | 2.3 min |
 | 07-code-quality | 3 | 10 min | 3.3 min |
-| 08-mysql-implementation | 2 | 6 min | 3 min |
+| 08-mysql-implementation | 3 | 11 min | 3.7 min |
 
 **Recent Trend:**
-- Last 5 plans: 3 min (07-02), 4 min (07-03), 3 min (08-01), 3 min (08-02)
+- Last 5 plans: 4 min (07-03), 3 min (08-01), 3 min (08-02), 5 min (08-03)
 - Trend: Consistent fast execution
 
 *Updated after each plan completion*
@@ -102,6 +102,8 @@ Recent decisions affecting current work:
 - **Exclude protobuf from mysql-connector-j:** X DevAPI not needed, reduces JAR size
 - **Factory pattern for Storage creation:** StorageFactory.createStorage(plugin) based on config type
 - **Fallback with warning for unknown DB types:** Unknown database.type defaults to SQLite with warning
+- **Separate sqlite:/mysql: config subsections:** Cleaner structure with dedicated section per backend
+- **Migration warning in config:** No automatic SQLite to MySQL transfer, operators must handle manually
 
 ### Pending Todos
 
@@ -119,5 +121,5 @@ New from execution:
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 08-02-PLAN.md (Storage Factory Integration)
+Stopped at: Completed 08-03-PLAN.md (Config Documentation)
 Resume file: None
