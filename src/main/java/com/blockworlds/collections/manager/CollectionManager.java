@@ -17,10 +17,10 @@ import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Enumeration;
@@ -81,13 +81,16 @@ public class CollectionManager {
      * Dynamically extracts all YAML files from the collections/ directory in the JAR.
      */
     private void saveDefaultCollections() {
-        // Cast to JavaPlugin to access getFile()
-        if (!(plugin instanceof JavaPlugin javaPlugin)) {
-            plugin.getLogger().warning("Cannot extract default collections: plugin is not a JavaPlugin");
+        // Locate the plugin JAR file using class protection domain
+        File jarFile;
+        try {
+            jarFile = new File(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
+        } catch (URISyntaxException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to locate plugin JAR file", e);
             return;
         }
 
-        try (JarFile jar = new JarFile(javaPlugin.getFile())) {
+        try (JarFile jar = new JarFile(jarFile)) {
             Enumeration<JarEntry> entries = jar.entries();
             int extracted = 0;
 
