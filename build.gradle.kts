@@ -20,6 +20,9 @@ dependencies {
     // Database connection pooling
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("org.xerial:sqlite-jdbc:3.45.3.0")
+    implementation("com.mysql:mysql-connector-j:9.1.0") {
+        exclude(group = "com.google.protobuf") // X DevAPI not needed
+    }
 
     // Testing - Use Paper 1.21.1 for MockBukkit compatibility
     // MockBukkit v1.21 is built against 1.21.1-R0.1-SNAPSHOT
@@ -56,6 +59,7 @@ tasks {
         // Relocate dependencies to avoid conflicts with other plugins
         relocate("com.zaxxer.hikari", "com.blockworlds.collections.lib.hikari")
         relocate("org.sqlite", "com.blockworlds.collections.lib.sqlite")
+        relocate("com.mysql", "com.blockworlds.collections.lib.mysql")
     }
 
     build {
