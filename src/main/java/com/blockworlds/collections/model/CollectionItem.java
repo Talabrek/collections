@@ -1,5 +1,6 @@
 package com.blockworlds.collections.model;
 
+import com.blockworlds.collections.util.ValidationUtils;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -30,9 +31,7 @@ public record CollectionItem(
      * Create a CollectionItem with validation.
      */
     public CollectionItem {
-        if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("Item id cannot be null or blank");
-        }
+        ValidationUtils.requireValidId(id, "Item");
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Item name cannot be null or blank");
         }
