@@ -66,20 +66,34 @@ goggles:
     unlock_on_first_collect: true
 
 # Database Settings
+# Collections supports two storage backends:
+#   - sqlite: Single-server deployments (default, no setup required)
+#   - mysql: Multi-server networks (shared database across servers)
+#
+# MIGRATION NOTE: SQLite and MySQL use separate databases.
+# If switching from SQLite to MySQL, player progress will NOT transfer automatically.
+# You must manually export/import data or have players re-collect.
 database:
   # Database type: sqlite or mysql
+  # Use 'sqlite' for single-server setups (simpler, no external database needed)
+  # Use 'mysql' for multi-server networks (shared progress across servers)
   type: sqlite
 
-  # Path to SQLite database file (relative to server root)
-  path: plugins/Collections/data.db
+  # SQLite settings (only used if type is sqlite)
+  # Path is relative to server root directory
+  sqlite:
+    path: plugins/Collections/collections.db
 
   # MySQL settings (only used if type is mysql)
+  # Requires MySQL 8.0+ server
   mysql:
     host: localhost
     port: 3306
     database: collections
     username: root
     password: ""
+    # Connection pool size - increase for high-traffic networks
+    # Recommended: 10 for single server, 5-10 per server in a network
     pool-size: 10
 
 # Spawn Algorithm Settings
