@@ -16,14 +16,15 @@ import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 
 /**
@@ -75,30 +76,46 @@ public class CollectionManager {
     }
 
     /**
-     * Save default collection files if they don't exist.
+     * Save default collection files from the plugin JAR if they don't exist.
+     * Dynamically extracts all YAML files from the collections/ directory in the JAR.
      */
     private void saveDefaultCollections() {
-        String[] defaults = {"collectors_initiation.yml"};
+        // Cast to JavaPlugin to access getFile()
+        if (!(plugin instanceof JavaPlugin javaPlugin)) {
+            plugin.getLogger().warning("Cannot extract default collections: plugin is not a JavaPlugin");
+            return;
+        }
 
-        for (String fileName : defaults) {
-            File file = new File(collectionsFolder, fileName);
-            if (!file.exists()) {
-                try (InputStream in = plugin.getResource("collections/" + fileName)) {
-                    if (in != null) {
-                        try (OutputStream out = Files.newOutputStream(file.toPath())) {
-                            byte[] buffer = new byte[1024];
-                            int length;
-                            while ((length = in.read(buffer)) > 0) {
-                                out.write(buffer, 0, length);
-                            }
-                        }
-                        plugin.getLogger().info("Saved default collection: " + fileName);
-                    }
-                } catch (IOException e) {
-                    plugin.getLogger().log(Level.WARNING,
-                            "Failed to save default collection: " + fileName, e);
+        try (JarFile jar = new JarFile(javaPlugin.getFile())) {
+            Enumeration<JarEntry> entries = jar.entries();
+            int extracted = 0;
+
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+                String name = entry.getName();
+
+                // Only process YAML files in collections/ directory
+                if (entry.isDirectory() || !name.startsWith("collections/") || !name.endsWith(".yml")) {
+                    continue;
+                }
+
+                // Extract filename (remove "collections/" prefix)
+                String fileName = name.substring("collections/".length());
+                File targetFile = new File(collectionsFolder, fileName);
+
+                // Only extract if file doesn't exist (preserve user modifications)
+                if (!targetFile.exists()) {
+                    plugin.saveResource(name, false);
+                    plugin.getLogger().info("Extracted default collection: " + fileName);
+                    extracted++;
                 }
             }
+
+            if (extracted > 0) {
+                plugin.getLogger().info("Extracted " + extracted + " default collection file(s)");
+            }
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to enumerate collection resources from JAR", e);
         }
     }
 
@@ -232,7 +249,7 @@ public class CollectionManager {
 
         List<String> lore = section.getStringList("lore");
         int weight = section.getInt("weight", 10);
-        boolean soulbound = section.getBoolean("soulbound", true);
+        boolean soulbound = section.getBoolean("soulbound", false);
 
         // Parse spawn conditions (item-level)
         SpawnConditions spawnConditions = parseSpawnConditions(section.getConfigurationSection("conditions"));
