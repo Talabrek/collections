@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-20)
 ## Current Position
 
 Phase: 8 of 9 (MySQL Implementation)
-Plan: 0 of 4 in current phase
-Status: Ready to plan
-Last activity: 2026-01-21 - Completed Phase 7 (Code Quality)
+Plan: 1 of 4 in current phase
+Status: In progress
+Last activity: 2026-01-21 - Completed 08-01-PLAN.md (MySQL Storage Class)
 
-Progress: [████████░░] 78%
+Progress: [████████░░] 83%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 18
+- Total plans completed: 19
 - Average duration: 5 min
-- Total execution time: 94 min
+- Total execution time: 97 min
 
 **By Phase:**
 
@@ -34,10 +34,11 @@ Progress: [████████░░] 78%
 | 05-entity-management | 2 | 10 min | 5 min |
 | 06-performance-optimization | 3 | 7 min | 2.3 min |
 | 07-code-quality | 3 | 10 min | 3.3 min |
+| 08-mysql-implementation | 1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 3 min, 4 min, 3 min (07-01), 3 min (07-02), 4 min (07-03)
-- Trend: Consistent fast execution for code quality tasks
+- Last 5 plans: 3 min (07-01), 3 min (07-02), 4 min (07-03), 3 min (08-01)
+- Trend: Consistent fast execution
 
 *Updated after each plan completion*
 
@@ -95,6 +96,9 @@ Recent decisions affecting current work:
 - **plugin.saveResource() preserves user modifications:** Check existence before extraction
 - **Use parseOrNull() for CollectionManager, parse() for ZoneManager:** Different null semantics per caller
 - **Mark ZoneManager.parseSpawnConditions() as @Deprecated:** Direct to utility class while maintaining backward compat
+- **Fixed pool size for MySQL:** Set minimumIdle = maximumPoolSize for predictable connection behavior
+- **30-minute maxLifetime for MySQL:** Less than MySQL wait_timeout (8h) prevents stale connections
+- **MySQL performance properties:** cachePrepStmts, useServerPrepStmts, rewriteBatchedStatements
 
 ### Pending Todos
 
@@ -112,5 +116,5 @@ New from execution:
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed Phase 7, ready for Phase 8
+Stopped at: Completed 08-01-PLAN.md (MySQL Storage Class)
 Resume file: None
