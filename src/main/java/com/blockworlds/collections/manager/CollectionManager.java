@@ -84,7 +84,13 @@ public class CollectionManager {
         // Locate the plugin JAR file using class protection domain
         File jarFile;
         try {
-            jarFile = new File(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
+            java.security.CodeSource codeSource = plugin.getClass().getProtectionDomain().getCodeSource();
+            if (codeSource == null || codeSource.getLocation() == null) {
+                // Running in test environment or non-JAR context - skip extraction
+                plugin.getLogger().fine("Cannot locate JAR file (test environment?) - skipping default collection extraction");
+                return;
+            }
+            jarFile = new File(codeSource.getLocation().toURI());
         } catch (URISyntaxException e) {
             plugin.getLogger().log(Level.WARNING, "Failed to locate plugin JAR file", e);
             return;
