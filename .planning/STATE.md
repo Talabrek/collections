@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-20)
 ## Current Position
 
 Phase: 8 of 9 (MySQL Implementation)
-Plan: 1 of 4 in current phase
+Plan: 2 of 4 in current phase
 Status: In progress
-Last activity: 2026-01-21 - Completed 08-01-PLAN.md (MySQL Storage Class)
+Last activity: 2026-01-21 - Completed 08-02-PLAN.md (Storage Factory Integration)
 
-Progress: [████████░░] 83%
+Progress: [████████░░] 87%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
+- Total plans completed: 20
 - Average duration: 5 min
-- Total execution time: 97 min
+- Total execution time: 100 min
 
 **By Phase:**
 
@@ -34,10 +34,10 @@ Progress: [████████░░] 83%
 | 05-entity-management | 2 | 10 min | 5 min |
 | 06-performance-optimization | 3 | 7 min | 2.3 min |
 | 07-code-quality | 3 | 10 min | 3.3 min |
-| 08-mysql-implementation | 1 | 3 min | 3 min |
+| 08-mysql-implementation | 2 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 3 min (07-01), 3 min (07-02), 4 min (07-03), 3 min (08-01)
+- Last 5 plans: 3 min (07-02), 4 min (07-03), 3 min (08-01), 3 min (08-02)
 - Trend: Consistent fast execution
 
 *Updated after each plan completion*
@@ -99,6 +99,9 @@ Recent decisions affecting current work:
 - **Fixed pool size for MySQL:** Set minimumIdle = maximumPoolSize for predictable connection behavior
 - **30-minute maxLifetime for MySQL:** Less than MySQL wait_timeout (8h) prevents stale connections
 - **MySQL performance properties:** cachePrepStmts, useServerPrepStmts, rewriteBatchedStatements
+- **Exclude protobuf from mysql-connector-j:** X DevAPI not needed, reduces JAR size
+- **Factory pattern for Storage creation:** StorageFactory.createStorage(plugin) based on config type
+- **Fallback with warning for unknown DB types:** Unknown database.type defaults to SQLite with warning
 
 ### Pending Todos
 
@@ -116,5 +119,5 @@ New from execution:
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 08-01-PLAN.md (MySQL Storage Class)
+Stopped at: Completed 08-02-PLAN.md (Storage Factory Integration)
 Resume file: None
