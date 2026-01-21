@@ -24,8 +24,8 @@ import com.blockworlds.collections.manager.RewardManager;
 import com.blockworlds.collections.manager.SpawnManager;
 import com.blockworlds.collections.manager.ZoneManager;
 import com.blockworlds.collections.recipe.GoggleRecipeManager;
-import com.blockworlds.collections.storage.SQLiteStorage;
 import com.blockworlds.collections.storage.Storage;
+import com.blockworlds.collections.storage.StorageFactory;
 import com.blockworlds.collections.task.ActionBarPromptTask;
 import com.blockworlds.collections.task.ParticleTask;
 import io.papermc.paper.command.brigadier.Commands;
@@ -68,7 +68,7 @@ public class Collections extends JavaPlugin {
 
         // Initialize managers in dependency order
         this.configManager = new ConfigManager(this);
-        this.storage = new SQLiteStorage(this);
+        this.storage = StorageFactory.createStorage(this);
         this.collectionManager = new CollectionManager(this);
         this.zoneManager = new ZoneManager(this);
         this.playerDataManager = new PlayerDataManager(this, storage);
