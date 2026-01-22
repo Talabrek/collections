@@ -514,6 +514,214 @@ class DataMigrationManagerTest {
         }
     }
 
+    // ========== Edge Cases and Round-Trip Tests ==========
+
+    @Nested
+    @DisplayName("Edge Cases and Round-Trip Tests")
+    class EdgeCaseTests {
+
+        @Test
+        @DisplayName("exportPlayer with empty progress exports valid JSON")
+        void testExportPlayer_emptyProgress_exportsValidJson() throws Exception {
+            // Setup: Create player with no collections
+            UUID playerId = UUID.randomUUID();
+            PlayerProgress progress = new PlayerProgress(playerId);
+
+            when(storage.loadPlayer(playerId)).thenReturn(CompletableFuture.completedFuture(progress));
+
+            // Execute
+            DataMigrationManager.ExportResult result = migrationManager.exportPlayer(playerId, sender)
+                    .get(5, TimeUnit.SECONDS);
+
+            // Verify export succeeds with empty progress
+            assertTrue(result.success(), "Export should succeed");
+            assertEquals(1, result.playerCount(), "Should export 1 player");
+
+            // Verify JSON is valid
+            String jsonContent = Files.readString(result.filePath());
+            JsonObject json = JsonParser.parseString(jsonContent).getAsJsonObject();
+            JsonObject playerJson = json.getAsJsonArray("players").get(0).getAsJsonObject();
+            JsonObject collections = playerJson.getAsJsonObject("collections");
+
+            // Empty collections object is valid
+            assertEquals(0, collections.size(), "Should have 0 collections");
+        }
+
+        @Test
+        @DisplayName("validation handles player with invalid UUID format")
+        void testValidation_invalidUuidFormat_returnsError() throws Exception {
+            // Create JSON with invalid UUID
+            String json = """
+                {
+                  "formatVersion": 1,
+                  "players": [
+                    {
+                      "uuid": "not-a-valid-uuid",
+                      "collections": {}
+                    }
+                  ]
+                }
+                """;
+            Path file = tempDir.resolve("invalid_uuid_format.json");
+            Files.writeString(file, json);
+
+            ValidationResult result = migrationManager.validateImportFile(file);
+
+            assertFalse(result.isValid(), "Should fail validation");
+            assertTrue(result.getErrors().stream().anyMatch(e -> e.toLowerCase().contains("uuid")),
+                    "Error should mention UUID");
+        }
+
+        @Test
+        @DisplayName("validation handles player missing collections field")
+        void testValidation_missingCollectionsField_returnsError() throws Exception {
+            // Create JSON with player missing collections
+            String json = """
+                {
+                  "formatVersion": 1,
+                  "players": [
+                    {
+                      "uuid": "%s"
+                    }
+                  ]
+                }
+                """.formatted(UUID.randomUUID());
+            Path file = tempDir.resolve("missing_collections.json");
+            Files.writeString(file, json);
+
+            ValidationResult result = migrationManager.validateImportFile(file);
+
+            assertFalse(result.isValid(), "Should fail validation");
+            assertTrue(result.getErrors().stream().anyMatch(e -> e.contains("collections")),
+                    "Error should mention collections");
+        }
+
+        @Test
+        @DisplayName("export then validate round-trip succeeds")
+        void testExportThenValidate_roundTripSucceeds() throws Exception {
+            // Setup: Create complex player data
+            UUID playerId = UUID.randomUUID();
+            PlayerProgress progress = new PlayerProgress(playerId);
+            progress.setTotalCollectiblesCollected(100);
+            progress.setTotalCollectionsCompleted(5);
+            progress.setFirstCollectionDate(1705852800000L);
+            progress.setLastActivityDate(1705939200000L);
+
+            // Add multiple collections with various states
+            PlayerProgress.CollectionProgress col1 = progress.getProgress("forest_specimens");
+            col1.addItemDirect("acorn");
+            col1.addItemDirect("maple_leaf");
+            col1.addItemDirect("pine_cone");
+            col1.setComplete(true);
+            col1.setRewardClaimed(true);
+            col1.setCompletedDate(1705890000000L);
+
+            PlayerProgress.CollectionProgress col2 = progress.getProgress("ocean_treasures");
+            col2.addItemDirect("pearl");
+            col2.addItemDirect("coral");
+            col2.setComplete(false);
+            col2.setRewardClaimed(false);
+
+            PlayerProgress.CollectionProgress col3 = progress.getProgress("mountain_relics");
+            col3.addItemDirect("crystal");
+            col3.setComplete(true);
+            col3.setRewardClaimed(false);
+            col3.setCompletedDate(1705920000000L);
+
+            when(storage.loadPlayer(playerId)).thenReturn(CompletableFuture.completedFuture(progress));
+
+            // Export
+            DataMigrationManager.ExportResult exportResult = migrationManager.exportPlayer(playerId, sender)
+                    .get(5, TimeUnit.SECONDS);
+
+            assertTrue(exportResult.success(), "Export should succeed");
+
+            // Validate the exported file
+            ValidationResult validationResult = migrationManager.validateImportFile(exportResult.filePath());
+
+            assertTrue(validationResult.isValid(), "Exported file should be valid");
+            assertEquals(1, validationResult.getPlayerCount(), "Should count 1 player");
+            assertEquals(ExportFormat.FORMAT_VERSION, validationResult.getFormatVersion());
+        }
+
+        @Test
+        @DisplayName("export preserves all collection data in round-trip")
+        void testExportPreservesAllData_roundTrip() throws Exception {
+            // Setup
+            UUID playerId = UUID.randomUUID();
+            PlayerProgress progress = createComplexPlayerProgress(playerId);
+
+            when(storage.loadPlayer(playerId)).thenReturn(CompletableFuture.completedFuture(progress));
+
+            // Export
+            DataMigrationManager.ExportResult result = migrationManager.exportPlayer(playerId, sender)
+                    .get(5, TimeUnit.SECONDS);
+
+            // Read and verify JSON
+            String jsonContent = Files.readString(result.filePath());
+            JsonObject json = JsonParser.parseString(jsonContent).getAsJsonObject();
+            JsonObject playerJson = json.getAsJsonArray("players").get(0).getAsJsonObject();
+
+            // Verify UUID
+            assertEquals(playerId.toString(), playerJson.get("uuid").getAsString());
+
+            // Verify stats
+            JsonObject stats = playerJson.getAsJsonObject("stats");
+            assertEquals(50, stats.get("totalCollectiblesCollected").getAsInt());
+            assertEquals(3, stats.get("totalCollectionsCompleted").getAsInt());
+            assertEquals(1705852800000L, stats.get("firstCollectionDate").getAsLong());
+            assertEquals(1705939200000L, stats.get("lastActivityDate").getAsLong());
+
+            // Verify collections
+            JsonObject collections = playerJson.getAsJsonObject("collections");
+            assertEquals(2, collections.size(), "Should have 2 collections");
+
+            JsonObject testCol = collections.getAsJsonObject("test_collection");
+            assertTrue(testCol.get("complete").getAsBoolean());
+            assertTrue(testCol.get("rewardClaimed").getAsBoolean());
+            assertEquals(2, testCol.getAsJsonArray("items").size());
+
+            JsonObject partialCol = collections.getAsJsonObject("partial_collection");
+            assertFalse(partialCol.get("complete").getAsBoolean());
+            assertFalse(partialCol.get("rewardClaimed").getAsBoolean());
+        }
+
+        @Test
+        @DisplayName("suggestExportFiles returns empty for non-existent directory")
+        void testSuggestExportFiles_noDirectory_returnsEmpty() {
+            // Don't create exports directory
+            List<String> suggestions = migrationManager.suggestExportFiles();
+
+            assertTrue(suggestions.isEmpty(), "Should return empty list");
+        }
+
+        @Test
+        @DisplayName("suggestExportFiles returns JSON files only")
+        void testSuggestExportFiles_returnsJsonFiles() throws Exception {
+            // Create exports directory with various files
+            Path exportsDir = tempDir.resolve("exports");
+            Files.createDirectories(exportsDir);
+            Files.writeString(exportsDir.resolve("export1.json"), "{}");
+            Files.writeString(exportsDir.resolve("export2.json"), "{}");
+            Files.writeString(exportsDir.resolve("readme.txt"), "text");
+            Files.writeString(exportsDir.resolve("backup.sql"), "sql");
+
+            List<String> suggestions = migrationManager.suggestExportFiles();
+
+            assertEquals(2, suggestions.size(), "Should return only JSON files");
+            assertTrue(suggestions.contains("export1.json"));
+            assertTrue(suggestions.contains("export2.json"));
+        }
+
+        @Test
+        @DisplayName("getExportsDirectory returns correct path")
+        void testGetExportsDirectory_returnsCorrectPath() {
+            Path exportsDir = migrationManager.getExportsDirectory();
+
+            assertEquals(tempDir.resolve("exports"), exportsDir);
+        }
+    }
+
     // ========== Helper Methods ==========
 
     private PlayerProgress createTestPlayerProgress(UUID playerId) {
@@ -526,6 +734,33 @@ class DataMigrationManagerTest {
         PlayerProgress.CollectionProgress colProgress = progress.getProgress("test_collection");
         colProgress.addItemDirect("item1");
         colProgress.addItemDirect("item2");
+
+        return progress;
+    }
+
+    /**
+     * Creates a complex player progress for round-trip testing.
+     */
+    private PlayerProgress createComplexPlayerProgress(UUID playerId) {
+        PlayerProgress progress = new PlayerProgress(playerId);
+        progress.setTotalCollectiblesCollected(50);
+        progress.setTotalCollectionsCompleted(3);
+        progress.setFirstCollectionDate(1705852800000L);
+        progress.setLastActivityDate(1705939200000L);
+
+        // Complete collection with reward claimed
+        PlayerProgress.CollectionProgress col1 = progress.getProgress("test_collection");
+        col1.addItemDirect("item1");
+        col1.addItemDirect("item2");
+        col1.setComplete(true);
+        col1.setRewardClaimed(true);
+        col1.setCompletedDate(1705900000000L);
+
+        // Partial collection
+        PlayerProgress.CollectionProgress col2 = progress.getProgress("partial_collection");
+        col2.addItemDirect("itemA");
+        col2.setComplete(false);
+        col2.setRewardClaimed(false);
 
         return progress;
     }
