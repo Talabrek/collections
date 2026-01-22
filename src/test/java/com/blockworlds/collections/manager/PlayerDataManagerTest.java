@@ -517,4 +517,33 @@ class PlayerDataManagerTest {
         assertTrue(cached.hasItem(collectionId, "item1"));
         assertTrue(cached.hasItem(collectionId, "item2"));
     }
+
+    // ===== Admin Action Logging Tests =====
+
+    @Test
+    @DisplayName("logAdminAction executes without exception")
+    void testLogAdminAction_FormatsCorrectly() {
+        // Setup
+        UUID targetId = UUID.randomUUID();
+        String targetName = "TestPlayer";
+
+        // Execute: Log an admin action
+        // This just verifies no exception - actual log output verification would require log capture
+        playerDataManager.logAdminAction("TEST_ACTION", "AdminUser", targetId, targetName, "test details");
+
+        // Verify: No exception thrown, method executes
+        // For full verification, would need log capture mechanism
+    }
+
+    @Test
+    @DisplayName("logAdminAction handles null target name gracefully")
+    void testLogAdminAction_HandlesNullName() {
+        // Setup: Player with no name (never joined)
+        UUID targetId = UUID.randomUUID();
+
+        // Execute: Log with null name
+        playerDataManager.logAdminAction("TEST_ACTION", "CONSOLE", targetId, null, "unknown player");
+
+        // Verify: No exception thrown, method handles null name gracefully
+    }
 }
