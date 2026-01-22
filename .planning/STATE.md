@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 
 Milestone: v1.1 Operational Features
 Phase: 12 - Metrics & Observability (IN PROGRESS)
-Plan: 01 of 3 complete
-Status: MetricsManager foundation complete, ready for Plan 02 (hook points)
-Last activity: 2026-01-22 - Completed 12-01-PLAN.md (MetricsManager with bStats)
+Plan: 02 of 3 complete
+Status: Counter hooks active, ready for Plan 03 (MetricsManager tests)
+Last activity: 2026-01-22 - Completed 12-02-PLAN.md (Counter hook points)
 
-Progress: [███████---] 7/12 plans (phase 12: 1/3 complete)
+Progress: [████████--] 8/12 plans (phase 12: 2/3 complete)
 
 ## Shipped Milestones
 
@@ -34,9 +34,9 @@ See `.planning/milestones/` for archived details.
 - Total execution time: 122 min
 
 **v1.1 Velocity:**
-- Plans completed: 7
+- Plans completed: 8
 - Phases completed: 2/4 (Phase 10, Phase 11 complete)
-- Average plan duration: 5.3 min
+- Average plan duration: 5.1 min
 
 ## Accumulated Context
 
@@ -75,10 +75,11 @@ From research phase:
 | 12-01 | bStats relocated to avoid plugin conflicts | Shaded dependencies prevent version collisions |
 | 12-01 | AtomicLong for thread-safe counters | Async event handlers can safely increment |
 | 12-01 | Placeholder bStats ID until registration | Plugin works without bstats.org account |
+| 12-02 | Null-safe MetricsManager access | Handles disabled metrics gracefully |
+| 12-02 | Admin spawns tracked in metrics | Complete spawn metrics coverage |
 
 ### Pending Todos
 
-- Execute Plan 12-02 (hook points into managers)
 - Execute Plan 12-03 (tests for MetricsManager)
 
 ### Known Issues
@@ -89,8 +90,8 @@ From research phase:
 ## Session Continuity
 
 Last session: 2026-01-22
-Stopped at: Completed 12-01-PLAN.md
-Resume with: `/gsd:execute-phase 12` (plan 02)
+Stopped at: Completed 12-02-PLAN.md
+Resume with: `/gsd:execute-phase 12` (plan 03)
 
 ---
-*Updated: 2026-01-22 after completing 12-01-PLAN.md*
+*Updated: 2026-01-22 after completing 12-02-PLAN.md*
