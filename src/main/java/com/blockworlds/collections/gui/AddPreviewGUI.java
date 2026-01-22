@@ -257,6 +257,12 @@ public class AddPreviewGUI implements GUIHolder {
         // Send progress notification (actionbar by default)
         notificationManager.sendProgressNotification(player, collection, currentCount, totalCount);
 
+        // Check for milestone notifications (25%, 50%, 75%)
+        if (progress != null) {
+            PlayerProgress.CollectionProgress colProgress = progress.getProgress(collectionId);
+            notificationManager.checkMilestoneNotifications(player, collection, colProgress, currentCount, totalCount);
+        }
+
         // Check if this was the first collection - unlock recipes
         if (progress != null && progress.getTotalCollectiblesCollected() == 1) {
             GoggleRecipeManager recipeManager = plugin.getGoggleRecipeManager();
