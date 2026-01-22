@@ -5,6 +5,7 @@ import com.blockworlds.collections.storage.Storage;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -382,6 +383,142 @@ public class PlayerDataManager {
                 .exceptionally(throwable -> {
                     plugin.getLogger().log(Level.WARNING,
                             "Failed to reset collection for " + playerId, throwable);
+                    return null;
+                });
+    }
+
+    // === Offline Player Operations for Admin Commands ===
+
+    /**
+     * Load player data by UUID without requiring a Player object.
+     * If player is cached (online), returns cached version.
+     * Otherwise loads from storage but does NOT cache (to avoid memory leaks for offline players).
+     *
+     * @param playerId The player's UUID
+     * @return CompletableFuture containing the player's progress
+     */
+    public CompletableFuture<PlayerProgress> loadPlayerByUuid(UUID playerId) {
+        // Check cache first (player is online)
+        PlayerProgress cached = cache.get(playerId);
+        if (cached != null) {
+            return CompletableFuture.completedFuture(cached);
+        }
+
+        // Check for pending load
+        CompletableFuture<PlayerProgress> pending = pendingLoads.get(playerId);
+        if (pending != null) {
+            return pending;
+        }
+
+        // Load from storage without caching (offline player)
+        return storage.loadPlayer(playerId)
+                .orTimeout(30, TimeUnit.SECONDS)
+                .exceptionally(throwable -> {
+                    plugin.getLogger().log(Level.WARNING,
+                            "Failed to load offline player data for " + playerId, throwable);
+                    // Return new progress on failure
+                    return new PlayerProgress(playerId);
+                });
+    }
+
+    /**
+     * Get progress snapshot for offline player inspection.
+     * If player is cached (online), returns cached immediately.
+     * Otherwise loads from storage (does not persist to cache).
+     *
+     * @param playerId The player's UUID
+     * @return CompletableFuture containing the player's progress
+     */
+    public CompletableFuture<PlayerProgress> getProgressOffline(UUID playerId) {
+        return loadPlayerByUuid(playerId);
+    }
+
+    /**
+     * Add an item to an offline player's collection.
+     * Uses load-then-modify-then-save pattern for offline players.
+     * If player is cached (online), delegates to existing addItem().
+     *
+     * @param playerId     The player's UUID
+     * @param collectionId The collection ID
+     * @param itemId       The item ID
+     * @return CompletableFuture with true if item was newly added, false if already had it
+     */
+    public CompletableFuture<Boolean> addItemOffline(UUID playerId, String collectionId, String itemId) {
+        // Check cache first (player is online)
+        PlayerProgress cached = cache.get(playerId);
+        if (cached != null) {
+            // Use existing sync method for online players
+            boolean added = addItem(playerId, collectionId, itemId);
+            return CompletableFuture.completedFuture(added);
+        }
+
+        // Offline player: load -> modify -> save pattern
+        return storage.loadPlayer(playerId)
+                .orTimeout(30, TimeUnit.SECONDS)
+                .thenCompose(progress -> {
+                    boolean added = progress.addItem(collectionId, itemId);
+                    if (added) {
+                        // Save the modified progress
+                        return storage.savePlayer(progress)
+                                .orTimeout(30, TimeUnit.SECONDS)
+                                .thenApply(v -> true);
+                    }
+                    // Item already existed, no need to save
+                    return CompletableFuture.completedFuture(false);
+                })
+                .exceptionally(throwable -> {
+                    plugin.getLogger().log(Level.WARNING,
+                            "Failed to add item offline for player " + playerId, throwable);
+                    return false;
+                });
+    }
+
+    /**
+     * Force-complete a collection for an offline player.
+     * Adds all specified items and marks the collection complete.
+     * If player is cached (online), modifies cache directly then persists.
+     *
+     * @param playerId     The player's UUID
+     * @param collectionId The collection ID
+     * @param itemIds      The item IDs to add
+     * @return CompletableFuture that completes when operation is done
+     */
+    public CompletableFuture<Void> completeCollectionOffline(UUID playerId, String collectionId, List<String> itemIds) {
+        // Check cache first (player is online)
+        PlayerProgress cached = cache.get(playerId);
+        if (cached != null) {
+            // Modify cache directly for online players
+            for (String itemId : itemIds) {
+                cached.addItem(collectionId, itemId);
+            }
+            cached.markComplete(collectionId);
+            // Persist the full progress
+            return storage.savePlayer(cached)
+                    .orTimeout(30, TimeUnit.SECONDS)
+                    .exceptionally(throwable -> {
+                        plugin.getLogger().log(Level.SEVERE,
+                                "Failed to persist force-complete for player " + playerId, throwable);
+                        return null;
+                    });
+        }
+
+        // Offline player: load -> modify -> save pattern
+        return storage.loadPlayer(playerId)
+                .orTimeout(30, TimeUnit.SECONDS)
+                .thenCompose(progress -> {
+                    // Add all items
+                    for (String itemId : itemIds) {
+                        progress.addItem(collectionId, itemId);
+                    }
+                    // Mark complete
+                    progress.markComplete(collectionId);
+                    // Save the modified progress
+                    return storage.savePlayer(progress)
+                            .orTimeout(30, TimeUnit.SECONDS);
+                })
+                .exceptionally(throwable -> {
+                    plugin.getLogger().log(Level.WARNING,
+                            "Failed to complete collection offline for player " + playerId, throwable);
                     return null;
                 });
     }
