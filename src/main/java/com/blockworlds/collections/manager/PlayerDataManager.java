@@ -523,6 +523,32 @@ public class PlayerDataManager {
                 });
     }
 
+    // === Cache Invalidation ===
+
+    /**
+     * Invalidate cache for a player and reload from database.
+     * Used after import to ensure online players see updated data immediately.
+     *
+     * @param playerId The player's UUID
+     * @return CompletableFuture that completes when reload is done
+     */
+    public CompletableFuture<Void> invalidateCacheAndReload(UUID playerId) {
+        // Remove stale cache entry
+        cache.remove(playerId);
+        pendingLoads.remove(playerId);
+
+        // Check if player is online
+        Player onlinePlayer = org.bukkit.Bukkit.getPlayer(playerId);
+        if (onlinePlayer != null) {
+            // Reload from database
+            return loadPlayer(onlinePlayer).thenAccept(progress -> {
+                plugin.getLogger().fine("Reloaded cache for online player: " + playerId);
+            });
+        }
+
+        return CompletableFuture.completedFuture(null);
+    }
+
     // === Admin Action Logging ===
 
     /**

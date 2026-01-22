@@ -2,8 +2,12 @@ package com.blockworlds.collections.manager;
 
 import com.blockworlds.collections.Collections;
 import com.blockworlds.collections.model.ExportFormat;
+import com.blockworlds.collections.model.ImportResult;
 import com.blockworlds.collections.model.PlayerProgress;
+import com.blockworlds.collections.model.ValidationResult;
 import com.blockworlds.collections.storage.Storage;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,17 +15,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
 /**
  * Manages data export and import operations for the Collections plugin.
@@ -295,5 +302,445 @@ public class DataMigrationManager {
      */
     public Path getExportsDirectory() {
         return exportsDirectory;
+    }
+
+    // ========== Import Operations ==========
+
+    /**
+     * Validate an import file without applying changes.
+     * Uses streaming to handle large files efficiently.
+     *
+     * @param file The path to the import file
+     * @return ValidationResult with errors or success info
+     */
+    public ValidationResult validateImportFile(Path file) {
+        ValidationResult result = new ValidationResult();
+
+        if (!Files.exists(file)) {
+            result.addError("File not found: " + file.getFileName());
+            return result;
+        }
+
+        try (Reader fileReader = Files.newBufferedReader(file);
+             JsonReader reader = new JsonReader(fileReader)) {
+
+            reader.beginObject();
+
+            boolean hasFormatVersion = false;
+            boolean hasPlayers = false;
+
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+
+                switch (name) {
+                    case "formatVersion" -> {
+                        int version = reader.nextInt();
+                        result.setFormatVersion(version);
+                        hasFormatVersion = true;
+
+                        if (version > ExportFormat.FORMAT_VERSION) {
+                            result.addError("Unsupported format version: " + version +
+                                    " (max supported: " + ExportFormat.FORMAT_VERSION + ")");
+                        }
+                    }
+                    case "players" -> {
+                        hasPlayers = true;
+                        int playerCount = validatePlayersArray(reader, result);
+                        result.setPlayerCount(playerCount);
+                    }
+                    default -> reader.skipValue();
+                }
+            }
+
+            reader.endObject();
+
+            // Check required fields
+            if (!hasFormatVersion) {
+                result.addError("Missing required field: formatVersion");
+            }
+            if (!hasPlayers) {
+                result.addError("Missing required field: players");
+            }
+
+        } catch (IOException e) {
+            result.addError("Failed to read file: " + e.getMessage());
+        } catch (Exception e) {
+            result.addError("Invalid JSON: " + e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
+     * Validate the players array in an import file.
+     *
+     * @param reader The JSON reader positioned at the players array
+     * @param result The validation result to add errors to
+     * @return The number of valid players found
+     */
+    private int validatePlayersArray(JsonReader reader, ValidationResult result) throws IOException {
+        int playerCount = 0;
+        int playerIndex = 0;
+
+        reader.beginArray();
+        while (reader.hasNext()) {
+            playerIndex++;
+            if (validatePlayerEntry(reader, result, playerIndex)) {
+                playerCount++;
+            }
+        }
+        reader.endArray();
+
+        return playerCount;
+    }
+
+    /**
+     * Validate a single player entry in the import file.
+     *
+     * @param reader      The JSON reader positioned at a player object
+     * @param result      The validation result to add errors to
+     * @param playerIndex The index of this player (for error messages)
+     * @return true if the player entry is valid
+     */
+    private boolean validatePlayerEntry(JsonReader reader, ValidationResult result, int playerIndex) throws IOException {
+        boolean hasUuid = false;
+        boolean hasCollections = false;
+        boolean valid = true;
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+
+            switch (name) {
+                case "uuid" -> {
+                    String uuidStr = reader.nextString();
+                    try {
+                        UUID.fromString(uuidStr);
+                        hasUuid = true;
+                    } catch (IllegalArgumentException e) {
+                        result.addError("Player " + playerIndex + ": Invalid UUID format: " + uuidStr);
+                        valid = false;
+                    }
+                }
+                case "collections" -> {
+                    hasCollections = true;
+                    reader.skipValue(); // Collections format is flexible
+                }
+                default -> reader.skipValue();
+            }
+        }
+        reader.endObject();
+
+        if (!hasUuid) {
+            result.addError("Player " + playerIndex + ": Missing required field 'uuid'");
+            valid = false;
+        }
+        if (!hasCollections) {
+            result.addError("Player " + playerIndex + ": Missing required field 'collections'");
+            valid = false;
+        }
+
+        return valid;
+    }
+
+    /**
+     * Import player data from a JSON file.
+     *
+     * @param file   The path to the import file
+     * @param dryRun If true, validate only without applying changes
+     * @param sender The command sender to receive progress updates
+     * @return CompletableFuture containing the import result
+     */
+    public CompletableFuture<ImportResult> importPlayers(Path file, boolean dryRun, CommandSender sender) {
+        String executor = sender.getName();
+
+        return CompletableFuture.supplyAsync(() -> {
+            // First validate the file
+            ValidationResult validation = validateImportFile(file);
+            if (!validation.isValid()) {
+                String errors = String.join("; ", validation.getErrors());
+                return ImportResult.failure("Validation failed: " + errors);
+            }
+
+            if (dryRun) {
+                // Count online players that would be affected
+                List<UUID> onlineAffected = countAffectedOnlinePlayers(file);
+
+                // Log dry-run
+                plugin.getLogger().info("[IMPORT] Dry-run by " + executor + ": " +
+                        validation.getPlayerCount() + " players would be imported from " + file.getFileName());
+
+                return new ImportResult(validation.getPlayerCount(), 0, onlineAffected);
+            }
+
+            // Perform the actual import
+            return performImport(file, sender, executor);
+        });
+    }
+
+    /**
+     * Count online players that would be affected by an import.
+     */
+    private List<UUID> countAffectedOnlinePlayers(Path file) {
+        List<UUID> affected = new ArrayList<>();
+
+        try (Reader fileReader = Files.newBufferedReader(file);
+             JsonReader reader = new JsonReader(fileReader)) {
+
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                if ("players".equals(name)) {
+                    reader.beginArray();
+                    while (reader.hasNext()) {
+                        UUID uuid = extractUuidFromPlayer(reader);
+                        if (uuid != null && Bukkit.getPlayer(uuid) != null) {
+                            affected.add(uuid);
+                        }
+                    }
+                    reader.endArray();
+                } else {
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+
+        } catch (IOException ignored) {
+            // Already validated, shouldn't fail
+        }
+
+        return affected;
+    }
+
+    /**
+     * Extract UUID from a player entry without parsing everything.
+     */
+    private UUID extractUuidFromPlayer(JsonReader reader) throws IOException {
+        UUID uuid = null;
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if ("uuid".equals(name)) {
+                try {
+                    uuid = UUID.fromString(reader.nextString());
+                } catch (IllegalArgumentException ignored) {
+                    // Invalid UUID, skip
+                }
+            } else {
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+        return uuid;
+    }
+
+    /**
+     * Perform the actual import operation.
+     */
+    private ImportResult performImport(Path file, CommandSender sender, String executor) {
+        List<UUID> affectedOnlinePlayers = new ArrayList<>();
+        int imported = 0;
+        int skipped = 0;
+
+        try (Reader fileReader = Files.newBufferedReader(file);
+             JsonReader reader = new JsonReader(fileReader)) {
+
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                if ("players".equals(name)) {
+                    reader.beginArray();
+                    while (reader.hasNext()) {
+                        PlayerProgress progress = readPlayerProgress(reader);
+                        if (progress != null) {
+                            // Save to storage
+                            storage.savePlayer(progress).join();
+                            imported++;
+
+                            // Track if player is online
+                            if (Bukkit.getPlayer(progress.getPlayerId()) != null) {
+                                affectedOnlinePlayers.add(progress.getPlayerId());
+                            }
+
+                            // Progress feedback every 100 players
+                            if (imported % 100 == 0) {
+                                final int current = imported;
+                                Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
+                                    sender.sendMessage(Component.text(
+                                            "Imported " + current + " players...", NamedTextColor.GRAY));
+                                });
+                            }
+                        } else {
+                            skipped++;
+                        }
+                    }
+                    reader.endArray();
+                } else {
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+
+            // Invalidate cache for all affected online players
+            for (UUID playerId : affectedOnlinePlayers) {
+                playerDataManager.invalidateCacheAndReload(playerId).join();
+            }
+
+            // Log admin action
+            plugin.getLogger().info("[IMPORT] Import by " + executor + ": " +
+                    imported + " players from " + file.getFileName() +
+                    " (" + affectedOnlinePlayers.size() + " online players refreshed)");
+
+            return new ImportResult(imported, skipped, affectedOnlinePlayers);
+
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to import player data", e);
+            return ImportResult.failure("IO error: " + e.getMessage());
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.SEVERE, "Unexpected error during import", e);
+            return ImportResult.failure("Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Read a single player's progress from the JSON stream.
+     */
+    private PlayerProgress readPlayerProgress(JsonReader reader) throws IOException {
+        UUID playerId = null;
+        int totalCollectiblesCollected = 0;
+        int totalCollectionsCompleted = 0;
+        long firstCollectionDate = 0;
+        long lastActivityDate = 0;
+        List<CollectionData> collections = new ArrayList<>();
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+
+            switch (name) {
+                case "uuid" -> {
+                    try {
+                        playerId = UUID.fromString(reader.nextString());
+                    } catch (IllegalArgumentException e) {
+                        reader.skipValue();
+                        return null;
+                    }
+                }
+                case "stats" -> {
+                    reader.beginObject();
+                    while (reader.hasNext()) {
+                        String statName = reader.nextName();
+                        switch (statName) {
+                            case "totalCollectiblesCollected" -> totalCollectiblesCollected = reader.nextInt();
+                            case "totalCollectionsCompleted" -> totalCollectionsCompleted = reader.nextInt();
+                            case "firstCollectionDate" -> firstCollectionDate = reader.nextLong();
+                            case "lastActivityDate" -> lastActivityDate = reader.nextLong();
+                            default -> reader.skipValue();
+                        }
+                    }
+                    reader.endObject();
+                }
+                case "collections" -> {
+                    reader.beginObject();
+                    while (reader.hasNext()) {
+                        String collectionId = reader.nextName();
+                        CollectionData colData = readCollectionData(reader, collectionId);
+                        if (colData != null) {
+                            collections.add(colData);
+                        }
+                    }
+                    reader.endObject();
+                }
+                default -> reader.skipValue();
+            }
+        }
+        reader.endObject();
+
+        if (playerId == null) {
+            return null;
+        }
+
+        // Build PlayerProgress object
+        PlayerProgress progress = new PlayerProgress(playerId);
+        progress.setTotalCollectiblesCollected(totalCollectiblesCollected);
+        progress.setTotalCollectionsCompleted(totalCollectionsCompleted);
+        progress.setFirstCollectionDate(firstCollectionDate);
+        progress.setLastActivityDate(lastActivityDate);
+
+        // Add collection progress
+        for (CollectionData colData : collections) {
+            PlayerProgress.CollectionProgress colProgress = progress.getProgress(colData.id);
+            for (String item : colData.items) {
+                colProgress.addItemDirect(item);
+            }
+            colProgress.setComplete(colData.complete);
+            colProgress.setRewardClaimed(colData.rewardClaimed);
+            colProgress.setCompletedDate(colData.completedDate);
+        }
+
+        return progress;
+    }
+
+    /**
+     * Read collection data from the JSON stream.
+     */
+    private CollectionData readCollectionData(JsonReader reader, String collectionId) throws IOException {
+        List<String> items = new ArrayList<>();
+        boolean complete = false;
+        boolean rewardClaimed = false;
+        long completedDate = 0;
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+
+            switch (name) {
+                case "items" -> {
+                    reader.beginArray();
+                    while (reader.hasNext()) {
+                        items.add(reader.nextString());
+                    }
+                    reader.endArray();
+                }
+                case "complete" -> complete = reader.nextBoolean();
+                case "rewardClaimed" -> rewardClaimed = reader.nextBoolean();
+                case "completedDate" -> completedDate = reader.nextLong();
+                default -> reader.skipValue();
+            }
+        }
+        reader.endObject();
+
+        return new CollectionData(collectionId, items, complete, rewardClaimed, completedDate);
+    }
+
+    /**
+     * Temporary data holder for collection import.
+     */
+    private record CollectionData(
+            String id,
+            List<String> items,
+            boolean complete,
+            boolean rewardClaimed,
+            long completedDate
+    ) {}
+
+    /**
+     * List JSON files in the exports directory for tab completion.
+     *
+     * @return List of JSON filenames in the exports directory
+     */
+    public List<String> suggestExportFiles() {
+        if (!Files.exists(exportsDirectory)) {
+            return List.of();
+        }
+
+        try (Stream<Path> stream = Files.list(exportsDirectory)) {
+            return stream
+                    .filter(p -> p.toString().endsWith(".json"))
+                    .map(p -> p.getFileName().toString())
+                    .toList();
+        } catch (IOException e) {
+            return List.of();
+        }
     }
 }
