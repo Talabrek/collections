@@ -18,6 +18,10 @@ class CollectibleTierTest {
         assertEquals(CollectibleTier.COMMON, CollectibleTier.fromString("COMMON"));
         assertEquals(CollectibleTier.UNCOMMON, CollectibleTier.fromString("uncommon"));
         assertEquals(CollectibleTier.RARE, CollectibleTier.fromString("Rare"));
+        assertEquals(CollectibleTier.EPIC, CollectibleTier.fromString("EPIC"));
+        assertEquals(CollectibleTier.EPIC, CollectibleTier.fromString("epic"));
+        assertEquals(CollectibleTier.LEGENDARY, CollectibleTier.fromString("LEGENDARY"));
+        assertEquals(CollectibleTier.LEGENDARY, CollectibleTier.fromString("legendary"));
         assertEquals(CollectibleTier.EVENT, CollectibleTier.fromString("EVENT"));
     }
 
@@ -53,5 +57,23 @@ class CollectibleTierTest {
         assertEquals("Event", CollectibleTier.EVENT.getDisplayName());
         assertTrue(CollectibleTier.EVENT.requiresGoggles());
         assertEquals(NamedTextColor.LIGHT_PURPLE, CollectibleTier.EVENT.getColor());
+    }
+
+    @Test
+    @DisplayName("EPIC tier has correct properties")
+    void testEpicTierProperties() {
+        assertEquals("Epic", CollectibleTier.EPIC.getDisplayName());
+        assertTrue(CollectibleTier.EPIC.requiresGoggles());
+        assertEquals(NamedTextColor.DARK_PURPLE, CollectibleTier.EPIC.getColor());
+        assertEquals(Particle.SOUL_FIRE_FLAME, CollectibleTier.EPIC.getParticle());
+    }
+
+    @Test
+    @DisplayName("LEGENDARY tier has correct properties")
+    void testLegendaryTierProperties() {
+        assertEquals("Legendary", CollectibleTier.LEGENDARY.getDisplayName());
+        assertTrue(CollectibleTier.LEGENDARY.requiresGoggles());
+        assertEquals(NamedTextColor.GOLD, CollectibleTier.LEGENDARY.getColor());
+        assertEquals(Particle.DRAGON_BREATH, CollectibleTier.LEGENDARY.getParticle());
     }
 }
