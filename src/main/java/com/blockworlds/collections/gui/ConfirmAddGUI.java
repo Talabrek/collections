@@ -252,9 +252,8 @@ public class ConfirmAddGUI implements GUIHolder {
                 player.playSound(player.getLocation(), completeSound, 1.0f, 1.0f);
             }
 
-            // Send completion message
-            player.sendMessage(configManager.getMessage("collection-complete",
-                    "collection", collection.name()));
+            // Send completion notification (title + optional chat)
+            notificationManager.sendCompletionNotification(player, collection);
 
             if (configManager.isDebugMode()) {
                 plugin.getLogger().info(player.getName() + " completed collection: " + collection.id());
