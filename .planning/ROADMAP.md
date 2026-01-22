@@ -94,9 +94,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 13-01-PLAN.md — DataMigrationManager + streaming export (EXPORT-01, EXPORT-02)
-- [ ] 13-02-PLAN.md — Import with validation, dry-run, cache invalidation (EXPORT-03..06)
-- [ ] 13-03-PLAN.md — Unit tests for DataMigrationManager
+- [x] 13-01-PLAN.md — DataMigrationManager + streaming export (EXPORT-01, EXPORT-02)
+- [x] 13-02-PLAN.md — Import with validation, dry-run, cache invalidation (EXPORT-03..06)
+- [x] 13-03-PLAN.md — Unit tests for DataMigrationManager
 
 **Success Criteria:**
 1. Admin can export single player or all players to JSON file in plugins/Collections/exports/
@@ -113,7 +113,7 @@ Plans:
 | 10 - Progress Notifications | Complete ✓ | 3 | 3 |
 | 11 - Admin Commands | Complete ✓ | 3 | 3 |
 | 12 - Metrics & Observability | Complete ✓ | 5 | 5 |
-| 13 - Data Export/Import | Planned | 3 | 0 |
+| 13 - Data Export/Import | Complete ✓ | 3 | 3 |
 
 ## Completed Milestones
 
@@ -122,4 +122,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-01-22*
-*Last updated: 2026-01-22 after Phase 13 planning*
+*Last updated: 2026-01-22 after Phase 13 execution*

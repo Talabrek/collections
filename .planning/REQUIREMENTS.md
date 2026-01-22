@@ -25,12 +25,12 @@ Requirements for operational features milestone. Each maps to roadmap phases.
 
 ### Export/Import
 
-- [ ] **EXPORT-01**: Admin can export a single player's data to JSON file
-- [ ] **EXPORT-02**: Admin can export all player data to JSON file (streaming)
-- [ ] **EXPORT-03**: Admin can import player data from JSON file
-- [ ] **EXPORT-04**: Import validates JSON structure before applying
-- [ ] **EXPORT-05**: Import supports dry-run mode (preview without applying)
-- [ ] **EXPORT-06**: Import handles cache invalidation for online players
+- [x] **EXPORT-01**: Admin can export a single player's data to JSON file
+- [x] **EXPORT-02**: Admin can export all player data to JSON file (streaming)
+- [x] **EXPORT-03**: Admin can import player data from JSON file
+- [x] **EXPORT-04**: Import validates JSON structure before applying
+- [x] **EXPORT-05**: Import supports dry-run mode (preview without applying)
+- [x] **EXPORT-06**: Import handles cache invalidation for online players
 
 ### Metrics
 
@@ -85,12 +85,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ADMIN-03 | Phase 11 | Complete |
 | ADMIN-04 | Phase 11 | Complete |
 | ADMIN-05 | Phase 11 | Complete |
-| EXPORT-01 | Phase 13 | Pending |
-| EXPORT-02 | Phase 13 | Pending |
-| EXPORT-03 | Phase 13 | Pending |
-| EXPORT-04 | Phase 13 | Pending |
-| EXPORT-05 | Phase 13 | Pending |
-| EXPORT-06 | Phase 13 | Pending |
+| EXPORT-01 | Phase 13 | Complete |
+| EXPORT-02 | Phase 13 | Complete |
+| EXPORT-03 | Phase 13 | Complete |
+| EXPORT-04 | Phase 13 | Complete |
+| EXPORT-05 | Phase 13 | Complete |
+| EXPORT-06 | Phase 13 | Complete |
 | METRICS-01 | Phase 12 | Complete |
 | METRICS-02 | Phase 12 | Complete |
 | METRICS-03 | Phase 12 | Complete |
@@ -105,4 +105,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-22 after Phase 12 completion*
+*Last updated: 2026-01-22 after Phase 13 completion*
