@@ -9,11 +9,11 @@ Requirements for operational features milestone. Each maps to roadmap phases.
 
 ### Notifications
 
-- [ ] **NOTIF-01**: Player sees actionbar message when collecting a new item ("1/5 in Forest Collection")
-- [ ] **NOTIF-02**: Player sees title/subtitle when completing a collection
-- [ ] **NOTIF-03**: Player hears sound effect on collection completion
-- [ ] **NOTIF-04**: Notification style is configurable in config.yml (actionbar/chat/title)
-- [ ] **NOTIF-05**: Duplicate collection attempts do not spam notifications
+- [x] **NOTIF-01**: Player sees actionbar message when collecting a new item ("1/5 in Forest Collection")
+- [x] **NOTIF-02**: Player sees title/subtitle when completing a collection
+- [x] **NOTIF-03**: Player hears sound effect on collection completion
+- [x] **NOTIF-04**: Notification style is configurable in config.yml (actionbar/chat/title)
+- [x] **NOTIF-05**: Duplicate collection attempts do not spam notifications
 
 ### Admin Commands
 
@@ -75,11 +75,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| NOTIF-01 | Phase 10 | Pending |
-| NOTIF-02 | Phase 10 | Pending |
-| NOTIF-03 | Phase 10 | Pending |
-| NOTIF-04 | Phase 10 | Pending |
-| NOTIF-05 | Phase 10 | Pending |
+| NOTIF-01 | Phase 10 | Complete |
+| NOTIF-02 | Phase 10 | Complete |
+| NOTIF-03 | Phase 10 | Complete |
+| NOTIF-04 | Phase 10 | Complete |
+| NOTIF-05 | Phase 10 | Complete |
 | ADMIN-01 | Phase 11 | Pending |
 | ADMIN-02 | Phase 11 | Pending |
 | ADMIN-03 | Phase 11 | Pending |
@@ -105,4 +105,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-22 after roadmap creation*
+*Last updated: 2026-01-22 after Phase 10 completion*
