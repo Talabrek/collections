@@ -823,4 +823,23 @@ public class SQLiteStorage implements Storage {
             return metrics;
         }, executor);
     }
+
+    // Export Operations
+
+    @Override
+    public CompletableFuture<List<UUID>> getAllPlayerUuids() {
+        return CompletableFuture.supplyAsync(() -> {
+            List<UUID> uuids = new ArrayList<>();
+            try (Connection conn = dataSource.getConnection();
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT uuid FROM players")) {
+                while (rs.next()) {
+                    uuids.add(UUID.fromString(rs.getString("uuid")));
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to get all player UUIDs", e);
+            }
+            return uuids;
+        });
+    }
 }

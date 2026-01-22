@@ -21,6 +21,9 @@ dependencies {
     // PlaceholderAPI for placeholder integration (optional soft-depend)
     compileOnly("me.clip:placeholderapi:2.11.7")
 
+    // Gson for JSON export/import (bundled with Paper at runtime, compileOnly for IDE support)
+    compileOnly("com.google.code.gson:gson:2.10.1")
+
     // Database connection pooling
     implementation("com.zaxxer:HikariCP:5.1.0")
 

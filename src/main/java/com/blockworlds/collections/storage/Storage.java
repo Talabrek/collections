@@ -178,4 +178,14 @@ public interface Storage {
      * @return CompletableFuture containing map of key -> value
      */
     CompletableFuture<Map<String, Long>> getAllMetrics();
+
+    // Export Operations
+
+    /**
+     * Get all player UUIDs in the database for streaming export.
+     * Returns a list to allow cursor-based iteration without loading all data.
+     *
+     * @return CompletableFuture containing list of all player UUIDs
+     */
+    CompletableFuture<List<UUID>> getAllPlayerUuids();
 }
