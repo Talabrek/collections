@@ -75,34 +75,34 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| NOTIF-01 | — | Pending |
-| NOTIF-02 | — | Pending |
-| NOTIF-03 | — | Pending |
-| NOTIF-04 | — | Pending |
-| NOTIF-05 | — | Pending |
-| ADMIN-01 | — | Pending |
-| ADMIN-02 | — | Pending |
-| ADMIN-03 | — | Pending |
-| ADMIN-04 | — | Pending |
-| ADMIN-05 | — | Pending |
-| EXPORT-01 | — | Pending |
-| EXPORT-02 | — | Pending |
-| EXPORT-03 | — | Pending |
-| EXPORT-04 | — | Pending |
-| EXPORT-05 | — | Pending |
-| EXPORT-06 | — | Pending |
-| METRICS-01 | — | Pending |
-| METRICS-02 | — | Pending |
-| METRICS-03 | — | Pending |
-| METRICS-04 | — | Pending |
-| METRICS-05 | — | Pending |
-| METRICS-06 | — | Pending |
+| NOTIF-01 | Phase 10 | Pending |
+| NOTIF-02 | Phase 10 | Pending |
+| NOTIF-03 | Phase 10 | Pending |
+| NOTIF-04 | Phase 10 | Pending |
+| NOTIF-05 | Phase 10 | Pending |
+| ADMIN-01 | Phase 11 | Pending |
+| ADMIN-02 | Phase 11 | Pending |
+| ADMIN-03 | Phase 11 | Pending |
+| ADMIN-04 | Phase 11 | Pending |
+| ADMIN-05 | Phase 11 | Pending |
+| EXPORT-01 | Phase 13 | Pending |
+| EXPORT-02 | Phase 13 | Pending |
+| EXPORT-03 | Phase 13 | Pending |
+| EXPORT-04 | Phase 13 | Pending |
+| EXPORT-05 | Phase 13 | Pending |
+| EXPORT-06 | Phase 13 | Pending |
+| METRICS-01 | Phase 12 | Pending |
+| METRICS-02 | Phase 12 | Pending |
+| METRICS-03 | Phase 12 | Pending |
+| METRICS-04 | Phase 12 | Pending |
+| METRICS-05 | Phase 12 | Pending |
+| METRICS-06 | Phase 12 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 22 total
-- Mapped to phases: 0
-- Unmapped: 22
+- Mapped to phases: 22
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-22 after initial definition*
+*Last updated: 2026-01-22 after roadmap creation*
