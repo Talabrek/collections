@@ -226,3 +226,10 @@ notifications:
     fade-in: 0.5
     stay: 3.0
     fade-out: 0.5
+
+# Metrics Settings
+metrics:
+  # Enable bStats community metrics (anonymous server statistics)
+  enabled: true
+  # bStats plugin ID - get from https://bstats.org/ after adding plugin
+  bstats-id: 12345
