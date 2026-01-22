@@ -20,6 +20,7 @@ import com.blockworlds.collections.manager.DropSourceManager;
 import com.blockworlds.collections.manager.EventManager;
 import com.blockworlds.collections.manager.GoggleManager;
 import com.blockworlds.collections.manager.NotificationManager;
+import com.blockworlds.collections.metrics.CollectionsExpansion;
 import com.blockworlds.collections.metrics.MetricsManager;
 import com.blockworlds.collections.manager.PlayerDataManager;
 import com.blockworlds.collections.manager.RewardManager;
@@ -108,6 +109,12 @@ public class Collections extends JavaPlugin {
 
         // Initialize metrics manager (bStats)
         this.metricsManager = new MetricsManager(this);
+
+        // Register PlaceholderAPI expansion if available
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new CollectionsExpansion(this).register();
+            getLogger().info("PlaceholderAPI expansion registered");
+        }
 
         // Initialize reward manager
         this.rewardManager = new RewardManager(this);
