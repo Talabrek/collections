@@ -22,9 +22,9 @@
 **Plans:** 3 plans
 
 Plans:
-- [ ] 10-01-PLAN.md — NotificationManager + config structure
-- [ ] 10-02-PLAN.md — Integration into ConfirmAddGUI
-- [ ] 10-03-PLAN.md — Unit tests for notification system
+- [x] 10-01-PLAN.md — NotificationManager + config structure
+- [x] 10-02-PLAN.md — Integration into ConfirmAddGUI
+- [x] 10-03-PLAN.md — Unit tests for notification system
 
 **Success Criteria:**
 1. Player sees actionbar progress (e.g., "2/5 Forest Collection") when collecting a new item
@@ -41,6 +41,13 @@ Plans:
 **Dependencies:** None (uses existing PlayerDataManager)
 
 **Requirements:** ADMIN-01, ADMIN-02, ADMIN-03, ADMIN-04, ADMIN-05
+
+**Plans:** 3 plans
+
+Plans:
+- [ ] 11-01-PLAN.md — PlayerDataManager offline player support
+- [ ] 11-02-PLAN.md — Admin inspect and complete commands
+- [ ] 11-03-PLAN.md — Unit tests for admin operations
 
 **Success Criteria:**
 1. Admin can run `/collections admin complete <player> <collection>` to mark a collection done
@@ -87,8 +94,8 @@ Plans:
 
 | Phase | Status | Plans | Completed |
 |-------|--------|-------|-----------|
-| 10 - Progress Notifications | Complete ✓ | 3 | 3 |
-| 11 - Admin Commands | Pending | 0 | 0 |
+| 10 - Progress Notifications | Complete | 3 | 3 |
+| 11 - Admin Commands | Planned | 3 | 0 |
 | 12 - Metrics & Observability | Pending | 0 | 0 |
 | 13 - Data Export/Import | Pending | 0 | 0 |
 
@@ -99,4 +106,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-01-22*
-*Last updated: 2026-01-22 after Phase 10 completion*
+*Last updated: 2026-01-22 after Phase 11 planning*
