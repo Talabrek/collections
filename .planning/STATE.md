@@ -5,17 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-01-22)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** v1.1 Operational Features - Phase 12 (Metrics & Observability)
+**Current focus:** v1.1 Operational Features - Phase 13 (Export/Import)
 
 ## Current Position
 
 Milestone: v1.1 Operational Features
-Phase: 12 - Metrics & Observability (IN PROGRESS)
-Plan: 02 of 3 complete
-Status: Counter hooks active, ready for Plan 03 (MetricsManager tests)
-Last activity: 2026-01-22 - Completed 12-02-PLAN.md (Counter hook points)
+Phase: 12 - Metrics & Observability (COMPLETE)
+Plan: 03 of 3 complete
+Status: Phase 12 complete, ready for Phase 13 (Export/Import)
+Last activity: 2026-01-22 - Completed 12-03-PLAN.md (PlaceholderAPI expansion)
 
-Progress: [████████--] 8/12 plans (phase 12: 2/3 complete)
+Progress: [█████████-] 9/12 plans (phase 12: 3/3 complete)
 
 ## Shipped Milestones
 
@@ -34,8 +34,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: 122 min
 
 **v1.1 Velocity:**
-- Plans completed: 8
-- Phases completed: 2/4 (Phase 10, Phase 11 complete)
+- Plans completed: 9
+- Phases completed: 3/4 (Phase 10, Phase 11, Phase 12 complete)
 - Average plan duration: 5.1 min
 
 ## Accumulated Context
@@ -77,10 +77,12 @@ From research phase:
 | 12-01 | Placeholder bStats ID until registration | Plugin works without bstats.org account |
 | 12-02 | Null-safe MetricsManager access | Handles disabled metrics gracefully |
 | 12-02 | Admin spawns tracked in metrics | Complete spawn metrics coverage |
+| 12-03 | PlaceholderAPI as compileOnly soft-depend | Avoids runtime dependency when PAPI absent |
+| 12-03 | persist() returns true for PAPI expansion | Survives /papi reload without re-registration |
 
 ### Pending Todos
 
-- Execute Plan 12-03 (tests for MetricsManager)
+- Execute Phase 13 plans (Export/Import functionality)
 
 ### Known Issues
 
@@ -90,8 +92,8 @@ From research phase:
 ## Session Continuity
 
 Last session: 2026-01-22
-Stopped at: Completed 12-02-PLAN.md
-Resume with: `/gsd:execute-phase 12` (plan 03)
+Stopped at: Completed 12-03-PLAN.md
+Resume with: `/gsd:execute-phase 13` (Export/Import)
 
 ---
-*Updated: 2026-01-22 after completing 12-02-PLAN.md*
+*Updated: 2026-01-22 after completing 12-03-PLAN.md*
