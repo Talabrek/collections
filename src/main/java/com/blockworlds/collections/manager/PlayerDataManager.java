@@ -522,4 +522,24 @@ public class PlayerDataManager {
                     return null;
                 });
     }
+
+    // === Admin Action Logging ===
+
+    /**
+     * Log an admin action for audit trail.
+     * Format: [ADMIN] {action} executed by {executor} on player {target}: {details}
+     *
+     * @param action     The action type (INSPECT, FORCE_COMPLETE, RESET, etc.)
+     * @param executor   The command executor name (player name or "CONSOLE")
+     * @param targetId   The target player's UUID
+     * @param targetName The target player's name (may be null for never-joined)
+     * @param details    Additional details about the action
+     */
+    public void logAdminAction(String action, String executor, UUID targetId, String targetName, String details) {
+        String target = targetName != null ? targetName : targetId.toString();
+        plugin.getLogger().info(String.format(
+                "[ADMIN] %s executed by %s on player %s: %s",
+                action, executor, target, details
+        ));
+    }
 }
