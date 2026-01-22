@@ -8,7 +8,7 @@ v1.2 Enhanced Collection UX focuses on fixing tier visibility bugs and improving
 
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
-| 14 | Tier Visibility | Pending | 0/? |
+| 14 | Tier Visibility | Planned | 0/1 |
 | 15 | Collectible Radar | Pending | 0/? |
 | 16 | Add Flow UX | Pending | 0/? |
 | 17 | Milestone Notifications | Pending | 0/? |
@@ -32,7 +32,10 @@ v1.2 Enhanced Collection UX focuses on fixing tier visibility bugs and improving
 3. Player with upgraded collector's helmet can see all tiers (common through legendary)
 4. Visibility changes immediately when helmet is equipped or removed
 
-**Plans:** TBD during plan-phase
+**Plans:** 1 plan
+
+Plans:
+- [ ] 14-01-PLAN.md -- Extend tier enum and fix visibility mapping
 
 ---
 
