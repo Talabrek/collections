@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,15 +29,15 @@ class PlayerDataManagerTest {
 
     private ServerMock server;
     private Plugin plugin;
-    private MockStorage storage;
-    private PlayerDataManager manager;
+    private MockStorage mockStorage;
+    private PlayerDataManager playerDataManager;
 
     @BeforeEach
     void setup() {
         server = MockBukkit.mock();
         plugin = MockBukkit.createMockPlugin();
-        storage = new MockStorage();
-        manager = new PlayerDataManager(plugin, storage);
+        mockStorage = new MockStorage();
+        playerDataManager = new PlayerDataManager(plugin, mockStorage);
     }
 
     @AfterEach
@@ -61,14 +63,14 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        assertFalse(manager.isLoaded(playerId), "Player should not be loaded initially");
+        assertFalse(playerDataManager.isLoaded(playerId), "Player should not be loaded initially");
 
-        PlayerProgress progress = manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        PlayerProgress progress = playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
 
         assertNotNull(progress, "Progress should not be null");
         assertEquals(playerId, progress.getPlayerId(), "Progress should have correct player ID");
-        assertTrue(manager.isLoaded(playerId), "Player should be loaded after loadPlayer");
-        assertEquals(1, storage.getLoadCount(), "Storage should have been called once");
+        assertTrue(playerDataManager.isLoaded(playerId), "Player should be loaded after loadPlayer");
+        assertEquals(1, mockStorage.getLoadCount(), "Storage should have been called once");
     }
 
     @Test
@@ -77,11 +79,11 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        PlayerProgress first = manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
-        PlayerProgress second = manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        PlayerProgress first = playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        PlayerProgress second = playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
 
         assertSame(first, second, "Second call should return same cached instance");
-        assertEquals(1, storage.getLoadCount(), "Storage should only be called once");
+        assertEquals(1, mockStorage.getLoadCount(), "Storage should only be called once");
     }
 
     @Test
@@ -89,7 +91,7 @@ class PlayerDataManagerTest {
     void testGetProgressReturnsNullBeforeLoad() {
         UUID playerId = UUID.randomUUID();
 
-        PlayerProgress progress = manager.getProgress(playerId);
+        PlayerProgress progress = playerDataManager.getProgress(playerId);
 
         assertNull(progress, "getProgress should return null for unloaded player");
     }
@@ -100,8 +102,8 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
-        PlayerProgress progress = manager.getProgress(playerId);
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        PlayerProgress progress = playerDataManager.getProgress(playerId);
 
         assertNotNull(progress, "getProgress should return data after load");
         assertEquals(playerId, progress.getPlayerId(), "Progress should have correct player ID");
@@ -113,13 +115,13 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        assertFalse(manager.isLoaded(playerId), "Initially not loaded");
+        assertFalse(playerDataManager.isLoaded(playerId), "Initially not loaded");
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
-        assertTrue(manager.isLoaded(playerId), "Loaded after loadPlayer");
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        assertTrue(playerDataManager.isLoaded(playerId), "Loaded after loadPlayer");
 
-        manager.saveAndUnload(playerId).get(5, TimeUnit.SECONDS);
-        assertFalse(manager.isLoaded(playerId), "Not loaded after saveAndUnload");
+        playerDataManager.saveAndUnload(playerId).get(5, TimeUnit.SECONDS);
+        assertFalse(playerDataManager.isLoaded(playerId), "Not loaded after saveAndUnload");
     }
 
     // ===== Save and Unload Tests =====
@@ -130,13 +132,13 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
-        assertEquals(0, storage.getSaveCount(), "No saves before savePlayer");
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        assertEquals(0, mockStorage.getSaveCount(), "No saves before savePlayer");
 
-        manager.savePlayer(playerId).get(5, TimeUnit.SECONDS);
+        playerDataManager.savePlayer(playerId).get(5, TimeUnit.SECONDS);
 
-        assertEquals(1, storage.getSaveCount(), "Storage.savePlayer should be called");
-        assertTrue(manager.isLoaded(playerId), "Player should still be in cache after save");
+        assertEquals(1, mockStorage.getSaveCount(), "Storage.savePlayer should be called");
+        assertTrue(playerDataManager.isLoaded(playerId), "Player should still be in cache after save");
     }
 
     @Test
@@ -145,14 +147,14 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
-        assertTrue(manager.isLoaded(playerId), "Player should be loaded");
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        assertTrue(playerDataManager.isLoaded(playerId), "Player should be loaded");
 
-        manager.saveAndUnload(playerId).get(5, TimeUnit.SECONDS);
+        playerDataManager.saveAndUnload(playerId).get(5, TimeUnit.SECONDS);
 
-        assertFalse(manager.isLoaded(playerId), "Player should be unloaded after saveAndUnload");
-        assertNull(manager.getProgress(playerId), "getProgress should return null after unload");
-        assertEquals(1, storage.getSaveCount(), "Storage.savePlayer should be called");
+        assertFalse(playerDataManager.isLoaded(playerId), "Player should be unloaded after saveAndUnload");
+        assertNull(playerDataManager.getProgress(playerId), "getProgress should return null after unload");
+        assertEquals(1, mockStorage.getSaveCount(), "Storage.savePlayer should be called");
     }
 
     @Test
@@ -163,15 +165,15 @@ class PlayerDataManagerTest {
         Player player1 = createMockPlayer(playerId1);
         Player player2 = createMockPlayer(playerId2);
 
-        manager.loadPlayer(player1).get(5, TimeUnit.SECONDS);
-        manager.loadPlayer(player2).get(5, TimeUnit.SECONDS);
-        assertEquals(2, manager.getCacheSize(), "Two players should be cached");
+        playerDataManager.loadPlayer(player1).get(5, TimeUnit.SECONDS);
+        playerDataManager.loadPlayer(player2).get(5, TimeUnit.SECONDS);
+        assertEquals(2, playerDataManager.getCacheSize(), "Two players should be cached");
 
-        manager.clearCache();
+        playerDataManager.clearCache();
 
-        assertEquals(0, manager.getCacheSize(), "Cache should be empty after clear");
-        assertFalse(manager.isLoaded(playerId1), "Player 1 should not be loaded");
-        assertFalse(manager.isLoaded(playerId2), "Player 2 should not be loaded");
+        assertEquals(0, playerDataManager.getCacheSize(), "Cache should be empty after clear");
+        assertFalse(playerDataManager.isLoaded(playerId1), "Player 1 should not be loaded");
+        assertFalse(playerDataManager.isLoaded(playerId2), "Player 2 should not be loaded");
     }
 
     // ===== Lifecycle Tests =====
@@ -179,21 +181,21 @@ class PlayerDataManagerTest {
     @Test
     @DisplayName("getCacheSize reflects loaded players")
     void testGetCacheSizeReflectsLoadedPlayers() throws Exception {
-        assertEquals(0, manager.getCacheSize(), "Initially empty");
+        assertEquals(0, playerDataManager.getCacheSize(), "Initially empty");
 
         UUID playerId1 = UUID.randomUUID();
         UUID playerId2 = UUID.randomUUID();
         Player player1 = createMockPlayer(playerId1);
         Player player2 = createMockPlayer(playerId2);
 
-        manager.loadPlayer(player1).get(5, TimeUnit.SECONDS);
-        assertEquals(1, manager.getCacheSize(), "One player loaded");
+        playerDataManager.loadPlayer(player1).get(5, TimeUnit.SECONDS);
+        assertEquals(1, playerDataManager.getCacheSize(), "One player loaded");
 
-        manager.loadPlayer(player2).get(5, TimeUnit.SECONDS);
-        assertEquals(2, manager.getCacheSize(), "Two players loaded");
+        playerDataManager.loadPlayer(player2).get(5, TimeUnit.SECONDS);
+        assertEquals(2, playerDataManager.getCacheSize(), "Two players loaded");
 
-        manager.saveAndUnload(playerId1).get(5, TimeUnit.SECONDS);
-        assertEquals(1, manager.getCacheSize(), "One player after unload");
+        playerDataManager.saveAndUnload(playerId1).get(5, TimeUnit.SECONDS);
+        assertEquals(1, playerDataManager.getCacheSize(), "One player after unload");
     }
 
     @Test
@@ -206,11 +208,11 @@ class PlayerDataManagerTest {
         Player player2 = createMockPlayer(playerId2);
         Player player3 = createMockPlayer(playerId3);
 
-        PlayerProgress progress1 = manager.loadPlayer(player1).get(5, TimeUnit.SECONDS);
-        PlayerProgress progress2 = manager.loadPlayer(player2).get(5, TimeUnit.SECONDS);
-        PlayerProgress progress3 = manager.loadPlayer(player3).get(5, TimeUnit.SECONDS);
+        PlayerProgress progress1 = playerDataManager.loadPlayer(player1).get(5, TimeUnit.SECONDS);
+        PlayerProgress progress2 = playerDataManager.loadPlayer(player2).get(5, TimeUnit.SECONDS);
+        PlayerProgress progress3 = playerDataManager.loadPlayer(player3).get(5, TimeUnit.SECONDS);
 
-        assertEquals(3, manager.getCacheSize(), "Three players should be cached");
+        assertEquals(3, playerDataManager.getCacheSize(), "Three players should be cached");
         assertNotSame(progress1, progress2, "Different players have different progress");
         assertNotSame(progress2, progress3, "Different players have different progress");
 
@@ -227,15 +229,15 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
 
-        boolean added = manager.addItem(playerId, "test_collection", "test_item");
+        boolean added = playerDataManager.addItem(playerId, "test_collection", "test_item");
 
         assertTrue(added, "Item should be newly added");
-        assertTrue(manager.hasItem(playerId, "test_collection", "test_item"), "Cache should reflect item");
+        assertTrue(playerDataManager.hasItem(playerId, "test_collection", "test_item"), "Cache should reflect item");
         // Note: saveCollectedItem is async, we check the call was made
         Thread.sleep(100); // Give async call time to complete
-        assertEquals(1, storage.getSaveItemCount(), "Storage.saveCollectedItem should be called");
+        assertEquals(1, mockStorage.getSaveItemCount(), "Storage.saveCollectedItem should be called");
     }
 
     @Test
@@ -244,10 +246,10 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
-        manager.addItem(playerId, "test_collection", "test_item");
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        playerDataManager.addItem(playerId, "test_collection", "test_item");
 
-        boolean addedAgain = manager.addItem(playerId, "test_collection", "test_item");
+        boolean addedAgain = playerDataManager.addItem(playerId, "test_collection", "test_item");
 
         assertFalse(addedAgain, "Duplicate item should return false");
     }
@@ -258,15 +260,15 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
 
-        assertFalse(manager.hasItem(playerId, "col1", "item1"), "Should not have item initially");
+        assertFalse(playerDataManager.hasItem(playerId, "col1", "item1"), "Should not have item initially");
 
-        manager.addItem(playerId, "col1", "item1");
+        playerDataManager.addItem(playerId, "col1", "item1");
 
-        assertTrue(manager.hasItem(playerId, "col1", "item1"), "Should have item after add");
-        assertFalse(manager.hasItem(playerId, "col1", "item2"), "Should not have different item");
-        assertFalse(manager.hasItem(playerId, "col2", "item1"), "Should not have item in different collection");
+        assertTrue(playerDataManager.hasItem(playerId, "col1", "item1"), "Should have item after add");
+        assertFalse(playerDataManager.hasItem(playerId, "col1", "item2"), "Should not have different item");
+        assertFalse(playerDataManager.hasItem(playerId, "col2", "item1"), "Should not have item in different collection");
     }
 
     @Test
@@ -275,15 +277,15 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
 
-        assertFalse(manager.hasCompleted(playerId, "test_collection"), "Not complete initially");
+        assertFalse(playerDataManager.hasCompleted(playerId, "test_collection"), "Not complete initially");
 
-        manager.markComplete(playerId, "test_collection");
+        playerDataManager.markComplete(playerId, "test_collection");
 
-        assertTrue(manager.hasCompleted(playerId, "test_collection"), "Complete after markComplete");
+        assertTrue(playerDataManager.hasCompleted(playerId, "test_collection"), "Complete after markComplete");
         Thread.sleep(100); // Give async call time to complete
-        assertEquals(1, storage.getUpdateStatusCount(), "Storage.updateCollectionStatus should be called");
+        assertEquals(1, mockStorage.getUpdateStatusCount(), "Storage.updateCollectionStatus should be called");
     }
 
     @Test
@@ -292,13 +294,13 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
 
-        assertFalse(manager.hasClaimedReward(playerId, "test_collection"), "Not claimed initially");
+        assertFalse(playerDataManager.hasClaimedReward(playerId, "test_collection"), "Not claimed initially");
 
-        manager.claimReward(playerId, "test_collection");
+        playerDataManager.claimReward(playerId, "test_collection");
 
-        assertTrue(manager.hasClaimedReward(playerId, "test_collection"), "Claimed after claimReward");
+        assertTrue(playerDataManager.hasClaimedReward(playerId, "test_collection"), "Claimed after claimReward");
     }
 
     // ===== Edge Cases =====
@@ -308,10 +310,10 @@ class PlayerDataManagerTest {
     void testOperationsOnUnloadedPlayer() {
         UUID playerId = UUID.randomUUID();
 
-        assertFalse(manager.hasItem(playerId, "col", "item"), "hasItem returns false for unloaded");
-        assertFalse(manager.hasCompleted(playerId, "col"), "hasCompleted returns false for unloaded");
-        assertFalse(manager.hasClaimedReward(playerId, "col"), "hasClaimedReward returns false for unloaded");
-        assertFalse(manager.addItem(playerId, "col", "item"), "addItem returns false for unloaded");
+        assertFalse(playerDataManager.hasItem(playerId, "col", "item"), "hasItem returns false for unloaded");
+        assertFalse(playerDataManager.hasCompleted(playerId, "col"), "hasCompleted returns false for unloaded");
+        assertFalse(playerDataManager.hasClaimedReward(playerId, "col"), "hasClaimedReward returns false for unloaded");
+        assertFalse(playerDataManager.addItem(playerId, "col", "item"), "addItem returns false for unloaded");
     }
 
     @Test
@@ -319,7 +321,7 @@ class PlayerDataManagerTest {
     void testGetProgressBlockingReturnsNullForUnloaded() {
         UUID playerId = UUID.randomUUID();
 
-        PlayerProgress progress = manager.getProgressBlocking(playerId);
+        PlayerProgress progress = playerDataManager.getProgressBlocking(playerId);
 
         assertNull(progress, "getProgressBlocking should return null for unloaded player");
     }
@@ -330,8 +332,8 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
-        PlayerProgress progress = manager.getProgressBlocking(playerId);
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        PlayerProgress progress = playerDataManager.getProgressBlocking(playerId);
 
         assertNotNull(progress, "getProgressBlocking should return cached data");
         assertEquals(playerId, progress.getPlayerId(), "Progress should have correct player ID");
@@ -343,9 +345,9 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
 
         // Should not throw and complete immediately
-        manager.savePlayer(playerId).get(5, TimeUnit.SECONDS);
+        playerDataManager.savePlayer(playerId).get(5, TimeUnit.SECONDS);
 
-        assertEquals(0, storage.getSaveCount(), "Storage.savePlayer should not be called for unloaded player");
+        assertEquals(0, mockStorage.getSaveCount(), "Storage.savePlayer should not be called for unloaded player");
     }
 
     @Test
@@ -354,11 +356,52 @@ class PlayerDataManagerTest {
         UUID playerId = UUID.randomUUID();
         Player player = createMockPlayer(playerId);
 
-        manager.loadPlayer(player).get(5, TimeUnit.SECONDS);
-        assertEquals(1, manager.getCacheSize(), "One player cached");
+        playerDataManager.loadPlayer(player).get(5, TimeUnit.SECONDS);
+        assertEquals(1, playerDataManager.getCacheSize(), "One player cached");
 
-        manager.saveAll().get(5, TimeUnit.SECONDS);
+        playerDataManager.saveAll().get(5, TimeUnit.SECONDS);
 
-        assertEquals(1, storage.getSaveCount(), "Storage.savePlayer should be called for cached player");
+        assertEquals(1, mockStorage.getSaveCount(), "Storage.savePlayer should be called for cached player");
+    }
+
+    // ===== Offline Player Operation Tests =====
+
+    @Test
+    @DisplayName("getProgressOffline loads from storage for offline player")
+    void testGetProgressOffline_LoadsFromStorage() throws Exception {
+        // Setup: Player NOT in cache (offline)
+        UUID offlinePlayerId = UUID.randomUUID();
+
+        // Execute: Load progress for offline player
+        CompletableFuture<PlayerProgress> future = playerDataManager.getProgressOffline(offlinePlayerId);
+        PlayerProgress progress = future.get(5, TimeUnit.SECONDS);
+
+        // Verify: Progress was loaded from storage
+        assertNotNull(progress);
+        assertEquals(offlinePlayerId, progress.getPlayerId());
+
+        // Verify: NOT cached (to prevent memory leaks)
+        assertNull(playerDataManager.getProgress(offlinePlayerId));
+    }
+
+    @Test
+    @DisplayName("getProgressOffline returns cached data for online player")
+    void testGetProgressOffline_ReturnsCachedForOnlinePlayer() throws Exception {
+        // Setup: Load player into cache (simulating online)
+        UUID playerId = UUID.randomUUID();
+        Player mockPlayer = mock(Player.class);
+        when(mockPlayer.getUniqueId()).thenReturn(playerId);
+        playerDataManager.loadPlayer(mockPlayer).get(5, TimeUnit.SECONDS);
+
+        // Verify: Player is now cached
+        assertNotNull(playerDataManager.getProgress(playerId));
+
+        // Execute: Get progress for "offline" (but actually cached) player
+        CompletableFuture<PlayerProgress> future = playerDataManager.getProgressOffline(playerId);
+        PlayerProgress progress = future.get(5, TimeUnit.SECONDS);
+
+        // Verify: Returns cached version immediately
+        assertNotNull(progress);
+        assertSame(playerDataManager.getProgress(playerId), progress);
     }
 }
