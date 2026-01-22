@@ -8,9 +8,9 @@ v1.2 Enhanced Collection UX focuses on fixing tier visibility bugs and improving
 
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
-| 14 | Tier Visibility | ✓ Complete | 1/1 |
+| 14 | Tier Visibility | Complete | 1/1 |
 | 15 | Collectible Radar | Planned | 1 plan |
-| 16 | Add Flow UX | Pending | 0/? |
+| 16 | Add Flow UX | Planned | 2 plans |
 | 17 | Milestone Notifications | Pending | 0/? |
 
 ---
@@ -84,7 +84,11 @@ Plans:
 4. Yes button adds item and transitions to collection view; No button cancels and closes GUI
 5. After adding, player sees the updated collection view with newly added item highlighted
 
-**Plans:** TBD during plan-phase
+**Plans:** 2 plans
+
+Plans:
+- [ ] 16-01-PLAN.md -- Create AddPreviewGUI with collection grid and progress preview
+- [ ] 16-02-PLAN.md -- Implement confirm flow with GUI transition and highlight
 
 ---
 
