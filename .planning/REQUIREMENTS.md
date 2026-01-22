@@ -15,10 +15,10 @@ Requirements for v1.2 Enhanced Collection UX. Each maps to roadmap phases.
 
 ### Radar
 
-- [ ] **RADAR-01**: Boss bar displays nearby collectibles when wearing collector's helmet
-- [ ] **RADAR-02**: Normal helmet radar detects common and uncommon collectibles
-- [ ] **RADAR-03**: Upgraded helmet radar detects all collectible tiers
-- [ ] **RADAR-04**: Boss bar radar hidden when not wearing any collector's helmet
+- [x] **RADAR-01**: Boss bar displays nearby collectibles when wearing collector's helmet
+- [x] **RADAR-02**: Normal helmet radar detects common and uncommon collectibles
+- [x] **RADAR-03**: Upgraded helmet radar detects all collectible tiers
+- [x] **RADAR-04**: Boss bar radar hidden when not wearing any collector's helmet
 
 ### Add Flow UX
 
@@ -70,10 +70,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VIS-01 | Phase 14 | Complete |
 | VIS-02 | Phase 14 | Complete |
 | VIS-03 | Phase 14 | Complete |
-| RADAR-01 | Phase 15 | Pending |
-| RADAR-02 | Phase 15 | Pending |
-| RADAR-03 | Phase 15 | Pending |
-| RADAR-04 | Phase 15 | Pending |
+| RADAR-01 | Phase 15 | Complete |
+| RADAR-02 | Phase 15 | Complete |
+| RADAR-03 | Phase 15 | Complete |
+| RADAR-04 | Phase 15 | Complete |
 | UX-01 | Phase 16 | Complete |
 | UX-02 | Phase 16 | Complete |
 | UX-03 | Phase 16 | Complete |
@@ -89,4 +89,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 16 completion*
+*Last updated: 2026-01-23 after Phase 15 completion*

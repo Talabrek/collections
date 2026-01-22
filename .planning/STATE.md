@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 ## Current Position
 
 Milestone: v1.2 Enhanced Collection UX
-Phase: 16 - Add Flow UX (complete)
+Phase: 15 - Collectible Radar (complete)
 Plan: --
-Status: Phase 16 verified, ready for Phase 15 or 17
-Last activity: 2026-01-23 - Phase 16 verified
+Status: Phase 15 verified, ready for Phase 17
+Last activity: 2026-01-23 - Phase 15 verified
 
-Progress: [██████████░░░░░░░░░░] 2/4 phases
+Progress: [███████████████░░░░░] 3/4 phases
 
 ## Shipped Milestones
 
@@ -40,10 +40,11 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~76 min
 
 **v1.2 Velocity (in progress):**
-- Plans completed: 3
+- Plans completed: 4
 - Phase 14-01 duration: 4 min
 - Phase 16-01 duration: 4 min
 - Phase 16-02 duration: 4 min
+- Phase 15-01 duration: 9 min
 
 ## Accumulated Context
 
@@ -60,6 +61,9 @@ Full decision history archived in `.planning/milestones/`.
 - Yes button at slot 47, No button at slot 51, item display at slot 49
 - Highlighted items use glowing effect + "Just added!" lore line
 - GUI transition: unregister source GUI before creating/opening destination GUI
+- Radar uses BossBar API with tier-based colors (WHITE=common through PINK=event)
+- Radar shows direction indicator [^] [<] [>] to nearest collectible
+- Progress bar fixed at 1.0, color indicates highest tier detected
 
 ### Known Issues
 
@@ -68,14 +72,13 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- Phase 15 (Collectible Radar) - planned but not yet executed
 - Phase 17 (Milestone Notifications) - pending planning
 
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Phase 16 complete and verified
-Resume with: `/gsd:execute-phase 15` for Collectible Radar or `/gsd:plan-phase 17` for Milestone Notifications
+Stopped at: Phase 15 complete and verified
+Resume with: `/gsd:plan-phase 17` for Milestone Notifications
 
 ---
-*Updated: 2026-01-23 after Phase 16 verification*
+*Updated: 2026-01-23 after Phase 15 verification*

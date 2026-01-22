@@ -9,7 +9,7 @@ v1.2 Enhanced Collection UX focuses on fixing tier visibility bugs and improving
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
 | 14 | Tier Visibility | Complete | 1/1 |
-| 15 | Collectible Radar | Planned | 1 plan |
+| 15 | Collectible Radar | Complete | 1/1 |
 | 16 | Add Flow UX | Complete | 2/2 |
 | 17 | Milestone Notifications | Pending | 0/? |
 
@@ -61,7 +61,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 15-01-PLAN.md -- Implement RadarManager, RadarTask, and helmet integration
+- [x] 15-01-PLAN.md -- Implement RadarManager, RadarTask, and helmet integration
 
 ---
 
