@@ -471,4 +471,50 @@ class PlayerDataManagerTest {
         assertNotNull(cached);
         assertTrue(cached.hasItem(collectionId, itemId));
     }
+
+    @Test
+    @DisplayName("completeCollectionOffline completes collection for offline player")
+    void testCompleteCollectionOffline_CompletesForOfflinePlayer() throws Exception {
+        // Setup: Offline player
+        UUID offlinePlayerId = UUID.randomUUID();
+        String collectionId = "test_collection";
+        List<String> itemIds = List.of("item1", "item2", "item3");
+
+        // Execute: Complete collection for offline player
+        CompletableFuture<Void> future = playerDataManager.completeCollectionOffline(offlinePlayerId, collectionId, itemIds);
+        future.get(5, TimeUnit.SECONDS);
+
+        // Verify: Collection is complete with all items
+        PlayerProgress reloaded = mockStorage.loadPlayer(offlinePlayerId).get(5, TimeUnit.SECONDS);
+        assertTrue(reloaded.hasCompleted(collectionId));
+        for (String itemId : itemIds) {
+            assertTrue(reloaded.hasItem(collectionId, itemId));
+        }
+
+        // Verify: NOT cached
+        assertNull(playerDataManager.getProgress(offlinePlayerId));
+    }
+
+    @Test
+    @DisplayName("completeCollectionOffline updates cached online player")
+    void testCompleteCollectionOffline_UpdatesCachedOnlinePlayer() throws Exception {
+        // Setup: Online player
+        UUID playerId = UUID.randomUUID();
+        Player mockPlayer = mock(Player.class);
+        when(mockPlayer.getUniqueId()).thenReturn(playerId);
+        playerDataManager.loadPlayer(mockPlayer).get(5, TimeUnit.SECONDS);
+
+        String collectionId = "test_collection";
+        List<String> itemIds = List.of("item1", "item2");
+
+        // Execute: Complete collection
+        playerDataManager.completeCollectionOffline(playerId, collectionId, itemIds).get(5, TimeUnit.SECONDS);
+
+        // Verify: Cache was updated
+        PlayerProgress cached = playerDataManager.getProgress(playerId);
+        assertNotNull(cached);
+        assertTrue(cached.hasCompleted(collectionId));
+        assertTrue(cached.hasItem(collectionId, "item1"));
+        assertTrue(cached.hasItem(collectionId, "item2"));
+    }
 }
