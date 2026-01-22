@@ -19,6 +19,7 @@ import com.blockworlds.collections.manager.CollectionManager;
 import com.blockworlds.collections.manager.DropSourceManager;
 import com.blockworlds.collections.manager.EventManager;
 import com.blockworlds.collections.manager.GoggleManager;
+import com.blockworlds.collections.manager.NotificationManager;
 import com.blockworlds.collections.manager.PlayerDataManager;
 import com.blockworlds.collections.manager.RewardManager;
 import com.blockworlds.collections.manager.SpawnManager;
@@ -56,6 +57,7 @@ public class Collections extends JavaPlugin {
     private GoggleManager goggleManager;
     private GoggleRecipeManager goggleRecipeManager;
     private EventManager eventManager;
+    private NotificationManager notificationManager;
     private CollectibleInteractListener collectibleInteractListener;
 
     @Override
@@ -98,6 +100,9 @@ public class Collections extends JavaPlugin {
 
         // Initialize GUI manager
         this.guiManager = new GUIManager(this);
+
+        // Initialize notification manager
+        this.notificationManager = new NotificationManager(configManager);
 
         // Initialize reward manager
         this.rewardManager = new RewardManager(this);
@@ -294,6 +299,10 @@ public class Collections extends JavaPlugin {
 
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    public NotificationManager getNotificationManager() {
+        return notificationManager;
     }
 
     public CollectibleInteractListener getCollectibleInteractListener() {
