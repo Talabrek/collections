@@ -10,6 +10,8 @@ public enum CollectibleTier {
     COMMON(Particle.HAPPY_VILLAGER, "Common", false, NamedTextColor.WHITE),
     UNCOMMON(Particle.ENCHANT, "Uncommon", true, NamedTextColor.GREEN),
     RARE(Particle.END_ROD, "Rare", true, NamedTextColor.BLUE),
+    EPIC(Particle.SOUL_FIRE_FLAME, "Epic", true, NamedTextColor.DARK_PURPLE),
+    LEGENDARY(Particle.DRAGON_BREATH, "Legendary", true, NamedTextColor.GOLD),
     EVENT(Particle.FIREWORK, "Event", true, NamedTextColor.LIGHT_PURPLE);
 
     private final Particle particle;

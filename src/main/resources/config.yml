@@ -200,6 +200,14 @@ tiers:
     # Requires master goggles
     particle: "ENCHANT"
     particle-color: "#5555FF"
+  epic:
+    # Requires master goggles
+    particle: "SOUL_FIRE_FLAME"
+    particle-color: "#AA00AA"
+  legendary:
+    # Requires master goggles
+    particle: "DRAGON_BREATH"
+    particle-color: "#FFD700"
   event:
     # Special event collectibles
     particle: "ENCHANTED_HIT"
