@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 ## Current Position
 
 Milestone: v1.2 Enhanced Collection UX
-Phase: 14 - Tier Visibility (complete)
-Plan: --
-Status: Phase 14 verified, ready for Phase 15
-Last activity: 2026-01-23 - Phase 14 verified
+Phase: 16 - Add Flow UX (in progress)
+Plan: 01 complete
+Status: Plan 16-01 complete, ready for 16-02
+Last activity: 2026-01-23 - Completed 16-01-PLAN.md
 
-Progress: [█████░░░░░░░░░░░░░░░] 1/4 phases
+Progress: [██████████░░░░░░░░░░] 2/4 phases
 
 ## Shipped Milestones
 
@@ -40,8 +40,9 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~76 min
 
 **v1.2 Velocity (in progress):**
-- Plans completed: 1
+- Plans completed: 2
 - Phase 14-01 duration: 4 min
+- Phase 16-01 duration: 4 min
 
 ## Accumulated Context
 
@@ -54,6 +55,8 @@ Full decision history archived in `.planning/milestones/`.
 - EPIC tier uses SOUL_FIRE_FLAME particle and DARK_PURPLE color
 - LEGENDARY tier uses DRAGON_BREATH particle and GOLD color
 - Tier hierarchy: COMMON < UNCOMMON < RARE < EPIC < LEGENDARY < EVENT
+- AddPreviewGUI uses 54-slot layout with 21 item slots matching CollectionDetailGUI
+- Yes button at slot 47, No button at slot 51, item display at slot 49
 
 ### Known Issues
 
@@ -62,13 +65,13 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- None - Phase 14 complete, ready for Phase 15
+- Plan 16-02: Implement confirmAdd() transition logic in AddPreviewGUI
 
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Phase 14 complete and verified
-Resume with: `/gsd:plan-phase 15` for Collectible Radar (or Phase 16 Add Flow UX)
+Stopped at: Completed 16-01-PLAN.md
+Resume with: Continue with 16-02-PLAN.md for confirmation transition
 
 ---
-*Updated: 2026-01-23 after Phase 14 verification*
+*Updated: 2026-01-23 after 16-01-PLAN.md completion*

@@ -37,6 +37,11 @@ public class ConfigManager {
     private boolean recipesEnabled;
     private boolean unlockOnFirstCollect;
 
+    // Radar settings
+    private boolean radarEnabled;
+    private int radarRangeBlocks;
+    private int radarUpdateIntervalTicks;
+
     // Database settings
     private String databaseType;
     private String databasePath;
@@ -100,6 +105,11 @@ public class ConfigManager {
         gogglesSoulbound = config.getBoolean("goggles.soulbound", true);
         recipesEnabled = config.getBoolean("goggles.recipes.enabled", true);
         unlockOnFirstCollect = config.getBoolean("goggles.recipes.unlock_on_first_collect", true);
+
+        // Radar settings
+        radarEnabled = config.getBoolean("radar.enabled", true);
+        radarRangeBlocks = config.getInt("radar.range-blocks", 32);
+        radarUpdateIntervalTicks = config.getInt("radar.update-interval-ticks", 10);
 
         // Database settings
         databaseType = config.getString("database.type", "sqlite");
@@ -286,6 +296,20 @@ public class ConfigManager {
 
     public boolean shouldUnlockOnFirstCollect() {
         return unlockOnFirstCollect;
+    }
+
+    // ========== Radar Settings ==========
+
+    public boolean isRadarEnabled() {
+        return radarEnabled;
+    }
+
+    public int getRadarRangeBlocks() {
+        return radarRangeBlocks;
+    }
+
+    public int getRadarUpdateIntervalTicks() {
+        return radarUpdateIntervalTicks;
     }
 
     // ========== Database Settings ==========

@@ -29,6 +29,17 @@ particles:
   # Interval between particle spawns (ticks, 20 = 1 second)
   interval-ticks: 10
 
+# Radar Settings (boss bar showing nearby collectibles)
+radar:
+  # Enable radar for players wearing collector's helmets
+  enabled: true
+
+  # Detection range in blocks
+  range-blocks: 32
+
+  # Update interval in ticks (10 = ~500ms)
+  update-interval-ticks: 10
+
 # Goggle Settings
 goggles:
   # Enable the goggle visibility system
