@@ -2,11 +2,15 @@ package com.blockworlds.collections.gui;
 
 import com.blockworlds.collections.Collections;
 import com.blockworlds.collections.config.ConfigManager;
+import com.blockworlds.collections.manager.NotificationManager;
 import com.blockworlds.collections.manager.PlayerDataManager;
+import com.blockworlds.collections.metrics.MetricsManager;
 import com.blockworlds.collections.model.Collection;
 import com.blockworlds.collections.model.CollectionItem;
 import com.blockworlds.collections.model.PlayerProgress;
+import com.blockworlds.collections.recipe.GoggleRecipeManager;
 import com.blockworlds.collections.util.ItemBuilder;
+import com.blockworlds.collections.util.PDCKeys;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -30,6 +34,7 @@ public class AddPreviewGUI implements GUIHolder {
     private final GUIManager guiManager;
     private final ConfigManager configManager;
     private final PlayerDataManager playerDataManager;
+    private final NotificationManager notificationManager;
     private final Player player;
     private final ItemStack itemToAdd;
     private final Collection collection;
@@ -60,6 +65,7 @@ public class AddPreviewGUI implements GUIHolder {
         this.guiManager = plugin.getGUIManager();
         this.configManager = plugin.getConfigManager();
         this.playerDataManager = plugin.getPlayerDataManager();
+        this.notificationManager = plugin.getNotificationManager();
         this.player = player;
         this.itemToAdd = itemToAdd.clone();
         this.collection = collection;
@@ -203,15 +209,141 @@ public class AddPreviewGUI implements GUIHolder {
     }
 
     /**
-     * Confirm adding the item to the journal.
-     * Note: Plan 02 will implement the full transition logic.
-     * For now, this is a stub that just closes the inventory.
+     * Confirm adding the item to the journal and transition to collection view.
      */
     private void confirmAdd() {
-        // Stub for now - Plan 02 will implement the full logic with transition
+        // Close the GUI first
         player.closeInventory();
-        player.sendMessage(configManager.getMessage("item-added-placeholder",
-                "item", collectionItem.name()));
+
+        // Check if player still has the item in their inventory
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+        if (!isMatchingItem(mainHand)) {
+            player.sendMessage(configManager.getMessage("item-not-found-in-hand"));
+            guiManager.playErrorSound(player);
+            return;
+        }
+
+        String collectionId = collection.id();
+        String itemId = collectionItem.id();
+
+        // Check if already has this item (race condition guard)
+        if (playerDataManager.hasItem(player.getUniqueId(), collectionId, itemId)) {
+            player.sendMessage(configManager.getMessage("item-duplicate",
+                    "item", collectionItem.name()));
+            guiManager.playErrorSound(player);
+            return;
+        }
+
+        // Add to journal
+        boolean added = playerDataManager.addItem(player.getUniqueId(), collectionId, itemId);
+        if (!added) {
+            player.sendMessage(configManager.getMessage("item-duplicate",
+                    "item", collectionItem.name()));
+            guiManager.playErrorSound(player);
+            return;
+        }
+
+        // Record item collected for metrics
+        MetricsManager metricsManager = plugin.getMetricsManager();
+        if (metricsManager != null) {
+            metricsManager.recordItemCollected();
+        }
+
+        // Get current progress for notification
+        PlayerProgress progress = playerDataManager.getProgressBlocking(player.getUniqueId());
+        int currentCount = progress != null ? progress.getCollectedCount(collectionId) : 1;
+        int totalCount = collection.getItemCount();
+
+        // Send progress notification (actionbar by default)
+        notificationManager.sendProgressNotification(player, collection, currentCount, totalCount);
+
+        // Check if this was the first collection - unlock recipes
+        if (progress != null && progress.getTotalCollectiblesCollected() == 1) {
+            GoggleRecipeManager recipeManager = plugin.getGoggleRecipeManager();
+            if (recipeManager != null) {
+                recipeManager.unlockRecipesForPlayer(player);
+            }
+        }
+
+        // Consume the item
+        if (mainHand.getAmount() > 1) {
+            mainHand.setAmount(mainHand.getAmount() - 1);
+        } else {
+            player.getInventory().setItemInMainHand(null);
+        }
+
+        // Play sound
+        String addSound = configManager.getSound("add-to-journal");
+        if (addSound != null) {
+            player.playSound(player.getLocation(), addSound, 1.0f, 1.0f);
+        }
+
+        // Send success message
+        player.sendMessage(configManager.getMessage("item-added-to-journal",
+                "item", collectionItem.name(),
+                "collection", collection.name()));
+
+        // Check if collection is now complete
+        checkCollectionComplete();
+
+        // Transition to collection detail view with highlight
+        guiManager.unregisterGUI(player.getUniqueId());
+        CollectionDetailGUI detailGui = new CollectionDetailGUI(plugin, player, collection);
+        detailGui.setHighlightedItem(itemId);
+        detailGui.open();
+    }
+
+    /**
+     * Check if the item in hand matches the one we're adding.
+     */
+    private boolean isMatchingItem(ItemStack item) {
+        if (item == null || item.getType() == Material.AIR) {
+            return false;
+        }
+
+        // Check if PDC tags match
+        String itemCollectionId = ItemBuilder.getData(item, PDCKeys.COLLECTION_ID());
+        String itemItemId = ItemBuilder.getData(item, PDCKeys.ITEM_ID());
+
+        return collection.id().equals(itemCollectionId) &&
+                collectionItem.id().equals(itemItemId);
+    }
+
+    /**
+     * Check if the collection is complete after adding this item.
+     */
+    private void checkCollectionComplete() {
+        PlayerProgress progress = playerDataManager.getProgressBlocking(player.getUniqueId());
+        if (progress == null) {
+            return;
+        }
+
+        int collectedCount = progress.getCollectedCount(collection.id());
+        int totalCount = collection.getItemCount();
+
+        if (collectedCount >= totalCount) {
+            // Collection is complete!
+            playerDataManager.markComplete(player.getUniqueId(), collection.id());
+
+            // Record collection completed for metrics
+            MetricsManager metricsManager = plugin.getMetricsManager();
+            if (metricsManager != null) {
+                metricsManager.recordCollectionCompleted();
+            }
+
+            // Play completion sound
+            String completeSound = configManager.getSound("complete-collection");
+            if (completeSound != null) {
+                player.playSound(player.getLocation(), completeSound, 1.0f, 1.0f);
+            }
+
+            // Send completion notification (title + optional chat)
+            notificationManager.sendCompletionNotification(player, collection);
+
+            if (configManager.isDebugMode()) {
+                plugin.getLogger().info(player.getName() + " completed collection: " + collection.id());
+            }
+        }
     }
 
     /**
