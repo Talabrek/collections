@@ -43,6 +43,9 @@ public class CollectionDetailGUI implements GUIHolder {
     // Prevents double-claim race from rapid clicks
     private final AtomicBoolean claiming = new AtomicBoolean(false);
 
+    // Optional highlight for recently added item
+    private String highlightedItemId = null;
+
     // State snapshot from when GUI was opened - for staleness detection
     private final boolean wasCompleteOnOpen;
     private final boolean wasClaimedOnOpen;
@@ -80,6 +83,16 @@ public class CollectionDetailGUI implements GUIHolder {
         PlayerProgress openProgress = playerDataManager.getProgress(player.getUniqueId());
         this.wasCompleteOnOpen = openProgress != null && openProgress.hasCompleted(collection.id());
         this.wasClaimedOnOpen = openProgress != null && openProgress.hasClaimedReward(collection.id());
+    }
+
+    /**
+     * Set an item to highlight (e.g., just added).
+     * @param itemId The item ID to highlight, or null to clear
+     * @return this for chaining
+     */
+    public CollectionDetailGUI setHighlightedItem(String itemId) {
+        this.highlightedItemId = itemId;
+        return this;
     }
 
     /**
@@ -160,20 +173,31 @@ public class CollectionDetailGUI implements GUIHolder {
     private ItemStack createItemIcon(CollectionItem item, boolean collected, boolean hasProgress) {
         if (collected) {
             // Show the actual item
+            boolean isHighlighted = item.id().equals(highlightedItemId);
+
             List<String> lore = new ArrayList<>();
             lore.add("<gray>─────────────────</gray>");
             lore.addAll(item.lore());
             lore.add("");
             lore.add("<green>✓ Collected</green>");
 
+            if (isHighlighted) {
+                lore.add("<yellow>Just added!</yellow>");
+            }
+
             if (item.soulbound()) {
                 lore.add("<red>Soulbound</red>");
             }
 
-            return ItemBuilder.of(item.material())
+            ItemBuilder builder = ItemBuilder.of(item.material())
                     .name("<gold>" + item.name() + "</gold>")
-                    .lore(lore)
-                    .build();
+                    .lore(lore);
+
+            if (isHighlighted) {
+                builder.glowing();
+            }
+
+            return builder.build();
         } else if (hasProgress) {
             // Player has some progress - show name and hints
             List<String> lore = new ArrayList<>();
