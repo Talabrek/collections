@@ -19,6 +19,13 @@
 
 **Requirements:** NOTIF-01, NOTIF-02, NOTIF-03, NOTIF-04, NOTIF-05
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 10-01-PLAN.md — NotificationManager + config structure
+- [ ] 10-02-PLAN.md — Integration into ConfirmAddGUI
+- [ ] 10-03-PLAN.md — Unit tests for notification system
+
 **Success Criteria:**
 1. Player sees actionbar progress (e.g., "2/5 Forest Collection") when collecting a new item
 2. Player sees title announcement and hears sound when completing any collection
@@ -80,7 +87,7 @@
 
 | Phase | Status | Plans | Completed |
 |-------|--------|-------|-----------|
-| 10 - Progress Notifications | Pending | 0 | 0 |
+| 10 - Progress Notifications | Planned | 3 | 0 |
 | 11 - Admin Commands | Pending | 0 | 0 |
 | 12 - Metrics & Observability | Pending | 0 | 0 |
 | 13 - Data Export/Import | Pending | 0 | 0 |
