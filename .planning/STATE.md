@@ -5,15 +5,15 @@
 See: .planning/PROJECT.md (updated 2026-01-22)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** POST-MILESTONE (awaiting next milestone)
+**Current focus:** v1.1 Operational Features (defining requirements)
 
 ## Current Position
 
-Milestone: v1.0 Quality Audit
-Status: SHIPPED
-Last activity: 2026-01-22 - Completed milestone audit and archive
+Milestone: v1.1 Operational Features
+Status: Defining requirements
+Last activity: 2026-01-22 - Milestone v1.1 started
 
-Progress: No active work
+Progress: Phase not started
 
 ## Shipped Milestones
 
@@ -53,4 +53,4 @@ Stopped at: v1.0 SHIPPED
 Resume file: None
 
 ---
-*Updated: 2026-01-22 after v1.0 milestone completion*
+*Updated: 2026-01-22 after v1.1 milestone started*

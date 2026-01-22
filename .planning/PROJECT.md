@@ -22,6 +22,16 @@ The plugin is production-ready for multi-server network deployment:
 - MySQL support added via StorageFactory pattern for multi-server networks
 - 104 unit tests with 99% pass rate
 
+## Current Milestone: v1.1 Operational Features
+
+**Goal:** Add operator tooling, player feedback, and observability for production networks.
+
+**Target features:**
+- Data export/import commands for server migration
+- Progress notification system ("1/5 collected")
+- Admin force-complete command
+- Metrics collection and observability
+
 ## Requirements
 
 ### Validated
@@ -44,13 +54,17 @@ The plugin is production-ready for multi-server network deployment:
 - ✓ Chunk load/unload correctly manages entity state — v1.0
 - ✓ All default collections properly deployed — v1.0
 
+### Active (v1.1)
+
+- [ ] Data export/import command for server migration
+- [ ] Progress notification system ("1/5 collected")
+- [ ] Admin force-complete command
+- [ ] Metrics collection for spawn success rates
+- [ ] Performance monitoring integration
+
 ### Deferred (v2+)
 
-- Data export/import command for server migration
-- Progress notification system ("1/5 collected")
-- Admin force-complete command
-- Metrics collection for spawn success rates
-- Performance monitoring integration
+(None currently)
 
 ### Out of Scope
 
@@ -91,4 +105,4 @@ See `.planning/MILESTONES.md` for shipped milestones.
 See `.planning/milestones/` for archived milestone details.
 
 ---
-*Last updated: 2026-01-22 after v1.0 milestone completion*
+*Last updated: 2026-01-22 after v1.1 milestone started*
