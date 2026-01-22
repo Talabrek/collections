@@ -9,7 +9,7 @@ v1.2 Enhanced Collection UX focuses on fixing tier visibility bugs and improving
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
 | 14 | Tier Visibility | ✓ Complete | 1/1 |
-| 15 | Collectible Radar | Pending | 0/? |
+| 15 | Collectible Radar | Planned | 1 plan |
 | 16 | Add Flow UX | Pending | 0/? |
 | 17 | Milestone Notifications | Pending | 0/? |
 
@@ -58,7 +58,10 @@ Plans:
 4. Boss bar appears when helmet is equipped and disappears when removed
 5. Radar updates as player moves and collectibles enter/exit range
 
-**Plans:** TBD during plan-phase
+**Plans:** 1 plan
+
+Plans:
+- [ ] 15-01-PLAN.md -- Implement RadarManager, RadarTask, and helmet integration
 
 ---
 
