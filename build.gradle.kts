@@ -19,6 +19,9 @@ dependencies {
 
     // Database connection pooling
     implementation("com.zaxxer:HikariCP:5.1.0")
+
+    // bStats for community metrics
+    implementation("org.bstats:bstats-bukkit:3.1.0")
     implementation("org.xerial:sqlite-jdbc:3.45.3.0")
     implementation("com.mysql:mysql-connector-j:9.1.0") {
         exclude(group = "com.google.protobuf") // X DevAPI not needed
@@ -62,6 +65,7 @@ tasks {
         relocate("com.zaxxer.hikari", "com.blockworlds.collections.lib.hikari")
         relocate("org.sqlite", "com.blockworlds.collections.lib.sqlite")
         relocate("com.mysql", "com.blockworlds.collections.lib.mysql")
+        relocate("org.bstats", "com.blockworlds.collections.lib.bstats")
     }
 
     build {
