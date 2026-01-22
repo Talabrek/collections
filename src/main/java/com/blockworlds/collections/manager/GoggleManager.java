@@ -33,7 +33,12 @@ public class GoggleManager {
 
     // Visibility tiers for each goggle type
     private static final Set<CollectibleTier> BASIC_GOGGLES_TIERS = Set.of(CollectibleTier.UNCOMMON);
-    private static final Set<CollectibleTier> MASTER_GOGGLES_TIERS = Set.of(CollectibleTier.UNCOMMON, CollectibleTier.RARE);
+    private static final Set<CollectibleTier> MASTER_GOGGLES_TIERS = Set.of(
+            CollectibleTier.UNCOMMON,
+            CollectibleTier.RARE,
+            CollectibleTier.EPIC,
+            CollectibleTier.LEGENDARY
+    );
 
     public GoggleManager(Collections plugin) {
         this.plugin = plugin;
@@ -307,7 +312,7 @@ public class GoggleManager {
             lore.add("<gray>Ancient lenses imbued with</gray>");
             lore.add("<gray>the wisdom of master collectors.</gray>");
             lore.add("");
-            lore.add("<yellow>Reveals: <aqua>Uncommon</aqua> + <gold>Rare</gold> collectibles</yellow>");
+            lore.add("<yellow>Reveals: <aqua>Uncommon</aqua>, <blue>Rare</blue>, <dark_purple>Epic</dark_purple>, <gold>Legendary</gold></yellow>");
 
             List<net.kyori.adventure.text.Component> loreParsed = new ArrayList<>();
             for (String line : lore) {
