@@ -6,5 +6,6 @@ package com.blockworlds.collections.gui;
 public enum GUIType {
     COLLECTION_MENU,
     COLLECTION_DETAIL,
-    CONFIRM_ADD
+    CONFIRM_ADD,
+    ADD_PREVIEW
 }
