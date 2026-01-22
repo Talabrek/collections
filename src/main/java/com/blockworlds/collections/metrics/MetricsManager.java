@@ -35,6 +35,24 @@ public class MetricsManager {
     private ScheduledTask saveTask;
 
     /**
+     * Private no-arg constructor for testing.
+     * Creates counters without bStats or storage integration.
+     */
+    private MetricsManager() {
+        this.plugin = null;
+        this.storage = null;
+        // Counters are already initialized at field declaration
+    }
+
+    /**
+     * Create a MetricsManager for testing without bStats or storage.
+     * Package-private for test access only.
+     */
+    static MetricsManager createForTesting() {
+        return new MetricsManager();
+    }
+
+    /**
      * Create a new MetricsManager.
      *
      * @param plugin The plugin instance
@@ -208,6 +226,9 @@ public class MetricsManager {
      * Called during construction to restore state from previous session.
      */
     private void loadCounters() {
+        if (storage == null) {
+            return; // Skip in test mode
+        }
         storage.getAllMetrics().thenAccept(metrics -> {
             itemsCollected.set(metrics.getOrDefault("items_collected", 0L));
             collectionsCompleted.set(metrics.getOrDefault("collections_completed", 0L));
@@ -228,6 +249,9 @@ public class MetricsManager {
      * @return CompletableFuture that completes when all saves are done
      */
     public CompletableFuture<Void> saveCounters() {
+        if (storage == null) {
+            return CompletableFuture.completedFuture(null); // No-op in test mode
+        }
         return CompletableFuture.allOf(
             storage.setMetric("items_collected", itemsCollected.get()),
             storage.setMetric("collections_completed", collectionsCompleted.get()),
@@ -242,6 +266,9 @@ public class MetricsManager {
      * Saves every 5 minutes.
      */
     private void startPeriodicSave() {
+        if (storage == null) {
+            return; // Skip in test mode
+        }
         // Save every 5 minutes (5 * 60 * 20 = 6000 ticks)
         int intervalTicks = 5 * 60 * 20;
         saveTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, task -> {
@@ -257,6 +284,11 @@ public class MetricsManager {
         // Cancel periodic save task
         if (saveTask != null) {
             saveTask.cancel();
+        }
+
+        // Only save if we have storage (not in test mode)
+        if (storage == null) {
+            return;
         }
 
         // Final blocking save to ensure counters are persisted

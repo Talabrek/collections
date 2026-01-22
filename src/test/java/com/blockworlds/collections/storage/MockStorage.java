@@ -23,6 +23,7 @@ public class MockStorage implements Storage {
 
     private final Map<UUID, PlayerProgress> playerData = new ConcurrentHashMap<>();
     private final Map<UUID, Collectible> collectibles = new ConcurrentHashMap<>();
+    private final Map<String, Long> metrics = new ConcurrentHashMap<>();
 
     // Executor for async operations - avoids recursive update in ConcurrentHashMap
     private final Executor executor = Executors.newCachedThreadPool();
@@ -212,5 +213,21 @@ public class MockStorage implements Storage {
             progress.resetCollection(collectionId);
         }
         return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
+    public CompletableFuture<Long> getMetric(String key) {
+        return CompletableFuture.completedFuture(metrics.getOrDefault(key, 0L));
+    }
+
+    @Override
+    public CompletableFuture<Void> setMetric(String key, long value) {
+        metrics.put(key, value);
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
+    public CompletableFuture<Map<String, Long>> getAllMetrics() {
+        return CompletableFuture.completedFuture(new ConcurrentHashMap<>(metrics));
     }
 }
