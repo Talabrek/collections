@@ -5,17 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-01-22)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** v1.1 Operational Features - Phase 11 (Admin Commands)
+**Current focus:** v1.1 Operational Features - Phase 12 (Metrics & Observability)
 
 ## Current Position
 
 Milestone: v1.1 Operational Features
-Phase: 11 - Admin Commands (VERIFIED ✓)
-Plan: 03 of 3 complete
-Status: Phase 11 verified, ready for Phase 12
-Last activity: 2026-01-22 - Phase 11 verified (5/5 must-haves passed)
+Phase: 12 - Metrics & Observability (IN PROGRESS)
+Plan: 01 of 3 complete
+Status: MetricsManager foundation complete, ready for Plan 02 (hook points)
+Last activity: 2026-01-22 - Completed 12-01-PLAN.md (MetricsManager with bStats)
 
-Progress: [██████----] 6/12 plans (phase 11: 3/3 complete)
+Progress: [███████---] 7/12 plans (phase 12: 1/3 complete)
 
 ## Shipped Milestones
 
@@ -34,9 +34,9 @@ See `.planning/milestones/` for archived details.
 - Total execution time: 122 min
 
 **v1.1 Velocity:**
-- Plans completed: 6
+- Plans completed: 7
 - Phases completed: 2/4 (Phase 10, Phase 11 complete)
-- Average plan duration: 5.2 min
+- Average plan duration: 5.3 min
 
 ## Accumulated Context
 
@@ -72,10 +72,14 @@ From research phase:
 | 11-02 | playerProfiles() for offline player resolution | Paper API handles online/offline player lookup |
 | 11-03 | Field rename for test consistency | storage -> mockStorage, manager -> playerDataManager |
 | 11-03 | Simple log verification in tests | No-exception tests avoid log capture complexity |
+| 12-01 | bStats relocated to avoid plugin conflicts | Shaded dependencies prevent version collisions |
+| 12-01 | AtomicLong for thread-safe counters | Async event handlers can safely increment |
+| 12-01 | Placeholder bStats ID until registration | Plugin works without bstats.org account |
 
 ### Pending Todos
 
-- Plan and execute Phase 12 (Metrics & Observability)
+- Execute Plan 12-02 (hook points into managers)
+- Execute Plan 12-03 (tests for MetricsManager)
 
 ### Known Issues
 
@@ -85,8 +89,8 @@ From research phase:
 ## Session Continuity
 
 Last session: 2026-01-22
-Stopped at: Phase 11 verified
-Resume with: `/gsd:plan-phase 12`
+Stopped at: Completed 12-01-PLAN.md
+Resume with: `/gsd:execute-phase 12` (plan 02)
 
 ---
-*Updated: 2026-01-22 after Phase 11 verification*
+*Updated: 2026-01-22 after completing 12-01-PLAN.md*
