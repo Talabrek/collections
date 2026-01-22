@@ -8,7 +8,7 @@ v1.2 Enhanced Collection UX focuses on fixing tier visibility bugs and improving
 
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
-| 14 | Tier Visibility | Planned | 0/1 |
+| 14 | Tier Visibility | ✓ Complete | 1/1 |
 | 15 | Collectible Radar | Pending | 0/? |
 | 16 | Add Flow UX | Pending | 0/? |
 | 17 | Milestone Notifications | Pending | 0/? |
@@ -35,7 +35,7 @@ v1.2 Enhanced Collection UX focuses on fixing tier visibility bugs and improving
 **Plans:** 1 plan
 
 Plans:
-- [ ] 14-01-PLAN.md -- Extend tier enum and fix visibility mapping
+- [x] 14-01-PLAN.md -- Extend tier enum and fix visibility mapping
 
 ---
 

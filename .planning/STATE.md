@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 ## Current Position
 
 Milestone: v1.2 Enhanced Collection UX
-Phase: 14 - Tier Visibility
-Plan: 01 of 01
-Status: Phase complete
-Last activity: 2026-01-23 - Completed 14-01-PLAN.md
+Phase: 14 - Tier Visibility (complete)
+Plan: --
+Status: Phase 14 verified, ready for Phase 15
+Last activity: 2026-01-23 - Phase 14 verified
 
-Progress: [#####///////////////] 1/4 phases
+Progress: [█████░░░░░░░░░░░░░░░] 1/4 phases
 
 ## Shipped Milestones
 
@@ -67,8 +67,8 @@ Full decision history archived in `.planning/milestones/`.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed 14-01-PLAN.md
-Resume with: Phase 15 (GUI/UX improvements)
+Stopped at: Phase 14 complete and verified
+Resume with: `/gsd:plan-phase 15` for Collectible Radar (or Phase 16 Add Flow UX)
 
 ---
-*Updated: 2026-01-23 after Phase 14 completion*
+*Updated: 2026-01-23 after Phase 14 verification*

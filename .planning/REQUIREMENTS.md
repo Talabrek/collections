@@ -9,9 +9,9 @@ Requirements for v1.2 Enhanced Collection UX. Each maps to roadmap phases.
 
 ### Visibility
 
-- [ ] **VIS-01**: Uncommon collectibles completely invisible without normal collector's helmet
-- [ ] **VIS-02**: Rare+ collectibles completely invisible without upgraded collector's helmet
-- [ ] **VIS-03**: Common collectibles always visible regardless of helmet
+- [x] **VIS-01**: Uncommon collectibles completely invisible without normal collector's helmet
+- [x] **VIS-02**: Rare+ collectibles completely invisible without upgraded collector's helmet
+- [x] **VIS-03**: Common collectibles always visible regardless of helmet
 
 ### Radar
 
@@ -67,9 +67,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VIS-01 | Phase 14 | Pending |
-| VIS-02 | Phase 14 | Pending |
-| VIS-03 | Phase 14 | Pending |
+| VIS-01 | Phase 14 | Complete |
+| VIS-02 | Phase 14 | Complete |
+| VIS-03 | Phase 14 | Complete |
 | RADAR-01 | Phase 15 | Pending |
 | RADAR-02 | Phase 15 | Pending |
 | RADAR-03 | Phase 15 | Pending |
@@ -89,4 +89,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after roadmap creation*
+*Last updated: 2026-01-23 after Phase 14 completion*
