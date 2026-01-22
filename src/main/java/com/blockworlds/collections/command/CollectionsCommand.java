@@ -38,6 +38,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -194,6 +196,15 @@ public class CollectionsCommand {
                         // /collections export all - export all players
                         .then(Commands.literal("all")
                                 .executes(this::exportAll)))
+
+                // /collections import - data import commands
+                .then(Commands.literal("import")
+                        .requires(src -> src.getSender().hasPermission("collections.admin"))
+                        .then(Commands.argument("file", StringArgumentType.word())
+                                .suggests(this::suggestExportFiles)
+                                .executes(ctx -> importData(ctx, false))
+                                .then(Commands.literal("--dry-run")
+                                        .executes(ctx -> importData(ctx, true)))))
 
                 .build();
 
@@ -523,6 +534,16 @@ public class CollectionsCommand {
             sender.sendMessage(Component.text()
                     .append(Component.text("/collections export all", NamedTextColor.AQUA))
                     .append(Component.text(" - Export all player data", NamedTextColor.GRAY))
+                    .build());
+
+            sender.sendMessage(Component.text()
+                    .append(Component.text("/collections import <file>", NamedTextColor.AQUA))
+                    .append(Component.text(" - Import player data", NamedTextColor.GRAY))
+                    .build());
+
+            sender.sendMessage(Component.text()
+                    .append(Component.text("/collections import <file> --dry-run", NamedTextColor.AQUA))
+                    .append(Component.text(" - Preview import", NamedTextColor.GRAY))
                     .build());
         }
 
@@ -1329,6 +1350,116 @@ public class CollectionsCommand {
                 } else {
                     sender.sendMessage(Component.text()
                             .append(Component.text("Export failed: ", NamedTextColor.RED))
+                            .append(Component.text(result.errorMessage(), NamedTextColor.GRAY))
+                            .build());
+                }
+            });
+        });
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    // ========== Import Commands ==========
+
+    /**
+     * Suggest export files for import tab completion.
+     */
+    private CompletableFuture<Suggestions> suggestExportFiles(
+            CommandContext<CommandSourceStack> ctx, SuggestionsBuilder builder) {
+        for (String filename : dataMigrationManager.suggestExportFiles()) {
+            builder.suggest(filename);
+        }
+        return builder.buildFuture();
+    }
+
+    /**
+     * Import player data from a JSON file.
+     *
+     * @param ctx The command context
+     * @param dryRun If true, only preview the import without applying changes
+     */
+    private int importData(CommandContext<CommandSourceStack> ctx, boolean dryRun) {
+        var sender = ctx.getSource().getSender();
+        String filename = ctx.getArgument("file", String.class);
+
+        // Resolve file path
+        Path filePath = dataMigrationManager.getExportsDirectory().resolve(filename);
+
+        if (!Files.exists(filePath)) {
+            sender.sendMessage(Component.text()
+                    .append(Component.text("File not found: ", NamedTextColor.RED))
+                    .append(Component.text(filename, NamedTextColor.WHITE))
+                    .build());
+            return Command.SINGLE_SUCCESS;
+        }
+
+        if (dryRun) {
+            sender.sendMessage(Component.text()
+                    .append(Component.text("Validating ", NamedTextColor.YELLOW))
+                    .append(Component.text(filename, NamedTextColor.WHITE))
+                    .append(Component.text("...", NamedTextColor.YELLOW))
+                    .build());
+        } else {
+            sender.sendMessage(Component.text()
+                    .append(Component.text("Starting import from ", NamedTextColor.YELLOW))
+                    .append(Component.text(filename, NamedTextColor.WHITE))
+                    .append(Component.text("...", NamedTextColor.YELLOW))
+                    .build());
+        }
+
+        dataMigrationManager.importPlayers(filePath, dryRun, sender).thenAccept(result -> {
+            Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
+                if (result.success()) {
+                    if (dryRun) {
+                        // Dry-run preview
+                        int onlineCount = result.affectedOnlinePlayers().size();
+                        sender.sendMessage(Component.text()
+                                .append(Component.text("Dry-run complete! ", NamedTextColor.GREEN))
+                                .append(Component.text("Would import ", NamedTextColor.GRAY))
+                                .append(Component.text(String.valueOf(result.playersImported()), NamedTextColor.WHITE))
+                                .append(Component.text(" players", NamedTextColor.GRAY))
+                                .build());
+
+                        if (onlineCount > 0) {
+                            sender.sendMessage(Component.text()
+                                    .append(Component.text("  ", NamedTextColor.GRAY))
+                                    .append(Component.text(String.valueOf(onlineCount), NamedTextColor.YELLOW))
+                                    .append(Component.text(" player(s) are currently online", NamedTextColor.GRAY))
+                                    .build());
+                        }
+
+                        sender.sendMessage(Component.text()
+                                .append(Component.text("Run without --dry-run to apply changes.", NamedTextColor.GRAY))
+                                .build());
+                    } else {
+                        // Actual import complete
+                        int onlineRefreshed = result.affectedOnlinePlayers().size();
+                        sender.sendMessage(Component.text()
+                                .append(Component.text("Import complete! ", NamedTextColor.GREEN))
+                                .append(Component.text(String.valueOf(result.playersImported()), NamedTextColor.WHITE))
+                                .append(Component.text(" players imported", NamedTextColor.GREEN))
+                                .build());
+
+                        if (result.playersSkipped() > 0) {
+                            sender.sendMessage(Component.text()
+                                    .append(Component.text("  Skipped: ", NamedTextColor.GRAY))
+                                    .append(Component.text(String.valueOf(result.playersSkipped()), NamedTextColor.YELLOW))
+                                    .append(Component.text(" players (invalid data)", NamedTextColor.GRAY))
+                                    .build());
+                        }
+
+                        if (onlineRefreshed > 0) {
+                            sender.sendMessage(Component.text()
+                                    .append(Component.text("  Refreshed: ", NamedTextColor.GRAY))
+                                    .append(Component.text(String.valueOf(onlineRefreshed), NamedTextColor.GREEN))
+                                    .append(Component.text(" online player cache(s)", NamedTextColor.GRAY))
+                                    .build());
+                        }
+                    }
+                } else {
+                    // Import failed
+                    sender.sendMessage(Component.text()
+                            .append(Component.text("Import failed: ", NamedTextColor.RED))
                             .append(Component.text(result.errorMessage(), NamedTextColor.GRAY))
                             .build());
                 }
