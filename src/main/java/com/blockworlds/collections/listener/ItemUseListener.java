@@ -2,7 +2,7 @@ package com.blockworlds.collections.listener;
 
 import com.blockworlds.collections.Collections;
 import com.blockworlds.collections.config.ConfigManager;
-import com.blockworlds.collections.gui.ConfirmAddGUI;
+import com.blockworlds.collections.gui.AddPreviewGUI;
 import com.blockworlds.collections.manager.CollectionManager;
 import com.blockworlds.collections.manager.PlayerDataManager;
 import com.blockworlds.collections.model.Collection;
@@ -89,9 +89,9 @@ public class ItemUseListener implements Listener {
             return;
         }
 
-        // Open confirmation GUI instead of directly adding
-        ConfirmAddGUI confirmGui = new ConfirmAddGUI(plugin, player, item, collection, collectionItem);
-        confirmGui.open();
+        // Open add preview GUI instead of directly adding
+        AddPreviewGUI addGui = new AddPreviewGUI(plugin, player, item, collection, collectionItem);
+        addGui.open();
     }
 
     /**
