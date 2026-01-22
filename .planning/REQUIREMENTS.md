@@ -22,10 +22,10 @@ Requirements for v1.2 Enhanced Collection UX. Each maps to roadmap phases.
 
 ### Add Flow UX
 
-- [ ] **UX-01**: Right-clicking collectible opens full collection grid showing all slots
-- [ ] **UX-02**: Add screen displays progress summary (X/Y collected)
-- [ ] **UX-03**: Add screen includes Yes/No confirmation buttons
-- [ ] **UX-04**: After confirming add, GUI transitions to show the collection
+- [x] **UX-01**: Right-clicking collectible opens full collection grid showing all slots
+- [x] **UX-02**: Add screen displays progress summary (X/Y collected)
+- [x] **UX-03**: Add screen includes Yes/No confirmation buttons
+- [x] **UX-04**: After confirming add, GUI transitions to show the collection
 
 ### Notifications
 
@@ -74,10 +74,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RADAR-02 | Phase 15 | Pending |
 | RADAR-03 | Phase 15 | Pending |
 | RADAR-04 | Phase 15 | Pending |
-| UX-01 | Phase 16 | Pending |
-| UX-02 | Phase 16 | Pending |
-| UX-03 | Phase 16 | Pending |
-| UX-04 | Phase 16 | Pending |
+| UX-01 | Phase 16 | Complete |
+| UX-02 | Phase 16 | Complete |
+| UX-03 | Phase 16 | Complete |
+| UX-04 | Phase 16 | Complete |
 | NOTIF-01 | Phase 17 | Pending |
 | NOTIF-02 | Phase 17 | Pending |
 | NOTIF-03 | Phase 17 | Pending |
@@ -89,4 +89,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 14 completion*
+*Last updated: 2026-01-23 after Phase 16 completion*

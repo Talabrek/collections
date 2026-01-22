@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 ## Current Position
 
 Milestone: v1.2 Enhanced Collection UX
-Phase: 15 - Collectible Radar (complete)
-Plan: 01 complete
-Status: Phase 15 complete, radar system fully implemented
-Last activity: 2026-01-23 - Completed 15-01-PLAN.md
+Phase: 16 - Add Flow UX (complete)
+Plan: --
+Status: Phase 16 verified, ready for Phase 15 or 17
+Last activity: 2026-01-23 - Phase 16 verified
 
-Progress: [███████████████░░░░░] 3/4 phases
+Progress: [██████████░░░░░░░░░░] 2/4 phases
 
 ## Shipped Milestones
 
@@ -40,9 +40,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~76 min
 
 **v1.2 Velocity (in progress):**
-- Plans completed: 4
+- Plans completed: 3
 - Phase 14-01 duration: 4 min
-- Phase 15-01 duration: 9 min
 - Phase 16-01 duration: 4 min
 - Phase 16-02 duration: 4 min
 
@@ -61,9 +60,6 @@ Full decision history archived in `.planning/milestones/`.
 - Yes button at slot 47, No button at slot 51, item display at slot 49
 - Highlighted items use glowing effect + "Just added!" lore line
 - GUI transition: unregister source GUI before creating/opening destination GUI
-- RadarTask accepts RadarManager as constructor parameter for initialization order
-- Direction indicator uses [^], [<], [>] ASCII symbols for cross-client compatibility
-- Boss bar color matches highest tier collectible nearby for visual feedback
 
 ### Known Issues
 
@@ -72,14 +68,14 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- None - Phases 14, 15, 16 complete
-- Ready for Phase 17 if defined in roadmap
+- Phase 15 (Collectible Radar) - planned but not yet executed
+- Phase 17 (Milestone Notifications) - pending planning
 
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed 15-01-PLAN.md
-Resume with: Check roadmap for remaining v1.2 phases
+Stopped at: Phase 16 complete and verified
+Resume with: `/gsd:execute-phase 15` for Collectible Radar or `/gsd:plan-phase 17` for Milestone Notifications
 
 ---
-*Updated: 2026-01-23 after 15-01-PLAN.md completion*
+*Updated: 2026-01-23 after Phase 16 verification*

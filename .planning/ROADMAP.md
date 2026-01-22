@@ -10,7 +10,7 @@ v1.2 Enhanced Collection UX focuses on fixing tier visibility bugs and improving
 |-------|------|--------|-------|
 | 14 | Tier Visibility | Complete | 1/1 |
 | 15 | Collectible Radar | Planned | 1 plan |
-| 16 | Add Flow UX | Planned | 2 plans |
+| 16 | Add Flow UX | Complete | 2/2 |
 | 17 | Milestone Notifications | Pending | 0/? |
 
 ---
@@ -87,8 +87,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 16-01-PLAN.md -- Create AddPreviewGUI with collection grid and progress preview
-- [ ] 16-02-PLAN.md -- Implement confirm flow with GUI transition and highlight
+- [x] 16-01-PLAN.md -- Create AddPreviewGUI with collection grid and progress preview
+- [x] 16-02-PLAN.md -- Implement confirm flow with GUI transition and highlight
 
 ---
 
