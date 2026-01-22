@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 
 Milestone: v1.1 Operational Features
 Phase: 12 - Metrics & Observability (COMPLETE)
-Plan: 04 of 4 complete
+Plan: 05 of 5 complete
 Status: Phase 12 complete, ready for Phase 13 (Export/Import)
-Last activity: 2026-01-22 - Completed 12-04-PLAN.md (Database persistence for metrics)
+Last activity: 2026-01-22 - Completed 12-05-PLAN.md (MetricsManager unit tests)
 
-Progress: [██████████] 10/13 plans (phase 12: 4/4 complete)
+Progress: [███████████] 11/14 plans (phase 12: 5/5 complete)
 
 ## Shipped Milestones
 
@@ -34,9 +34,9 @@ See `.planning/milestones/` for archived details.
 - Total execution time: 122 min
 
 **v1.1 Velocity:**
-- Plans completed: 10
+- Plans completed: 11
 - Phases completed: 3/4 (Phase 10, Phase 11, Phase 12 complete)
-- Average plan duration: 5.1 min
+- Average plan duration: 5.3 min
 
 ## Accumulated Context
 
@@ -81,6 +81,8 @@ From research phase:
 | 12-03 | persist() returns true for PAPI expansion | Survives /papi reload without re-registration |
 | 12-04 | Dedicated executor for metrics storage | Avoids blocking main connection pool |
 | 12-04 | 5 minute periodic save interval | Balances crash protection and database load |
+| 12-05 | Test factory method for MetricsManager | Enables isolated counter testing without bStats/storage |
+| 12-05 | getSpawnSuccessRate returns 100% for zero attempts | No failures = success interpretation |
 
 ### Pending Todos
 
@@ -94,8 +96,8 @@ From research phase:
 ## Session Continuity
 
 Last session: 2026-01-22
-Stopped at: Completed 12-04-PLAN.md
+Stopped at: Completed 12-05-PLAN.md
 Resume with: `/gsd:execute-phase 13` (Export/Import)
 
 ---
-*Updated: 2026-01-22 after completing 12-04-PLAN.md*
+*Updated: 2026-01-22 after completing 12-05-PLAN.md*
