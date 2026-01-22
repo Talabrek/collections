@@ -230,4 +230,9 @@ public class MockStorage implements Storage {
     public CompletableFuture<Map<String, Long>> getAllMetrics() {
         return CompletableFuture.completedFuture(new ConcurrentHashMap<>(metrics));
     }
+
+    @Override
+    public CompletableFuture<List<UUID>> getAllPlayerUuids() {
+        return CompletableFuture.completedFuture(new ArrayList<>(playerData.keySet()));
+    }
 }
