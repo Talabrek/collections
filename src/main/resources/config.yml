@@ -246,6 +246,40 @@ notifications:
     stay: 3.0
     fade-out: 0.5
 
+  # Milestone notifications (25%, 50%, 75%)
+  milestones:
+    # Enable/disable milestone notifications
+    enabled: true
+
+    # 25% milestone - subtle celebration
+    quarter:
+      # Style: actionbar, chat, or none
+      style: actionbar
+      # Format (MiniMessage): <collection>, <percent> placeholders
+      format: "<green>25% Complete!</green> <gray>-</gray> <gold><collection></gold>"
+      sound: "entity.experience_orb.pickup"
+      particles: false
+
+    # 50% milestone - moderate celebration
+    half:
+      # Style: subtitle (shows in subtitle area), title, actionbar, chat, or none
+      style: subtitle
+      # Title line (only used if style is title)
+      title: "<gold>Halfway There!</gold>"
+      # Subtitle/format line
+      format: "<green>50% Complete!</green> <gray>-</gray> <gold><collection></gold>"
+      sound: "entity.player.levelup"
+      particles: true
+
+    # 75% milestone - prominent celebration
+    threequarter:
+      # Style: title shows both title and subtitle
+      style: title
+      title: "<gold><bold>75% Complete!</bold></gold>"
+      format: "<green><collection></green> <gray>- Almost done!</gray>"
+      sound: "ui.toast.challenge_complete"
+      particles: true
+
 # Metrics Settings
 metrics:
   # Enable bStats community metrics (anonymous server statistics)

@@ -65,6 +65,23 @@ public class ConfigManager {
     private double completionStay;
     private double completionFadeOut;
 
+    // Milestone notification settings
+    private boolean milestonesEnabled;
+    private String milestone25Style;
+    private String milestone25Format;
+    private String milestone25Sound;
+    private boolean milestone25Particles;
+    private String milestone50Style;
+    private String milestone50Title;
+    private String milestone50Format;
+    private String milestone50Sound;
+    private boolean milestone50Particles;
+    private String milestone75Style;
+    private String milestone75Title;
+    private String milestone75Format;
+    private String milestone75Sound;
+    private boolean milestone75Particles;
+
     // Cached messages
     private final Map<String, String> messages;
 
@@ -136,6 +153,26 @@ public class ConfigManager {
         completionFadeIn = config.getDouble("notifications.completion.fade-in", 0.5);
         completionStay = config.getDouble("notifications.completion.stay", 3.0);
         completionFadeOut = config.getDouble("notifications.completion.fade-out", 0.5);
+
+        // Milestone notifications
+        milestonesEnabled = config.getBoolean("notifications.milestones.enabled", true);
+
+        milestone25Style = config.getString("notifications.milestones.quarter.style", "actionbar");
+        milestone25Format = config.getString("notifications.milestones.quarter.format", "<green>25% Complete!</green> <gray>-</gray> <gold><collection></gold>");
+        milestone25Sound = config.getString("notifications.milestones.quarter.sound", "entity.experience_orb.pickup");
+        milestone25Particles = config.getBoolean("notifications.milestones.quarter.particles", false);
+
+        milestone50Style = config.getString("notifications.milestones.half.style", "subtitle");
+        milestone50Title = config.getString("notifications.milestones.half.title", "<gold>Halfway There!</gold>");
+        milestone50Format = config.getString("notifications.milestones.half.format", "<green>50% Complete!</green> <gray>-</gray> <gold><collection></gold>");
+        milestone50Sound = config.getString("notifications.milestones.half.sound", "entity.player.levelup");
+        milestone50Particles = config.getBoolean("notifications.milestones.half.particles", true);
+
+        milestone75Style = config.getString("notifications.milestones.threequarter.style", "title");
+        milestone75Title = config.getString("notifications.milestones.threequarter.title", "<gold><bold>75% Complete!</bold></gold>");
+        milestone75Format = config.getString("notifications.milestones.threequarter.format", "<green><collection></green> <gray>- Almost done!</gray>");
+        milestone75Sound = config.getString("notifications.milestones.threequarter.sound", "ui.toast.challenge_complete");
+        milestone75Particles = config.getBoolean("notifications.milestones.threequarter.particles", true);
 
         // Load messages
         messages.clear();
@@ -461,5 +498,55 @@ public class ConfigManager {
 
     public double getCompletionFadeOut() {
         return completionFadeOut;
+    }
+
+    // ========== Milestone Notification Settings ==========
+
+    public boolean isMilestonesEnabled() {
+        return milestonesEnabled;
+    }
+
+    public String getMilestoneStyle(int percent) {
+        return switch (percent) {
+            case 25 -> milestone25Style;
+            case 50 -> milestone50Style;
+            case 75 -> milestone75Style;
+            default -> "none";
+        };
+    }
+
+    public String getMilestoneTitle(int percent) {
+        return switch (percent) {
+            case 50 -> milestone50Title;
+            case 75 -> milestone75Title;
+            default -> "";
+        };
+    }
+
+    public String getMilestoneFormat(int percent) {
+        return switch (percent) {
+            case 25 -> milestone25Format;
+            case 50 -> milestone50Format;
+            case 75 -> milestone75Format;
+            default -> "";
+        };
+    }
+
+    public String getMilestoneSound(int percent) {
+        return switch (percent) {
+            case 25 -> milestone25Sound;
+            case 50 -> milestone50Sound;
+            case 75 -> milestone75Sound;
+            default -> null;
+        };
+    }
+
+    public boolean getMilestoneParticles(int percent) {
+        return switch (percent) {
+            case 25 -> milestone25Particles;
+            case 50 -> milestone50Particles;
+            case 75 -> milestone75Particles;
+            default -> false;
+        };
     }
 }
