@@ -11,7 +11,7 @@ v1.2 Enhanced Collection UX focuses on fixing tier visibility bugs and improving
 | 14 | Tier Visibility | Complete | 1/1 |
 | 15 | Collectible Radar | Complete | 1/1 |
 | 16 | Add Flow UX | Complete | 2/2 |
-| 17 | Milestone Notifications | Pending | 0/? |
+| 17 | Milestone Notifications | Planned | 0/2 |
 
 ---
 
@@ -96,7 +96,7 @@ Plans:
 
 **Goal:** Players receive celebratory notifications at 25%, 50%, and 75% collection progress.
 
-**Dependencies:** Phase 16 (UX flow may trigger notifications)
+**Dependencies:** Phase 16 (UX flow triggers notifications via AddPreviewGUI)
 
 **Requirements:**
 - NOTIF-01: Player receives notification at 25% collection progress
@@ -110,7 +110,11 @@ Plans:
 4. Notifications only trigger once per milestone per collection (not on every item after threshold)
 5. Notification style is celebratory and includes collection name and milestone reached
 
-**Plans:** TBD during plan-phase
+**Plans:** 2 plans
+
+Plans:
+- [ ] 17-01-PLAN.md -- Add milestone tracking to data layer (PlayerProgress, database schema)
+- [ ] 17-02-PLAN.md -- Implement milestone notifications with config and AddPreviewGUI integration
 
 ---
 
