@@ -3,6 +3,7 @@ package com.blockworlds.collections.listener;
 import com.blockworlds.collections.Collections;
 import com.blockworlds.collections.manager.GoggleManager;
 import com.blockworlds.collections.manager.PlayerDataManager;
+import com.blockworlds.collections.manager.RadarManager;
 import com.blockworlds.collections.recipe.GoggleRecipeManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -67,6 +68,12 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
+
+        // Clean up radar boss bar
+        RadarManager radarManager = plugin.getRadarManager();
+        if (radarManager != null) {
+            radarManager.cleanup(player);
+        }
 
         // Clean up cooldown tracking to prevent memory leak
         CollectibleInteractListener interactListener = plugin.getCollectibleInteractListener();

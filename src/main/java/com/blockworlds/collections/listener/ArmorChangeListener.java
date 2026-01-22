@@ -2,6 +2,8 @@ package com.blockworlds.collections.listener;
 
 import com.blockworlds.collections.Collections;
 import com.blockworlds.collections.manager.GoggleManager;
+import com.blockworlds.collections.manager.RadarManager;
+import com.blockworlds.collections.model.CollectibleTier;
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,6 +40,17 @@ public class ArmorChangeListener implements Listener {
         // EntityScheduler follows the entity across regions; no need for isOnline() check
         player.getScheduler().run(plugin, task -> {
             goggleManager.refreshVisibilityForPlayer(player);
+
+            // Radar show/hide based on goggle tier
+            RadarManager radarManager = plugin.getRadarManager();
+            if (radarManager != null && plugin.getConfigManager().isRadarEnabled()) {
+                CollectibleTier goggleTier = goggleManager.getPlayerGoggleTier(player);
+                if (goggleTier != null) {
+                    radarManager.showRadar(player);
+                } else {
+                    radarManager.hideRadar(player);
+                }
+            }
 
             if (plugin.getConfigManager().isDebugMode()) {
                 plugin.getLogger().info("Refreshed collectible visibility for " + player.getName() +

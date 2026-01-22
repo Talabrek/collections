@@ -32,6 +32,8 @@ import com.blockworlds.collections.storage.Storage;
 import com.blockworlds.collections.storage.StorageFactory;
 import com.blockworlds.collections.task.ActionBarPromptTask;
 import com.blockworlds.collections.task.ParticleTask;
+import com.blockworlds.collections.task.RadarTask;
+import com.blockworlds.collections.manager.RadarManager;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -64,6 +66,8 @@ public class Collections extends JavaPlugin {
     private MetricsManager metricsManager;
     private DataMigrationManager dataMigrationManager;
     private CollectibleInteractListener collectibleInteractListener;
+    private RadarManager radarManager;
+    private RadarTask radarTask;
 
     @Override
     public void onEnable() {
@@ -127,6 +131,13 @@ public class Collections extends JavaPlugin {
         // Initialize goggle manager
         this.goggleManager = new GoggleManager(this);
 
+        // Initialize radar manager and task
+        this.radarManager = new RadarManager(this);
+        this.radarTask = new RadarTask(this, radarManager);
+        if (configManager.isRadarEnabled()) {
+            radarTask.start();
+        }
+
         // Initialize event manager
         this.eventManager = new EventManager(this);
 
@@ -170,6 +181,11 @@ public class Collections extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // Stop radar task
+        if (radarTask != null) {
+            radarTask.stop();
+        }
+
         // Unregister recipes
         if (goggleRecipeManager != null) {
             goggleRecipeManager.unregisterRecipes();
@@ -258,6 +274,14 @@ public class Collections extends JavaPlugin {
             actionBarPromptTask.start();
         }
 
+        // Restart radar task with new settings
+        if (radarTask != null) {
+            radarTask.stop();
+            if (configManager.isRadarEnabled()) {
+                radarTask.start();
+            }
+        }
+
         getLogger().info("Collections reloaded!");
     }
 
@@ -337,5 +361,13 @@ public class Collections extends JavaPlugin {
 
     public DataMigrationManager getDataMigrationManager() {
         return dataMigrationManager;
+    }
+
+    public RadarManager getRadarManager() {
+        return radarManager;
+    }
+
+    public RadarTask getRadarTask() {
+        return radarTask;
     }
 }
