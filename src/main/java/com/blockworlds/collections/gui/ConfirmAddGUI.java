@@ -2,6 +2,7 @@ package com.blockworlds.collections.gui;
 
 import com.blockworlds.collections.Collections;
 import com.blockworlds.collections.config.ConfigManager;
+import com.blockworlds.collections.manager.NotificationManager;
 import com.blockworlds.collections.manager.PlayerDataManager;
 import com.blockworlds.collections.model.Collection;
 import com.blockworlds.collections.model.CollectionItem;
@@ -30,6 +31,7 @@ public class ConfirmAddGUI implements GUIHolder {
     private final GUIManager guiManager;
     private final ConfigManager configManager;
     private final PlayerDataManager playerDataManager;
+    private final NotificationManager notificationManager;
     private final Player player;
     private final ItemStack itemToAdd;
     private final Collection collection;
@@ -55,6 +57,7 @@ public class ConfirmAddGUI implements GUIHolder {
         this.guiManager = plugin.getGUIManager();
         this.configManager = plugin.getConfigManager();
         this.playerDataManager = plugin.getPlayerDataManager();
+        this.notificationManager = plugin.getNotificationManager();
         this.player = player;
         this.itemToAdd = itemToAdd.clone();
         this.collection = collection;
@@ -171,8 +174,15 @@ public class ConfirmAddGUI implements GUIHolder {
             return;
         }
 
-        // Check if this was the first collection - unlock recipes
+        // Get current progress for notification
         PlayerProgress progress = playerDataManager.getProgressBlocking(player.getUniqueId());
+        int currentCount = progress != null ? progress.getCollectedCount(collectionId) : 1;
+        int totalCount = collection.getItemCount();
+
+        // Send progress notification (actionbar by default)
+        notificationManager.sendProgressNotification(player, collection, currentCount, totalCount);
+
+        // Check if this was the first collection - unlock recipes
         if (progress != null && progress.getTotalCollectiblesCollected() == 1) {
             GoggleRecipeManager recipeManager = plugin.getGoggleRecipeManager();
             if (recipeManager != null) {
