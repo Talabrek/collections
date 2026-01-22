@@ -249,6 +249,271 @@ class DataMigrationManagerTest {
         }
     }
 
+    // ========== Validation Tests ==========
+
+    @Nested
+    @DisplayName("Validation Tests")
+    class ValidationTests {
+
+        @Test
+        @DisplayName("validateImportFile returns success for valid file")
+        void testValidateImportFile_validFile_returnsSuccess() throws Exception {
+            // Create valid JSON file
+            Path validFile = createValidExportFile(List.of(UUID.randomUUID(), UUID.randomUUID()));
+
+            ValidationResult result = migrationManager.validateImportFile(validFile);
+
+            assertTrue(result.isValid(), "Valid file should pass validation");
+            assertEquals(2, result.getPlayerCount(), "Should count 2 players");
+            assertEquals(ExportFormat.FORMAT_VERSION, result.getFormatVersion());
+            assertTrue(result.getErrors().isEmpty(), "Should have no errors");
+        }
+
+        @Test
+        @DisplayName("validateImportFile returns error for missing formatVersion")
+        void testValidateImportFile_missingFormatVersion_returnsError() throws Exception {
+            // Create JSON without formatVersion
+            String json = """
+                {
+                  "exportDate": "2026-01-22T00:00:00Z",
+                  "players": []
+                }
+                """;
+            Path file = tempDir.resolve("missing_version.json");
+            Files.writeString(file, json);
+
+            ValidationResult result = migrationManager.validateImportFile(file);
+
+            assertFalse(result.isValid(), "Should fail validation");
+            assertTrue(result.getErrors().stream().anyMatch(e -> e.contains("formatVersion")),
+                    "Error should mention formatVersion");
+        }
+
+        @Test
+        @DisplayName("validateImportFile returns error for unsupported version")
+        void testValidateImportFile_unsupportedVersion_returnsError() throws Exception {
+            // Create JSON with future version
+            String json = """
+                {
+                  "formatVersion": 999,
+                  "players": []
+                }
+                """;
+            Path file = tempDir.resolve("future_version.json");
+            Files.writeString(file, json);
+
+            ValidationResult result = migrationManager.validateImportFile(file);
+
+            assertFalse(result.isValid(), "Should fail validation");
+            assertTrue(result.getErrors().stream().anyMatch(e -> e.contains("version")),
+                    "Error should mention version");
+        }
+
+        @Test
+        @DisplayName("validateImportFile returns error for malformed JSON")
+        void testValidateImportFile_malformedJson_returnsError() throws Exception {
+            // Create malformed JSON
+            String json = "{ not valid json }}}";
+            Path file = tempDir.resolve("malformed.json");
+            Files.writeString(file, json);
+
+            ValidationResult result = migrationManager.validateImportFile(file);
+
+            assertFalse(result.isValid(), "Should fail validation");
+            assertFalse(result.getErrors().isEmpty(), "Should have error messages");
+        }
+
+        @Test
+        @DisplayName("validateImportFile returns error for missing players array")
+        void testValidateImportFile_missingPlayersArray_returnsError() throws Exception {
+            // Create JSON without players
+            String json = """
+                {
+                  "formatVersion": 1,
+                  "exportDate": "2026-01-22T00:00:00Z"
+                }
+                """;
+            Path file = tempDir.resolve("no_players.json");
+            Files.writeString(file, json);
+
+            ValidationResult result = migrationManager.validateImportFile(file);
+
+            assertFalse(result.isValid(), "Should fail validation");
+            assertTrue(result.getErrors().stream().anyMatch(e -> e.contains("players")),
+                    "Error should mention players");
+        }
+
+        @Test
+        @DisplayName("validateImportFile returns error for player missing uuid")
+        void testValidateImportFile_invalidPlayerEntry_returnsError() throws Exception {
+            // Create JSON with player missing uuid
+            String json = """
+                {
+                  "formatVersion": 1,
+                  "players": [
+                    {
+                      "collections": {}
+                    }
+                  ]
+                }
+                """;
+            Path file = tempDir.resolve("missing_uuid.json");
+            Files.writeString(file, json);
+
+            ValidationResult result = migrationManager.validateImportFile(file);
+
+            assertFalse(result.isValid(), "Should fail validation");
+            assertTrue(result.getErrors().stream().anyMatch(e -> e.contains("uuid")),
+                    "Error should mention uuid");
+        }
+
+        @Test
+        @DisplayName("validateImportFile returns error for empty file")
+        void testValidateImportFile_emptyFile_returnsError() throws Exception {
+            Path file = tempDir.resolve("empty.json");
+            Files.writeString(file, "");
+
+            ValidationResult result = migrationManager.validateImportFile(file);
+
+            assertFalse(result.isValid(), "Should fail validation");
+            assertFalse(result.getErrors().isEmpty(), "Should have error messages");
+        }
+
+        @Test
+        @DisplayName("validateImportFile returns error for non-existent file")
+        void testValidateImportFile_nonExistent_returnsError() {
+            Path file = tempDir.resolve("does_not_exist.json");
+
+            ValidationResult result = migrationManager.validateImportFile(file);
+
+            assertFalse(result.isValid(), "Should fail validation");
+            assertTrue(result.getErrors().stream().anyMatch(e -> e.contains("not found")),
+                    "Error should mention file not found");
+        }
+    }
+
+    // ========== Import Tests ==========
+
+    @Nested
+    @DisplayName("Import Tests")
+    class ImportTests {
+
+        /**
+         * Note: The import/dry-run tests that need Bukkit.getPlayer() run in async context
+         * where MockedStatic doesn't extend. We test the sync validation portion and
+         * verify that validation failure prevents storage.savePlayer() from being called.
+         */
+
+        @Test
+        @DisplayName("importPlayers with dry-run validates file correctly")
+        void testImportPlayers_dryRun_validatesFileCorrectly() throws Exception {
+            // Create valid export file
+            UUID player1 = UUID.randomUUID();
+            UUID player2 = UUID.randomUUID();
+            Path file = createValidExportFile(List.of(player1, player2));
+
+            // Verify validation passes (sync portion)
+            ValidationResult validation = migrationManager.validateImportFile(file);
+            assertTrue(validation.isValid(), "Validation should pass");
+            assertEquals(2, validation.getPlayerCount(), "Should count 2 players");
+        }
+
+        @Test
+        @DisplayName("importPlayers returns failure for invalid file - storage not called")
+        void testImportPlayers_invalidFile_returnsFailure() throws Exception {
+            // Create invalid JSON file
+            String json = "{ not valid }";
+            Path file = tempDir.resolve("invalid_import.json");
+            Files.writeString(file, json);
+
+            ImportResult result = migrationManager.importPlayers(file, false, sender)
+                    .get(5, TimeUnit.SECONDS);
+
+            assertFalse(result.success(), "Import should fail");
+            assertNotNull(result.errorMessage(), "Should have error message");
+
+            // Verify storage NOT called (validation failed before async import)
+            verify(storage, never()).savePlayer(any());
+        }
+
+        @Test
+        @DisplayName("importPlayers returns failure for non-existent file")
+        void testImportPlayers_nonExistentFile_returnsFailure() throws Exception {
+            Path file = tempDir.resolve("nonexistent.json");
+
+            ImportResult result = migrationManager.importPlayers(file, false, sender)
+                    .get(5, TimeUnit.SECONDS);
+
+            assertFalse(result.success(), "Import should fail");
+            assertTrue(result.errorMessage().contains("not found") ||
+                            result.errorMessage().contains("Validation failed"),
+                    "Should indicate file not found");
+        }
+
+        @Test
+        @DisplayName("validation blocks import for malformed data")
+        void testImportPlayers_validationBlocksImport() throws Exception {
+            // Create JSON with invalid player entry (missing uuid)
+            String json = """
+                {
+                  "formatVersion": 1,
+                  "players": [
+                    {
+                      "collections": {}
+                    }
+                  ]
+                }
+                """;
+            Path file = tempDir.resolve("invalid_player.json");
+            Files.writeString(file, json);
+
+            ImportResult result = migrationManager.importPlayers(file, false, sender)
+                    .get(5, TimeUnit.SECONDS);
+
+            assertFalse(result.success(), "Import should fail due to validation");
+            assertTrue(result.errorMessage().contains("Validation failed"),
+                    "Error should indicate validation failure");
+
+            // Storage should never be called due to validation failure
+            verify(storage, never()).savePlayer(any());
+        }
+
+        @Test
+        @DisplayName("validation allows import of empty players array")
+        void testValidation_emptyPlayersArray_valid() throws Exception {
+            // Create valid JSON with empty players
+            String json = """
+                {
+                  "formatVersion": 1,
+                  "exportDate": "2026-01-22T00:00:00Z",
+                  "players": []
+                }
+                """;
+            Path file = tempDir.resolve("empty_players.json");
+            Files.writeString(file, json);
+
+            // Verify validation passes
+            ValidationResult validation = migrationManager.validateImportFile(file);
+            assertTrue(validation.isValid(), "Empty players array should be valid");
+            assertEquals(0, validation.getPlayerCount(), "Should count 0 players");
+        }
+
+        @Test
+        @DisplayName("dry-run mode identified by validation result")
+        void testDryRun_usesValidationPlayerCount() throws Exception {
+            // Create valid export file with 3 players
+            UUID player1 = UUID.randomUUID();
+            UUID player2 = UUID.randomUUID();
+            UUID player3 = UUID.randomUUID();
+            Path file = createValidExportFile(List.of(player1, player2, player3));
+
+            // Verify validation counts correctly - this is what dry-run uses
+            ValidationResult validation = migrationManager.validateImportFile(file);
+            assertEquals(3, validation.getPlayerCount(),
+                    "Dry-run would report 3 players from validation");
+        }
+    }
+
     // ========== Helper Methods ==========
 
     private PlayerProgress createTestPlayerProgress(UUID playerId) {
@@ -263,5 +528,53 @@ class DataMigrationManagerTest {
         colProgress.addItemDirect("item2");
 
         return progress;
+    }
+
+    /**
+     * Creates a valid export JSON file for testing.
+     */
+    private Path createValidExportFile(List<UUID> playerIds) throws IOException {
+        StringBuilder json = new StringBuilder();
+        json.append("{\n");
+        json.append("  \"formatVersion\": ").append(ExportFormat.FORMAT_VERSION).append(",\n");
+        json.append("  \"exportDate\": \"2026-01-22T00:00:00Z\",\n");
+        json.append("  \"pluginVersion\": \"1.0.0-TEST\",\n");
+        json.append("  \"exportType\": \"FULL\",\n");
+        json.append("  \"players\": [\n");
+
+        for (int i = 0; i < playerIds.size(); i++) {
+            UUID id = playerIds.get(i);
+            json.append("    {\n");
+            json.append("      \"uuid\": \"").append(id.toString()).append("\",\n");
+            json.append("      \"stats\": {\n");
+            json.append("        \"totalCollectiblesCollected\": 10,\n");
+            json.append("        \"totalCollectionsCompleted\": 1,\n");
+            json.append("        \"firstCollectionDate\": 1705852800000,\n");
+            json.append("        \"lastActivityDate\": 1705939200000\n");
+            json.append("      },\n");
+            json.append("      \"collections\": {\n");
+            json.append("        \"test_collection\": {\n");
+            json.append("          \"items\": [\"item1\", \"item2\"],\n");
+            json.append("          \"complete\": true,\n");
+            json.append("          \"rewardClaimed\": false,\n");
+            json.append("          \"completedDate\": 1705939200000\n");
+            json.append("        }\n");
+            json.append("      }\n");
+            json.append("    }");
+            if (i < playerIds.size() - 1) {
+                json.append(",");
+            }
+            json.append("\n");
+        }
+
+        json.append("  ],\n");
+        json.append("  \"totalPlayers\": ").append(playerIds.size()).append("\n");
+        json.append("}\n");
+
+        Path exportsDir = tempDir.resolve("exports");
+        Files.createDirectories(exportsDir);
+        Path file = exportsDir.resolve("test_export.json");
+        Files.writeString(file, json.toString());
+        return file;
     }
 }
