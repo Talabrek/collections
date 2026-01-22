@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 ## Current Position
 
 Milestone: v1.2 Enhanced Collection UX
-Phase: 14 - Tier Visibility (pending plan)
-Plan: --
-Status: Roadmap complete, awaiting plan-phase
-Last activity: 2026-01-23 -- Roadmap created for v1.2
+Phase: 14 - Tier Visibility
+Plan: 01 of 01
+Status: Phase complete
+Last activity: 2026-01-23 - Completed 14-01-PLAN.md
 
-Progress: [░░░░░░░░░░░░░░░░░░░░] 0/4 phases
+Progress: [#####///////////////] 1/4 phases
 
 ## Shipped Milestones
 
@@ -39,12 +39,21 @@ See `.planning/milestones/` for archived details.
 - Average duration: 5.4 min
 - Total execution time: ~76 min
 
+**v1.2 Velocity (in progress):**
+- Plans completed: 1
+- Phase 14-01 duration: 4 min
+
 ## Accumulated Context
 
 ### Key Decisions
 
 Major decisions are logged in PROJECT.md Key Decisions table.
 Full decision history archived in `.planning/milestones/`.
+
+**v1.2 Decisions:**
+- EPIC tier uses SOUL_FIRE_FLAME particle and DARK_PURPLE color
+- LEGENDARY tier uses DRAGON_BREATH particle and GOLD color
+- Tier hierarchy: COMMON < UNCOMMON < RARE < EPIC < LEGENDARY < EVENT
 
 ### Known Issues
 
@@ -53,13 +62,13 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- None - roadmap created, ready for plan-phase
+- None - Phase 14 complete, ready for Phase 15
 
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Roadmap creation complete
-Resume with: `/gsd:plan-phase 14` to plan Tier Visibility phase
+Stopped at: Completed 14-01-PLAN.md
+Resume with: Phase 15 (GUI/UX improvements)
 
 ---
-*Updated: 2026-01-23 after v1.2 roadmap creation*
+*Updated: 2026-01-23 after Phase 14 completion*
