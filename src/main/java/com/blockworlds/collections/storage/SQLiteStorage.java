@@ -205,6 +205,13 @@ public class SQLiteStorage implements Storage {
                 // Column already exists
             }
 
+            // Migration: Add milestones column if it doesn't exist
+            try {
+                stmt.execute("ALTER TABLE collection_progress ADD COLUMN milestones TINYINT DEFAULT 0");
+            } catch (SQLException ignored) {
+                // Column already exists
+            }
+
             // Migration: Remove armor_stand_id column from existing databases
             // SQLite doesn't support DROP COLUMN, so we recreate the table if the column exists
             migrateRemoveArmorStandId(conn);
@@ -321,6 +328,13 @@ public class SQLiteStorage implements Storage {
                         String collectionId = rs.getString("collection_id");
                         PlayerProgress.CollectionProgress colProgress = progress.getProgress(collectionId);
                         colProgress.setRewardClaimed(rs.getBoolean("reward_claimed"));
+                        // Load milestones - use try/catch for backward compatibility
+                        try {
+                            colProgress.setTriggeredMilestones((byte) rs.getInt("milestones"));
+                        } catch (SQLException e) {
+                            // Column may not exist in older databases, default to 0
+                            colProgress.setTriggeredMilestones((byte) 0);
+                        }
                         colProgress.setCompletedDate(rs.getLong("completed_date"));
                         if (colProgress.getCompletedDate() > 0) {
                             colProgress.setComplete(true);
@@ -408,13 +422,14 @@ public class SQLiteStorage implements Storage {
             PlayerProgress.CollectionProgress colProgress) throws SQLException {
         try (PreparedStatement stmt = conn.prepareStatement("""
                 INSERT OR REPLACE INTO collection_progress
-                (uuid, collection_id, reward_claimed, completed_date)
-                VALUES (?, ?, ?, ?)
+                (uuid, collection_id, reward_claimed, completed_date, milestones)
+                VALUES (?, ?, ?, ?, ?)
                 """)) {
             stmt.setString(1, playerId.toString());
             stmt.setString(2, colProgress.getCollectionId());
             stmt.setBoolean(3, colProgress.isRewardClaimed());
             stmt.setLong(4, colProgress.getCompletedDate());
+            stmt.setInt(5, colProgress.getTriggeredMilestones());
             stmt.executeUpdate();
         }
     }

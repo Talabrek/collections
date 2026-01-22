@@ -142,6 +142,13 @@ public class MySQLStorage implements Storage {
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
                 """);
 
+            // Migration: Add milestones column if it doesn't exist
+            try {
+                stmt.execute("ALTER TABLE collection_progress ADD COLUMN milestones TINYINT DEFAULT 0");
+            } catch (SQLException ignored) {
+                // Column already exists (MySQL throws error, not ignores like SQLite)
+            }
+
             // Indexes for performance
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_collected_items_uuid ON collected_items(uuid)");
             stmt.execute("CREATE INDEX IF NOT EXISTS idx_collectibles_world ON active_collectibles(world)");
@@ -200,6 +207,13 @@ public class MySQLStorage implements Storage {
                         String collectionId = rs.getString("collection_id");
                         PlayerProgress.CollectionProgress colProgress = progress.getProgress(collectionId);
                         colProgress.setRewardClaimed(rs.getBoolean("reward_claimed"));
+                        // Load milestones - use try/catch for backward compatibility
+                        try {
+                            colProgress.setTriggeredMilestones((byte) rs.getInt("milestones"));
+                        } catch (SQLException e) {
+                            // Column may not exist in older databases, default to 0
+                            colProgress.setTriggeredMilestones((byte) 0);
+                        }
                         colProgress.setCompletedDate(rs.getLong("completed_date"));
                         if (colProgress.getCompletedDate() > 0) {
                             colProgress.setComplete(true);
@@ -292,16 +306,18 @@ public class MySQLStorage implements Storage {
             PlayerProgress.CollectionProgress colProgress) throws SQLException {
         try (PreparedStatement stmt = conn.prepareStatement("""
                 INSERT INTO collection_progress
-                (uuid, collection_id, reward_claimed, completed_date)
-                VALUES (?, ?, ?, ?)
+                (uuid, collection_id, reward_claimed, completed_date, milestones)
+                VALUES (?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE
                     reward_claimed = VALUES(reward_claimed),
-                    completed_date = VALUES(completed_date)
+                    completed_date = VALUES(completed_date),
+                    milestones = VALUES(milestones)
                 """)) {
             stmt.setString(1, playerId.toString());
             stmt.setString(2, colProgress.getCollectionId());
             stmt.setBoolean(3, colProgress.isRewardClaimed());
             stmt.setLong(4, colProgress.getCompletedDate());
+            stmt.setInt(5, colProgress.getTriggeredMilestones());
             stmt.executeUpdate();
         }
     }
