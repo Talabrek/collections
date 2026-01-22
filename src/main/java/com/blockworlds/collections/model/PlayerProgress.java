@@ -212,6 +212,7 @@ public class PlayerProgress {
         private boolean complete;
         private boolean rewardClaimed;
         private long completedDate;
+        private byte triggeredMilestones; // Bits: 0=25%, 1=50%, 2=75%
 
         public CollectionProgress(String collectionId) {
             this.collectionId = collectionId;
@@ -219,6 +220,7 @@ public class PlayerProgress {
             this.complete = false;
             this.rewardClaimed = false;
             this.completedDate = 0;
+            this.triggeredMilestones = 0;
         }
 
         public String getCollectionId() {
@@ -263,6 +265,44 @@ public class PlayerProgress {
 
         public void setCompletedDate(long completedDate) {
             this.completedDate = completedDate;
+        }
+
+        public byte getTriggeredMilestones() {
+            return triggeredMilestones;
+        }
+
+        public void setTriggeredMilestones(byte milestones) {
+            this.triggeredMilestones = milestones;
+        }
+
+        /**
+         * Check if a milestone has already been triggered.
+         * @param percent The milestone percentage (25, 50, or 75)
+         * @return true if the milestone has been triggered
+         */
+        public boolean hasMilestone(int percent) {
+            int bit = getMilestoneBit(percent);
+            return bit >= 0 && (triggeredMilestones & (1 << bit)) != 0;
+        }
+
+        /**
+         * Mark a milestone as triggered.
+         * @param percent The milestone percentage (25, 50, or 75)
+         */
+        public void setMilestone(int percent) {
+            int bit = getMilestoneBit(percent);
+            if (bit >= 0) {
+                triggeredMilestones |= (byte) (1 << bit);
+            }
+        }
+
+        private int getMilestoneBit(int percent) {
+            return switch (percent) {
+                case 25 -> 0;
+                case 50 -> 1;
+                case 75 -> 2;
+                default -> -1;
+            };
         }
     }
 }
