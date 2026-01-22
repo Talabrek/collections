@@ -8,6 +8,16 @@ A comprehensive EQ2-style collectibles system for Paper 1.21.4 servers. Players 
 
 Every player interaction must work correctly — collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
 
+## Current Milestone: v1.2 Enhanced Collection UX
+
+**Goal:** Fix tier visibility bugs and enhance the collection interaction experience with radar, improved add flow, and milestone notifications.
+
+**Target features:**
+- Tier visibility fix (uncommon/rare+ invisible without correct helmet)
+- Boss bar radar for nearby collectibles (helmet-gated by tier)
+- Enhanced add flow (full collection view + confirmation + show after adding)
+- Milestone notifications at 25/50/75% per-collection progress
+
 ## Current State
 
 **v1.1 Operational Features — Shipped 2026-01-22**
@@ -57,13 +67,20 @@ The plugin is production-ready for multi-server network deployment with full ope
 - ✓ Import dry-run mode — v1.1
 - ✓ Import cache invalidation — v1.1
 
-### Active (v1.2+)
+### Active (v1.2)
+
+- [ ] Tier visibility fix — uncommon/rare+ invisible without helmet (VIS-01)
+- [ ] Boss bar radar for nearby collectibles with helmet (RADAR-01)
+- [ ] Enhanced add flow — full collection grid + progress summary (UX-01)
+- [ ] Add confirmation UI with Yes/No (UX-02)
+- [ ] Show collection after adding item (UX-03)
+- [ ] Milestone notifications at 25/50/75% per-collection (NOTIF-06)
+
+### Active (v1.3+)
 
 - [ ] Prometheus metrics endpoint (OBS-01)
 - [ ] Per-collection completion rate tracking (OBS-02)
 - [ ] Spawn heatmap data export (OBS-03)
-- [ ] Boss bar for active collection tracking (NOTIF-06)
-- [ ] Milestone notifications at 25/50/75% (NOTIF-07)
 - [ ] Batch admin operations (ADMIN-06)
 - [ ] Confirmation prompts for destructive operations (ADMIN-07)
 - [ ] Undo recent admin action (ADMIN-08)
@@ -116,4 +133,4 @@ See `.planning/MILESTONES.md` for shipped milestones.
 See `.planning/milestones/` for archived milestone details.
 
 ---
-*Last updated: 2026-01-22 after v1.1 milestone*
+*Last updated: 2026-01-23 after v1.2 milestone start*

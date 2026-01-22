@@ -5,17 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-01-22)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** Planning next milestone
+**Current focus:** v1.2 Enhanced Collection UX
 
 ## Current Position
 
-Milestone: v1.1 Operational Features — SHIPPED
-Phase: All 4 phases complete (10-13)
-Plan: All 14 plans complete
-Status: Milestone archived, ready for next milestone
-Last activity: 2026-01-22 — v1.1 milestone completed
+Milestone: v1.2 Enhanced Collection UX
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-01-23 — Milestone v1.2 started
 
-Progress: [██████████████] 14/14 plans (milestone shipped)
+Progress: [░░░░░░░░░░░░░░] 0/? plans
 
 ## Shipped Milestones
 
@@ -53,13 +53,13 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- None - milestone complete, ready for next milestone planning
+- None - defining requirements
 
 ## Session Continuity
 
-Last session: 2026-01-22
-Stopped at: v1.1 milestone completed and archived
-Resume with: `/gsd:new-milestone` to plan v1.2 or v2.0
+Last session: 2026-01-23
+Stopped at: Defining v1.2 requirements
+Resume with: Continue requirements definition
 
 ---
-*Updated: 2026-01-22 after v1.1 milestone completion*
+*Updated: 2026-01-23 after v1.2 milestone start*
