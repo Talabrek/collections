@@ -1,7 +1,7 @@
 # Requirements: Collections Plugin v1.2
 
 **Defined:** 2026-01-23
-**Core Value:** Every player interaction must work correctly — collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
+**Core Value:** Every player interaction must work correctly -- collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
 
 ## v1.2 Requirements
 
@@ -67,26 +67,26 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VIS-01 | TBD | Pending |
-| VIS-02 | TBD | Pending |
-| VIS-03 | TBD | Pending |
-| RADAR-01 | TBD | Pending |
-| RADAR-02 | TBD | Pending |
-| RADAR-03 | TBD | Pending |
-| RADAR-04 | TBD | Pending |
-| UX-01 | TBD | Pending |
-| UX-02 | TBD | Pending |
-| UX-03 | TBD | Pending |
-| UX-04 | TBD | Pending |
-| NOTIF-01 | TBD | Pending |
-| NOTIF-02 | TBD | Pending |
-| NOTIF-03 | TBD | Pending |
+| VIS-01 | Phase 14 | Pending |
+| VIS-02 | Phase 14 | Pending |
+| VIS-03 | Phase 14 | Pending |
+| RADAR-01 | Phase 15 | Pending |
+| RADAR-02 | Phase 15 | Pending |
+| RADAR-03 | Phase 15 | Pending |
+| RADAR-04 | Phase 15 | Pending |
+| UX-01 | Phase 16 | Pending |
+| UX-02 | Phase 16 | Pending |
+| UX-03 | Phase 16 | Pending |
+| UX-04 | Phase 16 | Pending |
+| NOTIF-01 | Phase 17 | Pending |
+| NOTIF-02 | Phase 17 | Pending |
+| NOTIF-03 | Phase 17 | Pending |
 
 **Coverage:**
 - v1.2 requirements: 14 total
-- Mapped to phases: 0
-- Unmapped: 14 (pending roadmap)
+- Mapped to phases: 14
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after initial definition*
+*Last updated: 2026-01-23 after roadmap creation*

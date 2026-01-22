@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 ## Current Position
 
 Milestone: v1.2 Enhanced Collection UX
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-01-23 — Milestone v1.2 started
+Phase: 14 - Tier Visibility (pending plan)
+Plan: --
+Status: Roadmap complete, awaiting plan-phase
+Last activity: 2026-01-23 -- Roadmap created for v1.2
 
-Progress: [░░░░░░░░░░░░░░] 0/? plans
+Progress: [░░░░░░░░░░░░░░░░░░░░] 0/4 phases
 
 ## Shipped Milestones
 
@@ -53,13 +53,13 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- None - defining requirements
+- None - roadmap created, ready for plan-phase
 
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Defining v1.2 requirements
-Resume with: Continue requirements definition
+Stopped at: Roadmap creation complete
+Resume with: `/gsd:plan-phase 14` to plan Tier Visibility phase
 
 ---
-*Updated: 2026-01-23 after v1.2 milestone start*
+*Updated: 2026-01-23 after v1.2 roadmap creation*
