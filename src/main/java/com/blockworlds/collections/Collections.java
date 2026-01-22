@@ -204,7 +204,12 @@ public class Collections extends JavaPlugin {
             }
         }
 
-        // Shutdown storage connection
+        // Save metrics counters before storage shutdown
+        if (metricsManager != null) {
+            metricsManager.shutdown();
+        }
+
+        // Shutdown storage connection (must be last, after metrics save)
         if (storage != null) {
             storage.shutdown();
         }
