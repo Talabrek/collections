@@ -404,4 +404,71 @@ class PlayerDataManagerTest {
         assertNotNull(progress);
         assertSame(playerDataManager.getProgress(playerId), progress);
     }
+
+    @Test
+    @DisplayName("addItemOffline adds item to offline player via storage")
+    void testAddItemOffline_AddsItemToOfflinePlayer() throws Exception {
+        // Setup: Offline player (not in cache)
+        UUID offlinePlayerId = UUID.randomUUID();
+        String collectionId = "test_collection";
+        String itemId = "test_item";
+
+        // Execute: Add item to offline player
+        CompletableFuture<Boolean> future = playerDataManager.addItemOffline(offlinePlayerId, collectionId, itemId);
+        Boolean added = future.get(5, TimeUnit.SECONDS);
+
+        // Verify: Item was added
+        assertTrue(added);
+
+        // Verify: Progress was persisted to storage (load and check)
+        PlayerProgress reloaded = mockStorage.loadPlayer(offlinePlayerId).get(5, TimeUnit.SECONDS);
+        assertTrue(reloaded.hasItem(collectionId, itemId));
+
+        // Verify: NOT cached (offline player)
+        assertNull(playerDataManager.getProgress(offlinePlayerId));
+    }
+
+    @Test
+    @DisplayName("addItemOffline returns false for duplicate item")
+    void testAddItemOffline_ReturnsFalseForDuplicateItem() throws Exception {
+        // Setup: Offline player with existing item
+        UUID offlinePlayerId = UUID.randomUUID();
+        String collectionId = "test_collection";
+        String itemId = "test_item";
+
+        // Pre-add the item
+        playerDataManager.addItemOffline(offlinePlayerId, collectionId, itemId).get(5, TimeUnit.SECONDS);
+
+        // Execute: Try to add same item again
+        CompletableFuture<Boolean> future = playerDataManager.addItemOffline(offlinePlayerId, collectionId, itemId);
+        Boolean added = future.get(5, TimeUnit.SECONDS);
+
+        // Verify: Returns false (duplicate)
+        assertFalse(added);
+    }
+
+    @Test
+    @DisplayName("addItemOffline uses cache for online player")
+    void testAddItemOffline_UsesCache_ForOnlinePlayer() throws Exception {
+        // Setup: Online player (in cache)
+        UUID playerId = UUID.randomUUID();
+        Player mockPlayer = mock(Player.class);
+        when(mockPlayer.getUniqueId()).thenReturn(playerId);
+        playerDataManager.loadPlayer(mockPlayer).get(5, TimeUnit.SECONDS);
+
+        String collectionId = "test_collection";
+        String itemId = "test_item";
+
+        // Execute: Add item (should use cache path)
+        CompletableFuture<Boolean> future = playerDataManager.addItemOffline(playerId, collectionId, itemId);
+        Boolean added = future.get(5, TimeUnit.SECONDS);
+
+        // Verify: Item added
+        assertTrue(added);
+
+        // Verify: Cache was updated
+        PlayerProgress cached = playerDataManager.getProgress(playerId);
+        assertNotNull(cached);
+        assertTrue(cached.hasItem(collectionId, itemId));
+    }
 }
