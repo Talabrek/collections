@@ -204,3 +204,25 @@ tiers:
     # Special event collectibles
     particle: "ENCHANTED_HIT"
     particle-color: "#FF55FF"
+
+# Notification Settings
+notifications:
+  # Progress notification when adding item to journal
+  progress:
+    # Style: actionbar, chat, title, or none
+    style: actionbar
+    # Format (MiniMessage): <current>, <total>, <collection> placeholders
+    format: "<gold><current>/<total></gold> <gray>in</gray> <green><collection></green>"
+
+  # Completion notification when finishing a collection
+  completion:
+    # Style: title, chat, or both
+    style: title
+    # Title line (MiniMessage)
+    title: "<gold><bold>Collection Complete!</bold></gold>"
+    # Subtitle line (MiniMessage): <collection> placeholder
+    subtitle: "<green><collection></green>"
+    # Title timing in seconds
+    fade-in: 0.5
+    stay: 3.0
+    fade-out: 0.5
