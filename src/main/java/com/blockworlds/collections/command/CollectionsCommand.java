@@ -7,6 +7,7 @@ import com.blockworlds.collections.manager.CollectionManager;
 import com.blockworlds.collections.manager.EventManager;
 import com.blockworlds.collections.manager.GoggleManager;
 import com.blockworlds.collections.manager.PlayerDataManager;
+import com.blockworlds.collections.manager.RewardManager;
 import com.blockworlds.collections.manager.SpawnManager;
 import com.blockworlds.collections.manager.ZoneManager;
 import com.blockworlds.collections.model.Collectible;
@@ -27,7 +28,9 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import io.papermc.paper.command.brigadier.argument.resolvers.PlayerProfileListResolver;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
+import com.destroystokyo.paper.profile.PlayerProfile;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -38,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -161,6 +165,22 @@ public class CollectionsCommand {
                                         .executes(this::endEvent)))
                         .then(Commands.literal("list")
                                 .executes(this::listEvents)))
+
+                // /collections admin - admin operations on any player (online or offline)
+                .then(Commands.literal("admin")
+                        .requires(src -> src.getSender().hasPermission("collections.admin"))
+                        // /collections admin inspect <target>
+                        .then(Commands.literal("inspect")
+                                .then(Commands.argument("target", ArgumentTypes.playerProfiles())
+                                        .executes(this::adminInspect)))
+                        // /collections admin complete <target> <collection> [--rewards]
+                        .then(Commands.literal("complete")
+                                .then(Commands.argument("target", ArgumentTypes.playerProfiles())
+                                        .then(Commands.argument("collection", StringArgumentType.word())
+                                                .suggests(this::suggestCollections)
+                                                .executes(ctx -> adminComplete(ctx, false))
+                                                .then(Commands.literal("--rewards")
+                                                        .executes(ctx -> adminComplete(ctx, true)))))))
 
                 .build();
 
@@ -470,6 +490,16 @@ public class CollectionsCommand {
             sender.sendMessage(Component.text()
                     .append(Component.text("/collections event start|end|list", NamedTextColor.AQUA))
                     .append(Component.text(" - Manage events", NamedTextColor.GRAY))
+                    .build());
+
+            sender.sendMessage(Component.text()
+                    .append(Component.text("/collections admin inspect <player>", NamedTextColor.AQUA))
+                    .append(Component.text(" - View player progress", NamedTextColor.GRAY))
+                    .build());
+
+            sender.sendMessage(Component.text()
+                    .append(Component.text("/collections admin complete <player> <col> [--rewards]", NamedTextColor.AQUA))
+                    .append(Component.text(" - Force complete", NamedTextColor.GRAY))
                     .build());
         }
 
@@ -1012,6 +1042,193 @@ public class CollectionsCommand {
                             .build());
                 }
             }
+        }
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    // ========== Admin Commands ==========
+
+    /**
+     * Inspect a player's collection progress (works for offline players).
+     */
+    private int adminInspect(CommandContext<CommandSourceStack> ctx) {
+        var sender = ctx.getSource().getSender();
+        String executor = sender instanceof Player p ? p.getName() : "CONSOLE";
+
+        try {
+            PlayerProfileListResolver resolver = ctx.getArgument("target", PlayerProfileListResolver.class);
+            java.util.Collection<PlayerProfile> profiles = resolver.resolve(ctx.getSource());
+
+            if (profiles.isEmpty()) {
+                sender.sendMessage(Component.text("Player not found.", NamedTextColor.RED));
+                return Command.SINGLE_SUCCESS;
+            }
+
+            PlayerProfile profile = profiles.iterator().next();
+            UUID targetUuid = profile.getId();
+            String targetName = profile.getName();
+
+            // Log the admin action
+            playerDataManager.logAdminAction("INSPECT", executor, targetUuid, targetName, "viewing progress");
+
+            // Load progress asynchronously (works for offline players)
+            playerDataManager.getProgressOffline(targetUuid).thenAccept(progress -> {
+                // Send response back on main thread
+                Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
+                    sendInspectResult(sender, targetName != null ? targetName : targetUuid.toString(), progress);
+                });
+            }).exceptionally(throwable -> {
+                Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
+                    sender.sendMessage(Component.text("Failed to load player data: " + throwable.getMessage(), NamedTextColor.RED));
+                });
+                return null;
+            });
+
+        } catch (Exception e) {
+            sender.sendMessage(Component.text("Error: " + e.getMessage(), NamedTextColor.RED));
+        }
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * Send inspection results to the command sender.
+     */
+    private void sendInspectResult(org.bukkit.command.CommandSender sender, String targetName, PlayerProgress progress) {
+        sender.sendMessage(Component.text()
+                .append(Component.text("=== ", NamedTextColor.GOLD))
+                .append(Component.text("Progress for " + targetName, NamedTextColor.YELLOW))
+                .append(Component.text(" ===", NamedTextColor.GOLD))
+                .build());
+
+        if (progress == null) {
+            sender.sendMessage(Component.text("No collection data found.", NamedTextColor.GRAY));
+            return;
+        }
+
+        sender.sendMessage(Component.text()
+                .append(Component.text("Total Items: ", NamedTextColor.GRAY))
+                .append(Component.text(String.valueOf(progress.getTotalCollectiblesCollected()), NamedTextColor.GREEN))
+                .build());
+
+        sender.sendMessage(Component.text()
+                .append(Component.text("Collections Completed: ", NamedTextColor.GRAY))
+                .append(Component.text(String.valueOf(progress.getTotalCollectionsCompleted()), NamedTextColor.GREEN))
+                .build());
+
+        // Show per-collection progress
+        Map<String, Collection> allCollections = collectionManager.getAllCollections();
+        for (Collection collection : allCollections.values()) {
+            int collected = progress.getCollectedCount(collection.id());
+            int total = collection.items().size();
+            boolean complete = progress.hasCompleted(collection.id());
+            boolean claimed = progress.hasClaimedReward(collection.id());
+
+            int percent = total > 0 ? (collected * 100 / total) : 0;
+
+            NamedTextColor statusColor = complete ? NamedTextColor.GREEN :
+                    (collected > 0 ? NamedTextColor.YELLOW : NamedTextColor.GRAY);
+
+            Component status = Component.empty();
+            if (complete && claimed) {
+                status = Component.text(" [COMPLETE+CLAIMED]", NamedTextColor.AQUA);
+            } else if (complete) {
+                status = Component.text(" [COMPLETE]", NamedTextColor.GREEN);
+            }
+
+            sender.sendMessage(Component.text()
+                    .append(Component.text("  " + collection.name() + ": ", NamedTextColor.WHITE))
+                    .append(Component.text(collected + "/" + total + " (" + percent + "%)", statusColor))
+                    .append(status)
+                    .build());
+        }
+    }
+
+    /**
+     * Force complete a collection for a player (works for offline players).
+     *
+     * @param ctx The command context
+     * @param grantRewards Whether to grant rewards (only works for online players)
+     */
+    private int adminComplete(CommandContext<CommandSourceStack> ctx, boolean grantRewards) {
+        var sender = ctx.getSource().getSender();
+        String executor = sender instanceof Player p ? p.getName() : "CONSOLE";
+
+        try {
+            PlayerProfileListResolver resolver = ctx.getArgument("target", PlayerProfileListResolver.class);
+            java.util.Collection<PlayerProfile> profiles = resolver.resolve(ctx.getSource());
+
+            if (profiles.isEmpty()) {
+                sender.sendMessage(Component.text("Player not found.", NamedTextColor.RED));
+                return Command.SINGLE_SUCCESS;
+            }
+
+            PlayerProfile profile = profiles.iterator().next();
+            UUID targetUuid = profile.getId();
+            String targetName = profile.getName();
+            String collectionId = ctx.getArgument("collection", String.class);
+
+            Collection collection = collectionManager.getCollection(collectionId);
+            if (collection == null) {
+                sender.sendMessage(Component.text("Collection not found: " + collectionId, NamedTextColor.RED));
+                return Command.SINGLE_SUCCESS;
+            }
+
+            // Get item IDs for the collection
+            List<String> itemIds = collection.items().stream()
+                    .map(item -> item.id())
+                    .toList();
+
+            // Log the admin action
+            String details = "collection=" + collectionId + ", rewards=" + grantRewards;
+            playerDataManager.logAdminAction("FORCE_COMPLETE", executor, targetUuid, targetName, details);
+
+            // Check if player is online for rewards
+            Player onlineTarget = Bukkit.getPlayer(targetUuid);
+            boolean canGrantRewards = grantRewards && onlineTarget != null;
+
+            if (grantRewards && onlineTarget == null) {
+                sender.sendMessage(Component.text("Note: Player is offline, rewards will not be granted.", NamedTextColor.YELLOW));
+            }
+
+            // Complete collection asynchronously
+            playerDataManager.completeCollectionOffline(targetUuid, collectionId, itemIds).thenRun(() -> {
+                // Grant rewards if applicable (must be on main thread)
+                if (canGrantRewards) {
+                    Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
+                        RewardManager rewardManager = plugin.getRewardManager();
+                        if (rewardManager != null && !playerDataManager.hasClaimedReward(targetUuid, collectionId)) {
+                            rewardManager.giveRewards(onlineTarget, collection);
+                            playerDataManager.claimReward(targetUuid, collectionId);
+                        }
+                    });
+                }
+
+                // Send confirmation on main thread
+                Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
+                    String displayName = targetName != null ? targetName : targetUuid.toString();
+                    Component msg = Component.text()
+                            .append(Component.text("Completed ", NamedTextColor.GREEN))
+                            .append(Component.text(collection.name(), NamedTextColor.GOLD))
+                            .append(Component.text(" for ", NamedTextColor.GREEN))
+                            .append(Component.text(displayName, NamedTextColor.WHITE))
+                            .build();
+                    sender.sendMessage(msg);
+
+                    if (canGrantRewards) {
+                        sender.sendMessage(Component.text("Rewards granted.", NamedTextColor.GREEN));
+                    }
+                });
+            }).exceptionally(throwable -> {
+                Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
+                    sender.sendMessage(Component.text("Failed to complete collection: " + throwable.getMessage(), NamedTextColor.RED));
+                });
+                return null;
+            });
+
+        } catch (Exception e) {
+            sender.sendMessage(Component.text("Error: " + e.getMessage(), NamedTextColor.RED));
         }
 
         return Command.SINGLE_SUCCESS;
