@@ -17,11 +17,11 @@ Requirements for operational features milestone. Each maps to roadmap phases.
 
 ### Admin Commands
 
-- [ ] **ADMIN-01**: Admin can force-complete a collection for any player
-- [ ] **ADMIN-02**: Force-complete optionally grants collection rewards
-- [ ] **ADMIN-03**: Admin can inspect any player's collection progress
-- [ ] **ADMIN-04**: Admin commands work on offline players (by name or UUID)
-- [ ] **ADMIN-05**: Admin actions are logged with timestamp and executor
+- [x] **ADMIN-01**: Admin can force-complete a collection for any player
+- [x] **ADMIN-02**: Force-complete optionally grants collection rewards
+- [x] **ADMIN-03**: Admin can inspect any player's collection progress
+- [x] **ADMIN-04**: Admin commands work on offline players (by name or UUID)
+- [x] **ADMIN-05**: Admin actions are logged with timestamp and executor
 
 ### Export/Import
 
@@ -80,11 +80,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | NOTIF-03 | Phase 10 | Complete |
 | NOTIF-04 | Phase 10 | Complete |
 | NOTIF-05 | Phase 10 | Complete |
-| ADMIN-01 | Phase 11 | Pending |
-| ADMIN-02 | Phase 11 | Pending |
-| ADMIN-03 | Phase 11 | Pending |
-| ADMIN-04 | Phase 11 | Pending |
-| ADMIN-05 | Phase 11 | Pending |
+| ADMIN-01 | Phase 11 | Complete |
+| ADMIN-02 | Phase 11 | Complete |
+| ADMIN-03 | Phase 11 | Complete |
+| ADMIN-04 | Phase 11 | Complete |
+| ADMIN-05 | Phase 11 | Complete |
 | EXPORT-01 | Phase 13 | Pending |
 | EXPORT-02 | Phase 13 | Pending |
 | EXPORT-03 | Phase 13 | Pending |
@@ -105,4 +105,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-22 after Phase 10 completion*
+*Last updated: 2026-01-22 after Phase 11 completion*

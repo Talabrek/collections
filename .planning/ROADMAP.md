@@ -45,9 +45,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 11-01-PLAN.md — PlayerDataManager offline player support
-- [ ] 11-02-PLAN.md — Admin inspect and complete commands
-- [ ] 11-03-PLAN.md — Unit tests for admin operations
+- [x] 11-01-PLAN.md — PlayerDataManager offline player support
+- [x] 11-02-PLAN.md — Admin inspect and complete commands
+- [x] 11-03-PLAN.md — Unit tests for admin operations
 
 **Success Criteria:**
 1. Admin can run `/collections admin complete <player> <collection>` to mark a collection done
@@ -94,8 +94,8 @@ Plans:
 
 | Phase | Status | Plans | Completed |
 |-------|--------|-------|-----------|
-| 10 - Progress Notifications | Complete | 3 | 3 |
-| 11 - Admin Commands | Planned | 3 | 0 |
+| 10 - Progress Notifications | Complete ✓ | 3 | 3 |
+| 11 - Admin Commands | Complete ✓ | 3 | 3 |
 | 12 - Metrics & Observability | Pending | 0 | 0 |
 | 13 - Data Export/Import | Pending | 0 | 0 |
 
@@ -106,4 +106,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-01-22*
-*Last updated: 2026-01-22 after Phase 11 planning*
+*Last updated: 2026-01-22 after Phase 11 completion*
