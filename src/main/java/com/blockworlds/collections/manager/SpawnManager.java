@@ -6,6 +6,7 @@ import com.blockworlds.collections.model.CollectibleTier;
 import com.blockworlds.collections.model.Collection;
 import com.blockworlds.collections.model.CollectionItem;
 import com.blockworlds.collections.model.SpawnZone;
+import com.blockworlds.collections.metrics.MetricsManager;
 import com.blockworlds.collections.spawn.AdaptiveSpawnFinder;
 import com.blockworlds.collections.spawn.SpawnResult;
 import com.blockworlds.collections.storage.Storage;
@@ -236,6 +237,13 @@ public class SpawnManager {
 
         // Get a valid spawn location using adaptive finder
         SpawnResult result = findSpawnLocation(zone);
+
+        // Record spawn attempt for metrics
+        MetricsManager metricsManager = plugin.getMetricsManager();
+        if (metricsManager != null) {
+            metricsManager.recordSpawnAttempt(result.success());
+        }
+
         if (!result.success()) {
             if (plugin.getConfigManager().isDebugMode()) {
                 plugin.getLogger().info("Failed to find spawn location in zone " + zone.id() +
@@ -771,6 +779,13 @@ public class SpawnManager {
 
         // Get a valid spawn location using adaptive finder
         SpawnResult result = findSpawnLocation(zone);
+
+        // Record spawn attempt for metrics (admin-initiated)
+        MetricsManager metricsManager = plugin.getMetricsManager();
+        if (metricsManager != null) {
+            metricsManager.recordSpawnAttempt(result.success());
+        }
+
         if (!result.success()) {
             return result;
         }
