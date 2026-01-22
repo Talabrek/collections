@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 ## Current Position
 
 Milestone: v1.2 Enhanced Collection UX
-Phase: 15 - Collectible Radar (complete)
-Plan: --
-Status: Phase 15 verified, ready for Phase 17
-Last activity: 2026-01-23 - Phase 15 verified
+Phase: 17 - Milestone Notifications (in progress)
+Plan: 01 of 3 complete
+Status: In progress
+Last activity: 2026-01-22 - Completed 17-01-PLAN.md
 
-Progress: [███████████████░░░░░] 3/4 phases
+Progress: [███████████████░░░░░] 3/4 phases (Plan 17-01 complete)
 
 ## Shipped Milestones
 
@@ -40,11 +40,12 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~76 min
 
 **v1.2 Velocity (in progress):**
-- Plans completed: 4
+- Plans completed: 5
 - Phase 14-01 duration: 4 min
 - Phase 16-01 duration: 4 min
 - Phase 16-02 duration: 4 min
 - Phase 15-01 duration: 9 min
+- Phase 17-01 duration: 7 min
 
 ## Accumulated Context
 
@@ -64,6 +65,8 @@ Full decision history archived in `.planning/milestones/`.
 - Radar uses BossBar API with tier-based colors (WHITE=common through PINK=event)
 - Radar shows direction indicator [^] [<] [>] to nearest collectible
 - Progress bar fixed at 1.0, color indicates highest tier detected
+- Milestone bitmask: bit 0=25%, bit 1=50%, bit 2=75% (byte field in CollectionProgress)
+- Migration uses try/catch for backward compatibility with existing databases
 
 ### Known Issues
 
@@ -72,13 +75,14 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- Phase 17 (Milestone Notifications) - pending planning
+- Phase 17-02 (Milestone Detection Logic)
+- Phase 17-03 (Milestone Notification Display)
 
 ## Session Continuity
 
-Last session: 2026-01-23
-Stopped at: Phase 15 complete and verified
-Resume with: `/gsd:plan-phase 17` for Milestone Notifications
+Last session: 2026-01-22
+Stopped at: Completed 17-01-PLAN.md
+Resume with: Continue Phase 17 plans (17-02, 17-03)
 
 ---
-*Updated: 2026-01-23 after Phase 15 verification*
+*Updated: 2026-01-22 after 17-01-PLAN.md completion*
