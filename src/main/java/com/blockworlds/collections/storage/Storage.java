@@ -4,6 +4,7 @@ import com.blockworlds.collections.model.Collectible;
 import com.blockworlds.collections.model.PlayerProgress;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -151,4 +152,30 @@ public interface Storage {
      * @return CompletableFuture that completes when reset is done
      */
     CompletableFuture<Void> resetPlayerCollection(UUID playerId, String collectionId);
+
+    // Metrics Operations
+
+    /**
+     * Get a metric value by key.
+     *
+     * @param key The metric key (e.g., "items_collected", "collections_completed")
+     * @return CompletableFuture containing the metric value, or 0 if not found
+     */
+    CompletableFuture<Long> getMetric(String key);
+
+    /**
+     * Set a metric value.
+     *
+     * @param key The metric key
+     * @param value The metric value
+     * @return CompletableFuture that completes when save is done
+     */
+    CompletableFuture<Void> setMetric(String key, long value);
+
+    /**
+     * Get all metrics as a map.
+     *
+     * @return CompletableFuture containing map of key -> value
+     */
+    CompletableFuture<Map<String, Long>> getAllMetrics();
 }

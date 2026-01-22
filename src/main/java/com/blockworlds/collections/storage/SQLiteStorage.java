@@ -13,9 +13,13 @@ import org.bukkit.World;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -33,6 +37,7 @@ public class SQLiteStorage implements Storage {
     private final Collections plugin;
     private final String databasePath;
     private HikariDataSource dataSource;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public SQLiteStorage(Collections plugin) {
         this.plugin = plugin;
@@ -184,6 +189,15 @@ public class SQLiteStorage implements Storage {
                 )
                 """);
 
+            // Metrics table for counter persistence
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS metrics (
+                    key VARCHAR(64) PRIMARY KEY,
+                    value BIGINT NOT NULL DEFAULT 0,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+                """);
+
             // Migration: Add item_id column if it doesn't exist (for databases before item pre-selection)
             try {
                 stmt.execute("ALTER TABLE active_collectibles ADD COLUMN item_id VARCHAR(64)");
@@ -261,6 +275,16 @@ public class SQLiteStorage implements Storage {
 
     @Override
     public void shutdown() {
+        executor.shutdown();
+        try {
+            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+
         if (dataSource != null && !dataSource.isClosed()) {
             dataSource.close();
             plugin.getLogger().info("SQLite storage shut down");
@@ -745,5 +769,58 @@ public class SQLiteStorage implements Storage {
                 plugin.getLogger().log(Level.WARNING, "Failed to reset collection for player: " + playerId, e);
             }
         });
+    }
+
+    // Metrics Operations
+
+    @Override
+    public CompletableFuture<Long> getMetric(String key) {
+        return CompletableFuture.supplyAsync(() -> {
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT value FROM metrics WHERE key = ?")) {
+                stmt.setString(1, key);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getLong("value");
+                }
+                return 0L;
+            } catch (SQLException e) {
+                plugin.getLogger().warning("Failed to get metric " + key + ": " + e.getMessage());
+                return 0L;
+            }
+        }, executor);
+    }
+
+    @Override
+    public CompletableFuture<Void> setMetric(String key, long value) {
+        return CompletableFuture.runAsync(() -> {
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(
+                     "INSERT OR REPLACE INTO metrics (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)")) {
+                stmt.setString(1, key);
+                stmt.setLong(2, value);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                plugin.getLogger().warning("Failed to set metric " + key + ": " + e.getMessage());
+            }
+        }, executor);
+    }
+
+    @Override
+    public CompletableFuture<Map<String, Long>> getAllMetrics() {
+        return CompletableFuture.supplyAsync(() -> {
+            Map<String, Long> metrics = new HashMap<>();
+            try (Connection conn = dataSource.getConnection();
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT key, value FROM metrics")) {
+                while (rs.next()) {
+                    metrics.put(rs.getString("key"), rs.getLong("value"));
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().warning("Failed to get all metrics: " + e.getMessage());
+            }
+            return metrics;
+        }, executor);
     }
 }
