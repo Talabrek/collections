@@ -11,7 +11,7 @@ v1.2 Enhanced Collection UX focuses on fixing tier visibility bugs and improving
 | 14 | Tier Visibility | Complete | 1/1 |
 | 15 | Collectible Radar | Complete | 1/1 |
 | 16 | Add Flow UX | Complete | 2/2 |
-| 17 | Milestone Notifications | Planned | 0/2 |
+| 17 | Milestone Notifications | Complete | 2/2 |
 
 ---
 
@@ -113,8 +113,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 17-01-PLAN.md -- Add milestone tracking to data layer (PlayerProgress, database schema)
-- [ ] 17-02-PLAN.md -- Implement milestone notifications with config and AddPreviewGUI integration
+- [x] 17-01-PLAN.md -- Add milestone tracking to data layer (PlayerProgress, database schema)
+- [x] 17-02-PLAN.md -- Implement milestone notifications with config and AddPreviewGUI integration
 
 ---
 

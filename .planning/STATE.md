@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 ## Current Position
 
 Milestone: v1.2 Enhanced Collection UX
-Phase: 17 - Milestone Notifications (in progress)
-Plan: 02 of 3 complete
-Status: In progress
-Last activity: 2026-01-23 - Completed 17-02-PLAN.md
+Phase: 17 - Milestone Notifications (complete)
+Plan: --
+Status: Phase 17 verified, milestone complete
+Last activity: 2026-01-23 - Phase 17 verified
 
-Progress: [████████████████░░░░] 3/4 phases (Plan 17-02 complete)
+Progress: [████████████████████] 4/4 phases
 
 ## Shipped Milestones
 
@@ -78,13 +78,13 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- Phase 17-03 (Milestone Notification Display)
+- Milestone audit and completion
 
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed 17-02-PLAN.md
-Resume with: Continue Phase 17 plans (17-03)
+Stopped at: Phase 17 complete and verified
+Resume with: `/gsd:audit-milestone` for v1.2 completion
 
 ---
-*Updated: 2026-01-23 after 17-02-PLAN.md completion*
+*Updated: 2026-01-23 after Phase 17 verification*

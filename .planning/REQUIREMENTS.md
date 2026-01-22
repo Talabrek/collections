@@ -29,9 +29,9 @@ Requirements for v1.2 Enhanced Collection UX. Each maps to roadmap phases.
 
 ### Notifications
 
-- [ ] **NOTIF-01**: Player receives notification at 25% collection progress
-- [ ] **NOTIF-02**: Player receives notification at 50% collection progress
-- [ ] **NOTIF-03**: Player receives notification at 75% collection progress
+- [x] **NOTIF-01**: Player receives notification at 25% collection progress
+- [x] **NOTIF-02**: Player receives notification at 50% collection progress
+- [x] **NOTIF-03**: Player receives notification at 75% collection progress
 
 ## Future Requirements (v1.3+)
 
@@ -78,9 +78,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UX-02 | Phase 16 | Complete |
 | UX-03 | Phase 16 | Complete |
 | UX-04 | Phase 16 | Complete |
-| NOTIF-01 | Phase 17 | Pending |
-| NOTIF-02 | Phase 17 | Pending |
-| NOTIF-03 | Phase 17 | Pending |
+| NOTIF-01 | Phase 17 | Complete |
+| NOTIF-02 | Phase 17 | Complete |
+| NOTIF-03 | Phase 17 | Complete |
 
 **Coverage:**
 - v1.2 requirements: 14 total
@@ -89,4 +89,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 15 completion*
+*Last updated: 2026-01-23 after Phase 17 completion*
