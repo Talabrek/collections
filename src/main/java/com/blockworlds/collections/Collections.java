@@ -19,6 +19,7 @@ import com.blockworlds.collections.manager.CollectionManager;
 import com.blockworlds.collections.manager.DropSourceManager;
 import com.blockworlds.collections.manager.EventManager;
 import com.blockworlds.collections.manager.GoggleManager;
+import com.blockworlds.collections.manager.DataMigrationManager;
 import com.blockworlds.collections.manager.NotificationManager;
 import com.blockworlds.collections.metrics.CollectionsExpansion;
 import com.blockworlds.collections.metrics.MetricsManager;
@@ -61,6 +62,7 @@ public class Collections extends JavaPlugin {
     private EventManager eventManager;
     private NotificationManager notificationManager;
     private MetricsManager metricsManager;
+    private DataMigrationManager dataMigrationManager;
     private CollectibleInteractListener collectibleInteractListener;
 
     @Override
@@ -109,6 +111,9 @@ public class Collections extends JavaPlugin {
 
         // Initialize metrics manager (bStats)
         this.metricsManager = new MetricsManager(this);
+
+        // Initialize data migration manager for export/import
+        this.dataMigrationManager = new DataMigrationManager(this, storage, playerDataManager);
 
         // Register PlaceholderAPI expansion if available
         if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
@@ -328,5 +333,9 @@ public class Collections extends JavaPlugin {
 
     public MetricsManager getMetricsManager() {
         return metricsManager;
+    }
+
+    public DataMigrationManager getDataMigrationManager() {
+        return dataMigrationManager;
     }
 }

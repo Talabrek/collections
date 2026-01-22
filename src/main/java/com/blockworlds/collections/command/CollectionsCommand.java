@@ -4,6 +4,7 @@ import com.blockworlds.collections.Collections;
 import com.blockworlds.collections.config.ConfigManager;
 import com.blockworlds.collections.gui.CollectionMenuGUI;
 import com.blockworlds.collections.manager.CollectionManager;
+import com.blockworlds.collections.manager.DataMigrationManager;
 import com.blockworlds.collections.manager.EventManager;
 import com.blockworlds.collections.manager.GoggleManager;
 import com.blockworlds.collections.manager.PlayerDataManager;
@@ -53,12 +54,14 @@ public class CollectionsCommand {
     private final ConfigManager configManager;
     private final CollectionManager collectionManager;
     private final PlayerDataManager playerDataManager;
+    private final DataMigrationManager dataMigrationManager;
 
     public CollectionsCommand(Collections plugin) {
         this.plugin = plugin;
         this.configManager = plugin.getConfigManager();
         this.collectionManager = plugin.getCollectionManager();
         this.playerDataManager = plugin.getPlayerDataManager();
+        this.dataMigrationManager = plugin.getDataMigrationManager();
     }
 
     /**
@@ -181,6 +184,16 @@ public class CollectionsCommand {
                                                 .executes(ctx -> adminComplete(ctx, false))
                                                 .then(Commands.literal("--rewards")
                                                         .executes(ctx -> adminComplete(ctx, true)))))))
+
+                // /collections export - data export commands
+                .then(Commands.literal("export")
+                        .requires(src -> src.getSender().hasPermission("collections.admin"))
+                        // /collections export <player> - export single player
+                        .then(Commands.argument("target", ArgumentTypes.playerProfiles())
+                                .executes(this::exportPlayer))
+                        // /collections export all - export all players
+                        .then(Commands.literal("all")
+                                .executes(this::exportAll)))
 
                 .build();
 
@@ -500,6 +513,16 @@ public class CollectionsCommand {
             sender.sendMessage(Component.text()
                     .append(Component.text("/collections admin complete <player> <col> [--rewards]", NamedTextColor.AQUA))
                     .append(Component.text(" - Force complete", NamedTextColor.GRAY))
+                    .build());
+
+            sender.sendMessage(Component.text()
+                    .append(Component.text("/collections export <player>", NamedTextColor.AQUA))
+                    .append(Component.text(" - Export player data", NamedTextColor.GRAY))
+                    .build());
+
+            sender.sendMessage(Component.text()
+                    .append(Component.text("/collections export all", NamedTextColor.AQUA))
+                    .append(Component.text(" - Export all player data", NamedTextColor.GRAY))
                     .build());
         }
 
@@ -1230,6 +1253,87 @@ public class CollectionsCommand {
         } catch (Exception e) {
             sender.sendMessage(Component.text("Error: " + e.getMessage(), NamedTextColor.RED));
         }
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    // ========== Export Commands ==========
+
+    /**
+     * Export a single player's data to a JSON file.
+     */
+    private int exportPlayer(CommandContext<CommandSourceStack> ctx) {
+        var sender = ctx.getSource().getSender();
+
+        try {
+            PlayerProfileListResolver resolver = ctx.getArgument("target", PlayerProfileListResolver.class);
+            java.util.Collection<PlayerProfile> profiles = resolver.resolve(ctx.getSource());
+
+            if (profiles.isEmpty()) {
+                sender.sendMessage(Component.text("Player not found.", NamedTextColor.RED));
+                return Command.SINGLE_SUCCESS;
+            }
+
+            PlayerProfile profile = profiles.iterator().next();
+            UUID targetUuid = profile.getId();
+            String targetName = profile.getName();
+            String displayName = targetName != null ? targetName : targetUuid.toString();
+
+            sender.sendMessage(Component.text()
+                    .append(Component.text("Exporting data for ", NamedTextColor.YELLOW))
+                    .append(Component.text(displayName, NamedTextColor.WHITE))
+                    .append(Component.text("...", NamedTextColor.YELLOW))
+                    .build());
+
+            dataMigrationManager.exportPlayer(targetUuid, sender).thenAccept(result -> {
+                Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
+                    if (result.success()) {
+                        sender.sendMessage(Component.text()
+                                .append(Component.text("Export complete! ", NamedTextColor.GREEN))
+                                .append(Component.text("File: ", NamedTextColor.GRAY))
+                                .append(Component.text(result.filePath().getFileName().toString(), NamedTextColor.WHITE))
+                                .build());
+                    } else {
+                        sender.sendMessage(Component.text()
+                                .append(Component.text("Export failed: ", NamedTextColor.RED))
+                                .append(Component.text(result.errorMessage(), NamedTextColor.GRAY))
+                                .build());
+                    }
+                });
+            });
+
+        } catch (Exception e) {
+            sender.sendMessage(Component.text("Error: " + e.getMessage(), NamedTextColor.RED));
+        }
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * Export all player data to a JSON file.
+     */
+    private int exportAll(CommandContext<CommandSourceStack> ctx) {
+        var sender = ctx.getSource().getSender();
+
+        sender.sendMessage(Component.text("Starting export of all player data...", NamedTextColor.YELLOW));
+
+        dataMigrationManager.exportAllPlayers(sender).thenAccept(result -> {
+            Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
+                if (result.success()) {
+                    sender.sendMessage(Component.text()
+                            .append(Component.text("Export complete! ", NamedTextColor.GREEN))
+                            .append(Component.text(String.valueOf(result.playerCount()), NamedTextColor.WHITE))
+                            .append(Component.text(" players exported to ", NamedTextColor.GREEN))
+                            .append(Component.text(result.filePath().getFileName().toString(), NamedTextColor.WHITE))
+                            .build());
+                } else {
+                    sender.sendMessage(Component.text()
+                            .append(Component.text("Export failed: ", NamedTextColor.RED))
+                            .append(Component.text(result.errorMessage(), NamedTextColor.GRAY))
+                            .build());
+                }
+            });
+        });
 
         return Command.SINGLE_SUCCESS;
     }
