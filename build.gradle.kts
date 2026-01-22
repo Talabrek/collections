@@ -12,10 +12,14 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://jitpack.io")  // For latest MockBukkit snapshots
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+
+    // PlaceholderAPI for placeholder integration (optional soft-depend)
+    compileOnly("me.clip:placeholderapi:2.11.7")
 
     // Database connection pooling
     implementation("com.zaxxer:HikariCP:5.1.0")

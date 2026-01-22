@@ -8,6 +8,12 @@ website: https://blockworlds.com
 
 folia-supported: true
 
+dependencies:
+  server:
+    PlaceholderAPI:
+      required: false
+      load: BEFORE
+
 permissions:
   collections.use:
     description: Basic access to collections
