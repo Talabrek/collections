@@ -4,6 +4,7 @@ import com.blockworlds.collections.Collections;
 import com.blockworlds.collections.config.ConfigManager;
 import com.blockworlds.collections.manager.NotificationManager;
 import com.blockworlds.collections.manager.PlayerDataManager;
+import com.blockworlds.collections.metrics.MetricsManager;
 import com.blockworlds.collections.model.Collection;
 import com.blockworlds.collections.model.CollectionItem;
 import com.blockworlds.collections.model.PlayerProgress;
@@ -174,6 +175,12 @@ public class ConfirmAddGUI implements GUIHolder {
             return;
         }
 
+        // Record item collected for metrics
+        MetricsManager metricsManager = plugin.getMetricsManager();
+        if (metricsManager != null) {
+            metricsManager.recordItemCollected();
+        }
+
         // Get current progress for notification
         PlayerProgress progress = playerDataManager.getProgressBlocking(player.getUniqueId());
         int currentCount = progress != null ? progress.getCollectedCount(collectionId) : 1;
@@ -245,6 +252,12 @@ public class ConfirmAddGUI implements GUIHolder {
         if (collectedCount >= totalCount) {
             // Collection is complete!
             playerDataManager.markComplete(player.getUniqueId(), collection.id());
+
+            // Record collection completed for metrics
+            MetricsManager metricsManager = plugin.getMetricsManager();
+            if (metricsManager != null) {
+                metricsManager.recordCollectionCompleted();
+            }
 
             // Play completion sound
             String completeSound = configManager.getSound("complete-collection");
