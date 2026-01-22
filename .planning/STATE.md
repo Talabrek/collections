@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 
 Milestone: v1.2 Enhanced Collection UX
 Phase: 17 - Milestone Notifications (in progress)
-Plan: 01 of 3 complete
+Plan: 02 of 3 complete
 Status: In progress
-Last activity: 2026-01-22 - Completed 17-01-PLAN.md
+Last activity: 2026-01-23 - Completed 17-02-PLAN.md
 
-Progress: [███████████████░░░░░] 3/4 phases (Plan 17-01 complete)
+Progress: [████████████████░░░░] 3/4 phases (Plan 17-02 complete)
 
 ## Shipped Milestones
 
@@ -40,12 +40,13 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~76 min
 
 **v1.2 Velocity (in progress):**
-- Plans completed: 5
+- Plans completed: 6
 - Phase 14-01 duration: 4 min
 - Phase 16-01 duration: 4 min
 - Phase 16-02 duration: 4 min
 - Phase 15-01 duration: 9 min
 - Phase 17-01 duration: 7 min
+- Phase 17-02 duration: 6 min
 
 ## Accumulated Context
 
@@ -67,6 +68,8 @@ Full decision history archived in `.planning/milestones/`.
 - Progress bar fixed at 1.0, color indicates highest tier detected
 - Milestone bitmask: bit 0=25%, bit 1=50%, bit 2=75% (byte field in CollectionProgress)
 - Migration uses try/catch for backward compatibility with existing databases
+- Milestone notification escalation: 25%=actionbar, 50%=subtitle+particles, 75%=title+particles
+- Only highest newly reached milestone fires per item add (spam prevention)
 
 ### Known Issues
 
@@ -75,14 +78,13 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- Phase 17-02 (Milestone Detection Logic)
 - Phase 17-03 (Milestone Notification Display)
 
 ## Session Continuity
 
-Last session: 2026-01-22
-Stopped at: Completed 17-01-PLAN.md
-Resume with: Continue Phase 17 plans (17-02, 17-03)
+Last session: 2026-01-23
+Stopped at: Completed 17-02-PLAN.md
+Resume with: Continue Phase 17 plans (17-03)
 
 ---
-*Updated: 2026-01-22 after 17-01-PLAN.md completion*
+*Updated: 2026-01-23 after 17-02-PLAN.md completion*
