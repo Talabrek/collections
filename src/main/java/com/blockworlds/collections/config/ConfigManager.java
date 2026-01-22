@@ -50,6 +50,16 @@ public class ConfigManager {
     private boolean spawnDebug;
     private int despawnAfterMinutes;
 
+    // Notification settings
+    private String progressNotificationStyle;
+    private String progressNotificationFormat;
+    private String completionNotificationStyle;
+    private String completionTitle;
+    private String completionSubtitle;
+    private double completionFadeIn;
+    private double completionStay;
+    private double completionFadeOut;
+
     // Cached messages
     private final Map<String, String> messages;
 
@@ -103,6 +113,19 @@ public class ConfigManager {
         spawnAllowConditionRelaxation = config.getBoolean("spawn.allow-condition-relaxation", true);
         spawnDebug = config.getBoolean("spawn.debug", false);
         despawnAfterMinutes = config.getInt("spawn.despawn-after-minutes", 10);
+
+        // Notification settings
+        progressNotificationStyle = config.getString("notifications.progress.style", "actionbar");
+        progressNotificationFormat = config.getString("notifications.progress.format",
+            "<gold><current>/<total></gold> <gray>in</gray> <green><collection></green>");
+        completionNotificationStyle = config.getString("notifications.completion.style", "title");
+        completionTitle = config.getString("notifications.completion.title",
+            "<gold><bold>Collection Complete!</bold></gold>");
+        completionSubtitle = config.getString("notifications.completion.subtitle",
+            "<green><collection></green>");
+        completionFadeIn = config.getDouble("notifications.completion.fade-in", 0.5);
+        completionStay = config.getDouble("notifications.completion.stay", 3.0);
+        completionFadeOut = config.getDouble("notifications.completion.fade-out", 0.5);
 
         // Load messages
         messages.clear();
@@ -380,5 +403,39 @@ public class ConfigManager {
      */
     public boolean hasSound(String key) {
         return sounds.containsKey(key);
+    }
+
+    // ========== Notification Settings ==========
+
+    public String getProgressNotificationStyle() {
+        return progressNotificationStyle;
+    }
+
+    public String getProgressNotificationFormat() {
+        return progressNotificationFormat;
+    }
+
+    public String getCompletionNotificationStyle() {
+        return completionNotificationStyle;
+    }
+
+    public String getCompletionTitle() {
+        return completionTitle;
+    }
+
+    public String getCompletionSubtitle() {
+        return completionSubtitle;
+    }
+
+    public double getCompletionFadeIn() {
+        return completionFadeIn;
+    }
+
+    public double getCompletionStay() {
+        return completionStay;
+    }
+
+    public double getCompletionFadeOut() {
+        return completionFadeOut;
     }
 }
