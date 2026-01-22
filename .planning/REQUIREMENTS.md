@@ -34,12 +34,12 @@ Requirements for operational features milestone. Each maps to roadmap phases.
 
 ### Metrics
 
-- [ ] **METRICS-01**: Plugin reports to bStats community metrics
-- [ ] **METRICS-02**: Internal counters track collections completed
-- [ ] **METRICS-03**: Internal counters track items collected
-- [ ] **METRICS-04**: Internal counters track spawn success/failure rates
-- [ ] **METRICS-05**: PlaceholderAPI integration for player stats
-- [ ] **METRICS-06**: PlaceholderAPI integration for server-wide stats
+- [x] **METRICS-01**: Plugin reports to bStats community metrics
+- [x] **METRICS-02**: Internal counters track collections completed
+- [x] **METRICS-03**: Internal counters track items collected
+- [x] **METRICS-04**: Internal counters track spawn success/failure rates
+- [x] **METRICS-05**: PlaceholderAPI integration for player stats
+- [x] **METRICS-06**: PlaceholderAPI integration for server-wide stats
 
 ## Future Requirements (v1.2+)
 
@@ -91,12 +91,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXPORT-04 | Phase 13 | Pending |
 | EXPORT-05 | Phase 13 | Pending |
 | EXPORT-06 | Phase 13 | Pending |
-| METRICS-01 | Phase 12 | Pending |
-| METRICS-02 | Phase 12 | Pending |
-| METRICS-03 | Phase 12 | Pending |
-| METRICS-04 | Phase 12 | Pending |
-| METRICS-05 | Phase 12 | Pending |
-| METRICS-06 | Phase 12 | Pending |
+| METRICS-01 | Phase 12 | Complete |
+| METRICS-02 | Phase 12 | Complete |
+| METRICS-03 | Phase 12 | Complete |
+| METRICS-04 | Phase 12 | Complete |
+| METRICS-05 | Phase 12 | Complete |
+| METRICS-06 | Phase 12 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 22 total
@@ -105,4 +105,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-22 after Phase 11 completion*
+*Last updated: 2026-01-22 after Phase 12 completion*

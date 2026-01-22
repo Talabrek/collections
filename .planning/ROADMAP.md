@@ -68,11 +68,11 @@ Plans:
 **Plans:** 5 plans
 
 Plans:
-- [ ] 12-01-PLAN.md — MetricsManager + bStats core + build config
-- [ ] 12-02-PLAN.md — Hook counter increments into existing code
-- [ ] 12-03-PLAN.md — PlaceholderAPI expansion class
-- [ ] 12-04-PLAN.md — Counter persistence to database
-- [ ] 12-05-PLAN.md — Unit tests for MetricsManager
+- [x] 12-01-PLAN.md — MetricsManager + bStats core + build config
+- [x] 12-02-PLAN.md — Hook counter increments into existing code
+- [x] 12-03-PLAN.md — PlaceholderAPI expansion class
+- [x] 12-04-PLAN.md — Counter persistence to database
+- [x] 12-05-PLAN.md — Unit tests for MetricsManager
 
 **Success Criteria:**
 1. Plugin appears on bStats.org with server count and custom charts after server restart
@@ -105,7 +105,7 @@ Plans:
 |-------|--------|-------|-----------|
 | 10 - Progress Notifications | Complete ✓ | 3 | 3 |
 | 11 - Admin Commands | Complete ✓ | 3 | 3 |
-| 12 - Metrics & Observability | Planned | 5 | 0 |
+| 12 - Metrics & Observability | Complete ✓ | 5 | 5 |
 | 13 - Data Export/Import | Pending | 0 | 0 |
 
 ## Completed Milestones
@@ -115,4 +115,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-01-22*
-*Last updated: 2026-01-22 after Phase 12 planning*
+*Last updated: 2026-01-22 after Phase 12 execution*
