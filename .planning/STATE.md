@@ -10,10 +10,10 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 ## Current Position
 
 Milestone: v1.2 Enhanced Collection UX
-Phase: 16 - Add Flow UX (in progress)
-Plan: 01 complete
-Status: Plan 16-01 complete, ready for 16-02
-Last activity: 2026-01-23 - Completed 16-01-PLAN.md
+Phase: 16 - Add Flow UX (complete)
+Plan: 02 complete
+Status: Phase 16 complete, Add Flow UX fully implemented
+Last activity: 2026-01-23 - Completed 16-02-PLAN.md
 
 Progress: [██████████░░░░░░░░░░] 2/4 phases
 
@@ -40,9 +40,10 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~76 min
 
 **v1.2 Velocity (in progress):**
-- Plans completed: 2
+- Plans completed: 3
 - Phase 14-01 duration: 4 min
 - Phase 16-01 duration: 4 min
+- Phase 16-02 duration: 4 min
 
 ## Accumulated Context
 
@@ -57,6 +58,8 @@ Full decision history archived in `.planning/milestones/`.
 - Tier hierarchy: COMMON < UNCOMMON < RARE < EPIC < LEGENDARY < EVENT
 - AddPreviewGUI uses 54-slot layout with 21 item slots matching CollectionDetailGUI
 - Yes button at slot 47, No button at slot 51, item display at slot 49
+- Highlighted items use glowing effect + "Just added!" lore line
+- GUI transition: unregister source GUI before creating/opening destination GUI
 
 ### Known Issues
 
@@ -65,13 +68,14 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- Plan 16-02: Implement confirmAdd() transition logic in AddPreviewGUI
+- None for Phase 16 (complete)
+- Continue with remaining v1.2 phases (15 - Collectible Radar, 17 - TBD)
 
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed 16-01-PLAN.md
-Resume with: Continue with 16-02-PLAN.md for confirmation transition
+Stopped at: Completed 16-02-PLAN.md
+Resume with: Continue with next phase in v1.2 milestone
 
 ---
-*Updated: 2026-01-23 after 16-01-PLAN.md completion*
+*Updated: 2026-01-23 after 16-02-PLAN.md completion*
