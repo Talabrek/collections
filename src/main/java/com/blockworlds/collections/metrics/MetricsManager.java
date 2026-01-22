@@ -1,9 +1,14 @@
 package com.blockworlds.collections.metrics;
 
 import com.blockworlds.collections.Collections;
+import com.blockworlds.collections.storage.Storage;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
+import org.bukkit.Bukkit;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -25,7 +30,9 @@ public class MetricsManager {
     private final AtomicLong spawnFailures = new AtomicLong(0);
 
     private final Collections plugin;
+    private final Storage storage;
     private Metrics metrics;
+    private ScheduledTask saveTask;
 
     /**
      * Create a new MetricsManager.
@@ -34,6 +41,7 @@ public class MetricsManager {
      */
     public MetricsManager(Collections plugin) {
         this.plugin = plugin;
+        this.storage = plugin.getStorage();
 
         boolean metricsEnabled = plugin.getConfigManager().getBoolean("metrics.enabled", true);
         if (metricsEnabled) {
@@ -44,6 +52,12 @@ public class MetricsManager {
         } else {
             plugin.getLogger().info("bStats metrics disabled in config");
         }
+
+        // Load persisted counters from database
+        loadCounters();
+
+        // Start periodic save task (every 5 minutes)
+        startPeriodicSave();
     }
 
     /**
@@ -185,5 +199,72 @@ public class MetricsManager {
      */
     public boolean isEnabled() {
         return metrics != null;
+    }
+
+    // ========== Persistence Methods ==========
+
+    /**
+     * Load counter values from database.
+     * Called during construction to restore state from previous session.
+     */
+    private void loadCounters() {
+        storage.getAllMetrics().thenAccept(metrics -> {
+            itemsCollected.set(metrics.getOrDefault("items_collected", 0L));
+            collectionsCompleted.set(metrics.getOrDefault("collections_completed", 0L));
+            spawnAttempts.set(metrics.getOrDefault("spawn_attempts", 0L));
+            spawnSuccesses.set(metrics.getOrDefault("spawn_successes", 0L));
+            spawnFailures.set(metrics.getOrDefault("spawn_failures", 0L));
+            plugin.getLogger().info("Loaded metrics counters from database");
+        }).exceptionally(e -> {
+            plugin.getLogger().warning("Failed to load metrics counters: " + e.getMessage());
+            // Counters start at 0, which is fine as default
+            return null;
+        });
+    }
+
+    /**
+     * Save all counter values to database.
+     *
+     * @return CompletableFuture that completes when all saves are done
+     */
+    public CompletableFuture<Void> saveCounters() {
+        return CompletableFuture.allOf(
+            storage.setMetric("items_collected", itemsCollected.get()),
+            storage.setMetric("collections_completed", collectionsCompleted.get()),
+            storage.setMetric("spawn_attempts", spawnAttempts.get()),
+            storage.setMetric("spawn_successes", spawnSuccesses.get()),
+            storage.setMetric("spawn_failures", spawnFailures.get())
+        );
+    }
+
+    /**
+     * Start periodic save task to protect against data loss from crashes.
+     * Saves every 5 minutes.
+     */
+    private void startPeriodicSave() {
+        // Save every 5 minutes (5 * 60 * 20 = 6000 ticks)
+        int intervalTicks = 5 * 60 * 20;
+        saveTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, task -> {
+            saveCounters();
+        }, intervalTicks, intervalTicks);
+    }
+
+    /**
+     * Shutdown the metrics manager.
+     * Cancels periodic save task and performs final blocking save.
+     */
+    public void shutdown() {
+        // Cancel periodic save task
+        if (saveTask != null) {
+            saveTask.cancel();
+        }
+
+        // Final blocking save to ensure counters are persisted
+        try {
+            saveCounters().get(10, TimeUnit.SECONDS);
+            plugin.getLogger().info("Metrics counters saved to database");
+        } catch (Exception e) {
+            plugin.getLogger().warning("Failed to save metrics counters on shutdown: " + e.getMessage());
+        }
     }
 }
