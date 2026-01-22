@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-22)
 
 Milestone: v1.1 Operational Features
 Phase: 12 - Metrics & Observability (COMPLETE)
-Plan: 03 of 3 complete
+Plan: 04 of 4 complete
 Status: Phase 12 complete, ready for Phase 13 (Export/Import)
-Last activity: 2026-01-22 - Completed 12-03-PLAN.md (PlaceholderAPI expansion)
+Last activity: 2026-01-22 - Completed 12-04-PLAN.md (Database persistence for metrics)
 
-Progress: [█████████-] 9/12 plans (phase 12: 3/3 complete)
+Progress: [██████████] 10/13 plans (phase 12: 4/4 complete)
 
 ## Shipped Milestones
 
@@ -34,7 +34,7 @@ See `.planning/milestones/` for archived details.
 - Total execution time: 122 min
 
 **v1.1 Velocity:**
-- Plans completed: 9
+- Plans completed: 10
 - Phases completed: 3/4 (Phase 10, Phase 11, Phase 12 complete)
 - Average plan duration: 5.1 min
 
@@ -79,6 +79,8 @@ From research phase:
 | 12-02 | Admin spawns tracked in metrics | Complete spawn metrics coverage |
 | 12-03 | PlaceholderAPI as compileOnly soft-depend | Avoids runtime dependency when PAPI absent |
 | 12-03 | persist() returns true for PAPI expansion | Survives /papi reload without re-registration |
+| 12-04 | Dedicated executor for metrics storage | Avoids blocking main connection pool |
+| 12-04 | 5 minute periodic save interval | Balances crash protection and database load |
 
 ### Pending Todos
 
@@ -92,8 +94,8 @@ From research phase:
 ## Session Continuity
 
 Last session: 2026-01-22
-Stopped at: Completed 12-03-PLAN.md
+Stopped at: Completed 12-04-PLAN.md
 Resume with: `/gsd:execute-phase 13` (Export/Import)
 
 ---
-*Updated: 2026-01-22 after completing 12-03-PLAN.md*
+*Updated: 2026-01-22 after completing 12-04-PLAN.md*
