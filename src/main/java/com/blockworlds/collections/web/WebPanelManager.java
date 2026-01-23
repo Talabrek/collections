@@ -1,7 +1,10 @@
 package com.blockworlds.collections.web;
 
 import com.blockworlds.collections.Collections;
+import com.blockworlds.collections.web.api.StatusController;
 import io.javalin.Javalin;
+import io.javalin.config.JavalinConfig;
+import io.javalin.http.staticfiles.Location;
 
 /**
  * Manages the embedded Javalin web server lifecycle.
@@ -35,16 +38,14 @@ public class WebPanelManager {
             // Set plugin classloader so Javalin can find its dependencies
             Thread.currentThread().setContextClassLoader(plugin.getClass().getClassLoader());
 
-            // Create Javalin instance with minimal configuration
-            this.app = Javalin.create(config -> {
-                config.showJavalinBanner = false;
-                config.jetty.modifyServer(server -> {
-                    server.setStopTimeout(5000);
-                });
-            });
+            // Create Javalin instance with full configuration
+            this.app = Javalin.create(this::configureJavalin);
 
             // Start the server
             app.start(port);
+
+            // Register auth and API routes after server starts
+            registerRoutes();
 
             plugin.getLogger().info("Web panel started on port " + port);
 
@@ -52,6 +53,42 @@ public class WebPanelManager {
             // Restore original classloader
             Thread.currentThread().setContextClassLoader(originalClassLoader);
         }
+    }
+
+    /**
+     * Configure Javalin server settings.
+     *
+     * @param config The Javalin configuration object
+     */
+    private void configureJavalin(JavalinConfig config) {
+        // Suppress banner
+        config.showJavalinBanner = false;
+
+        // Graceful shutdown timeout
+        config.jetty.modifyServer(server -> {
+            server.setStopTimeout(5000);
+        });
+
+        // Static files from classpath (inside JAR)
+        // WEB-05: Serve static files at root, API at /api/
+        config.staticFiles.add(staticFiles -> {
+            staticFiles.hostedPath = "/";
+            staticFiles.directory = "/web";
+            staticFiles.location = Location.CLASSPATH;
+        });
+    }
+
+    /**
+     * Register authentication middleware and API routes.
+     */
+    private void registerRoutes() {
+        // AUTH-01/AUTH-02: Register authentication handler
+        String passwordHash = plugin.getConfigManager().getWebPanelPasswordHash();
+        WebAuthHandler authHandler = new WebAuthHandler(passwordHash);
+        authHandler.register(app);
+
+        // Register API controllers
+        new StatusController(plugin).register(app);
     }
 
     /**
