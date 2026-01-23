@@ -53,12 +53,12 @@ See `.planning/milestones/v1.2-enhanced-ux/` for archived details.
   3. Admin can log in with password from config.yml
   4. Plugin reload does not cause port binding errors
   5. Password is stored as hash in config.yml (not plaintext)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 18-01: TBD
-- [ ] 18-02: TBD
-- [ ] 18-03: TBD
+- [ ] 18-01-PLAN.md - Add Javalin dependencies and shadowJar relocations
+- [ ] 18-02-PLAN.md - WebPanelManager with classloader fix and lifecycle
+- [ ] 18-03-PLAN.md - HTTP Basic auth, static files, and status endpoint
 
 ### Phase 19: Read-Only API
 **Goal**: Admin can view all collections and their details through the web panel
@@ -145,7 +145,7 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 18. Web Infrastructure | v1.3 | 0/TBD | Not started | - |
+| 18. Web Infrastructure | v1.3 | 0/3 | Planned | - |
 | 19. Read-Only API | v1.3 | 0/TBD | Not started | - |
 | 20. Write API + CRUD | v1.3 | 0/TBD | Not started | - |
 | 21. Visual Builder | v1.3 | 0/TBD | Not started | - |
