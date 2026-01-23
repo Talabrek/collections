@@ -988,3 +988,31 @@ body.is-dragging .item-browser-grid .browser-item {
     color: var(--text-muted);
     white-space: nowrap;
 }
+
+/* ========== MiniMessage Preview ========== */
+.minimessage-preview {
+    min-height: 1.5rem;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0.25rem;
+    background: #1a1a1a;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: 'Minecraft', 'Courier New', monospace;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.minimessage-preview:empty {
+    display: none;
+}
+
+.minimessage-preview.parse-error {
+    border-color: #ff4444;
+    color: #ff8888;
+}
+
+/* Minecraft-style text colors for MiniMessage */
+.minimessage-preview [style*="color"] {
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+}

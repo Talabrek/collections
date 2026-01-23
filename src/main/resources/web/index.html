@@ -107,7 +107,9 @@
                         <div class="form-group">
                             <label for="form-name">Name</label>
                             <input type="text" id="form-name" name="name" placeholder="My Collection" required>
+                            <div id="preview-name" class="minimessage-preview" title="MiniMessage preview"></div>
                             <span class="error-message" data-field="name"></span>
+                            <small>Supports MiniMessage formatting: &lt;gold&gt;, &lt;bold&gt;, &lt;gradient:#FF0000:#00FF00&gt;</small>
                         </div>
                         <div class="form-group">
                             <label for="form-description">Description</label>
@@ -217,6 +219,8 @@
                         <div class="form-group">
                             <label for="form-reward-message">Completion Message</label>
                             <input type="text" id="form-reward-message" name="reward-message" placeholder="<gold>Collection complete!">
+                            <div id="preview-reward-message" class="minimessage-preview" title="MiniMessage preview"></div>
+                            <small>Supports MiniMessage formatting</small>
                         </div>
                     </div>
 
@@ -250,6 +254,7 @@
     <div id="toast" class="toast hidden"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+    <script src="https://unpkg.com/minimessage-js@^1.1/dist/minimessage.umd.js"></script>
     <script src="/js/app.js"></script>
 </body>
 </html>
