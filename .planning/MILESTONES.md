@@ -1,5 +1,33 @@
 # Project Milestones: Collections Plugin
 
+## v1.2 Enhanced Collection UX (Shipped: 2026-01-23)
+
+**Delivered:** Tier visibility fixes, boss bar radar for nearby collectibles, enhanced add flow with collection preview, and milestone notifications at 25/50/75% progress.
+
+**Phases completed:** 14-17 (6 plans total)
+
+**Key accomplishments:**
+
+- Added EPIC and LEGENDARY collectible tiers with distinct particles (SOUL_FIRE_FLAME, DRAGON_BREATH) and visibility rules
+- Built boss bar radar system showing nearby collectibles with direction indicators [^] [<] [>] and tier-based colors
+- Enhanced add flow with full 54-slot collection grid preview and Yes/No confirmation
+- Implemented GUI transition with just-added item highlighting (glowing effect + "Just added!" lore)
+- Added milestone notifications at 25%, 50%, 75% progress with escalating celebration styles (actionbar → subtitle → title)
+- Persisted milestone state to database via bitmask for once-per-milestone triggering
+
+**Stats:**
+
+- 18 files modified
+- 20,371 lines of Java (total project, +1,294 new)
+- 4 phases, 6 plans
+- 1 day from v1.1 to ship
+
+**Git range:** `feat(14-01)` → `feat(17-02)`
+
+**What's next:** v1.3 could add Prometheus metrics endpoint, batch admin operations, and spawn heatmap export.
+
+---
+
 ## v1.1 Operational Features (Shipped: 2026-01-22)
 
 **Delivered:** Added progress notifications, admin commands, bStats/PlaceholderAPI integration, and data export/import for production network deployment.

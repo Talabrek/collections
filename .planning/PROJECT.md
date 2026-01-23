@@ -8,28 +8,27 @@ A comprehensive EQ2-style collectibles system for Paper 1.21.4 servers. Players 
 
 Every player interaction must work correctly — collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
 
-## Current Milestone: v1.2 Enhanced Collection UX
-
-**Goal:** Fix tier visibility bugs and enhance the collection interaction experience with radar, improved add flow, and milestone notifications.
-
-**Target features:**
-- Tier visibility fix (uncommon/rare+ invisible without correct helmet)
-- Boss bar radar for nearby collectibles (helmet-gated by tier)
-- Enhanced add flow (full collection view + confirmation + show after adding)
-- Milestone notifications at 25/50/75% per-collection progress
-
 ## Current State
+
+**v1.2 Enhanced Collection UX — Shipped 2026-01-23**
+
+The plugin now provides an enhanced collection experience with:
+- EPIC and LEGENDARY collectible tiers with distinct particles and visibility rules
+- Boss bar radar showing nearby collectibles with direction indicators
+- Full collection grid preview when adding items with Yes/No confirmation
+- Smooth GUI transitions with highlighted just-added items
+- Milestone notifications at 25%, 50%, 75% progress with escalating celebrations
+- 20,371 lines of Java with comprehensive test coverage
 
 **v1.1 Operational Features — Shipped 2026-01-22**
 
-The plugin is production-ready for multi-server network deployment with full operational tooling:
+Production-ready for multi-server network deployment with:
 - Progress notifications with configurable actionbar/chat/title styles
 - Admin commands for inspecting and force-completing any player's progress
 - bStats community metrics with custom charts
 - PlaceholderAPI expansion for player and server statistics
 - Streaming JSON export/import for server migration
 - MySQL support for multi-server networks
-- 15,335 lines of Java with comprehensive test coverage
 
 ## Requirements
 
@@ -66,15 +65,12 @@ The plugin is production-ready for multi-server network deployment with full ope
 - ✓ JSON import with validation — v1.1
 - ✓ Import dry-run mode — v1.1
 - ✓ Import cache invalidation — v1.1
-
-### Active (v1.2)
-
-- [ ] Tier visibility fix — uncommon/rare+ invisible without helmet (VIS-01)
-- [ ] Boss bar radar for nearby collectibles with helmet (RADAR-01)
-- [ ] Enhanced add flow — full collection grid + progress summary (UX-01)
-- [ ] Add confirmation UI with Yes/No (UX-02)
-- [ ] Show collection after adding item (UX-03)
-- [ ] Milestone notifications at 25/50/75% per-collection (NOTIF-06)
+- ✓ Tier visibility fix (EPIC/LEGENDARY with helmet visibility) — v1.2
+- ✓ Boss bar radar for nearby collectibles — v1.2
+- ✓ Full collection grid preview on add — v1.2
+- ✓ Add confirmation UI with Yes/No — v1.2
+- ✓ Show collection after adding item with highlight — v1.2
+- ✓ Milestone notifications at 25/50/75% progress — v1.2
 
 ### Active (v1.3+)
 
@@ -100,7 +96,7 @@ The plugin is production-ready for multi-server network deployment with full ope
 - Full operational tooling for network administrators
 - Data export/import for server migration
 
-**Codebase:** 15,335 lines of Java, 71 files, 118 unit tests
+**Codebase:** 20,371 lines of Java, 73 files, 120 unit tests
 
 ## Constraints
 
@@ -126,6 +122,10 @@ The plugin is production-ready for multi-server network deployment with full ope
 | AtomicLong for counters | Thread-safe async access | ✓ Implemented |
 | Streaming JSON export | Avoid OOM on large datasets | ✓ Implemented |
 | Validation-first import | No partial writes | ✓ Implemented |
+| EPIC/LEGENDARY particles | Distinct visuals per tier | ✓ SOUL_FIRE_FLAME / DRAGON_BREATH |
+| Boss bar radar | Real-time collectible detection | ✓ With direction indicators |
+| Milestone bitmask | Once-per-milestone triggering | ✓ Database-persisted byte field |
+| GUI transition pattern | Smooth add → view flow | ✓ Unregister source before open |
 
 ## Milestones
 
@@ -133,4 +133,4 @@ See `.planning/MILESTONES.md` for shipped milestones.
 See `.planning/milestones/` for archived milestone details.
 
 ---
-*Last updated: 2026-01-23 after v1.2 milestone start*
+*Last updated: 2026-01-23 after v1.2 milestone completion*

@@ -2,20 +2,20 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-01-22)
+See: .planning/PROJECT.md (updated 2026-01-23)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** v1.2 Enhanced Collection UX
+**Current focus:** Planning next milestone
 
 ## Current Position
 
-Milestone: v1.2 Enhanced Collection UX
-Phase: 17 - Milestone Notifications (complete)
+Milestone: None (v1.2 shipped)
+Phase: --
 Plan: --
-Status: Phase 17 verified, milestone complete
-Last activity: 2026-01-23 - Phase 17 verified
+Status: Ready to plan next milestone
+Last activity: 2026-01-23 - v1.2 milestone complete
 
-Progress: [████████████████████] 4/4 phases
+Progress: N/A (between milestones)
 
 ## Shipped Milestones
 
@@ -23,6 +23,7 @@ Progress: [████████████████████] 4/4 pha
 |-----------|--------|-------|------|
 | v1.0 Quality Audit | 1-9 | 24 | 2026-01-22 |
 | v1.1 Operational Features | 10-13 | 14 | 2026-01-22 |
+| v1.2 Enhanced Collection UX | 14-17 | 6 | 2026-01-23 |
 
 See `.planning/MILESTONES.md` for summary.
 See `.planning/milestones/` for archived details.
@@ -39,14 +40,10 @@ See `.planning/milestones/` for archived details.
 - Average duration: 5.4 min
 - Total execution time: ~76 min
 
-**v1.2 Velocity (in progress):**
-- Plans completed: 6
-- Phase 14-01 duration: 4 min
-- Phase 16-01 duration: 4 min
-- Phase 16-02 duration: 4 min
-- Phase 15-01 duration: 9 min
-- Phase 17-01 duration: 7 min
-- Phase 17-02 duration: 6 min
+**v1.2 Velocity:**
+- Total plans completed: 6
+- Average duration: 5.7 min
+- Total execution time: ~34 min
 
 ## Accumulated Context
 
@@ -55,36 +52,21 @@ See `.planning/milestones/` for archived details.
 Major decisions are logged in PROJECT.md Key Decisions table.
 Full decision history archived in `.planning/milestones/`.
 
-**v1.2 Decisions:**
-- EPIC tier uses SOUL_FIRE_FLAME particle and DARK_PURPLE color
-- LEGENDARY tier uses DRAGON_BREATH particle and GOLD color
-- Tier hierarchy: COMMON < UNCOMMON < RARE < EPIC < LEGENDARY < EVENT
-- AddPreviewGUI uses 54-slot layout with 21 item slots matching CollectionDetailGUI
-- Yes button at slot 47, No button at slot 51, item display at slot 49
-- Highlighted items use glowing effect + "Just added!" lore line
-- GUI transition: unregister source GUI before creating/opening destination GUI
-- Radar uses BossBar API with tier-based colors (WHITE=common through PINK=event)
-- Radar shows direction indicator [^] [<] [>] to nearest collectible
-- Progress bar fixed at 1.0, color indicates highest tier detected
-- Milestone bitmask: bit 0=25%, bit 1=50%, bit 2=75% (byte field in CollectionProgress)
-- Migration uses try/catch for backward compatibility with existing databases
-- Milestone notification escalation: 25%=actionbar, 50%=subtitle+particles, 75%=title+particles
-- Only highest newly reached milestone fires per item add (spam prevention)
-
 ### Known Issues
 
 - Pre-existing MockBukkit test failure (IncompatibleClassChangeError) - does not affect functionality, only test suite. Requires MockBukkit update for Paper 1.21.4.
 - Pre-existing flaky test (testAddItemOffline_UsesCache) - race condition in test, not implementation
+- ParticleTask missing EPIC/LEGENDARY switch cases (cosmetic only - visibility works, particles don't display for these tiers)
 
 ### Pending Todos
 
-- Milestone audit and completion
+- Plan next milestone (v1.3 observability/admin features)
 
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Phase 17 complete and verified
-Resume with: `/gsd:audit-milestone` for v1.2 completion
+Stopped at: v1.2 milestone shipped
+Resume with: `/gsd:new-milestone` to plan v1.3
 
 ---
-*Updated: 2026-01-23 after Phase 17 verification*
+*Updated: 2026-01-23 after v1.2 milestone completion*
