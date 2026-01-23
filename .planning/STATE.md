@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 
 Milestone: v1.3 Web Control Panel
 Phase: 21 of 23 (Visual Builder)
-Plan: 2 of 6 complete
+Plan: 1 of 2 complete
 Status: In progress
-Last activity: 2026-01-23 - Completed 21-02-PLAN.md (Visual Builder Layout)
+Last activity: 2026-01-23 - Completed 21-01-PLAN.md (Materials API + Spawn Conditions)
 
-Progress: [████░░░░░░░░░░░░░░░░] 33% (2 of 6 plans in phase 21)
+Progress: [██████████░░░░░░░░░░] 50% (1 of 2 plans in phase 21)
 
 ## Shipped Milestones
 
@@ -47,7 +47,7 @@ See `.planning/milestones/` for archived details.
 
 **v1.3 Velocity (in progress):**
 - Plans completed: 9
-- Duration: 45 min (6 + 5 + 6 + 5 + 5 + 6 + 5 + 5 + 2)
+- Duration: 49 min (6 + 5 + 6 + 5 + 5 + 6 + 5 + 5 + 6)
 
 ## Accumulated Context
 
@@ -69,8 +69,8 @@ Full decision history archived in `.planning/milestones/`.
 | 20-01 | DTO-01: Java records with nullable types for request DTOs | Records provide immutable transfer, nullable handles missing JSON |
 | 20-01 | VAL-01: Use isValid instead of valid for ValidationResult | Avoids Java record accessor/static method name conflict |
 | 20-02 | CRUD-01: RuntimeException message prefix for main thread error translation | Clean error propagation from main thread to HTTP response codes |
-| 21-02 | VB-01: SortableJS from CDN (not npm) | Simpler integration without build step for web panel |
-| 21-02 | VB-02: Browser panel sticky positioning | Keeps item browser visible while scrolling items |
+| 21-01 | API-02: Material enum filtering done without main thread bridge | Material.values() is static, safe on web thread |
+| 21-01 | FORM-01: Spawn conditions default to Overworld, Y -64 to 320 | Minecraft 1.21 world bounds |
 
 ### Known Issues
 
@@ -85,8 +85,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed 21-02-PLAN.md (Visual Builder Layout)
+Stopped at: Completed 21-01-PLAN.md (Materials API + Spawn Conditions)
 Resume file: None
 
 ---
-*Updated: 2026-01-23 after 21-02 complete*
+*Updated: 2026-01-23 after 21-01 complete*
