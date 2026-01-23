@@ -102,12 +102,12 @@ Plans:
   3. Admin can reorder items within collection via drag-drop
   4. Admin can remove items from collection via button or drag-out
   5. Form fields exist for all collection properties (tier, biomes, dimensions, y-levels)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 21-01: TBD
-- [ ] 21-02: TBD
-- [ ] 21-03: TBD
+- [ ] 21-01-PLAN.md - Materials API endpoint and spawn condition form fields
+- [ ] 21-02-PLAN.md - Two-panel visual builder layout and CSS styling
+- [ ] 21-03-PLAN.md - Item browser JavaScript and SortableJS drag-drop integration
 
 ### Phase 22: Visual Builder Enhancements
 **Goal**: Visual builder provides templates, weight validation, and MiniMessage preview
@@ -148,10 +148,10 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 | 18. Web Infrastructure | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 19. Read-Only API | v1.3 | 2/2 | ✓ Complete | 2026-01-23 |
 | 20. Write API + CRUD | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
-| 21. Visual Builder | v1.3 | 0/TBD | Not started | - |
+| 21. Visual Builder | v1.3 | 0/3 | Not started | - |
 | 22. Visual Builder Enhancements | v1.3 | 0/TBD | Not started | - |
 | 23. Documentation | v1.3 | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 20 complete*
+*Last updated: 2026-01-23 after Phase 21 planning*
