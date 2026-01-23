@@ -38,7 +38,7 @@ See `.planning/milestones/v1.2-enhanced-ux/` for archived details.
 - [x] **Phase 19: Read-Only API** - Collection listing and detail viewing endpoints (complete 2026-01-23)
 - [x] **Phase 20: Write API + CRUD** - Create, edit, delete operations with reload (complete 2026-01-23)
 - [x] **Phase 21: Visual Builder** - Drag-drop item browser and collection editor (complete 2026-01-23)
-- [ ] **Phase 22: Visual Builder Enhancements** - MiniMessage preview, templates, weight validation
+- [x] **Phase 22: Visual Builder Enhancements** - MiniMessage preview, templates, weight validation (complete 2026-01-23)
 - [ ] **Phase 23: Documentation** - README update with setup instructions and screenshots
 
 ## Phase Details
@@ -122,9 +122,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 22-01-PLAN.md - Collection templates UI and data
-- [ ] 22-02-PLAN.md - Weight validation and percentage display/adjustment
-- [ ] 22-03-PLAN.md - MiniMessage live preview with minimessage-js
+- [x] 22-01-PLAN.md - Collection templates UI and data
+- [x] 22-02-PLAN.md - Weight validation and percentage display/adjustment
+- [x] 22-03-PLAN.md - MiniMessage live preview with minimessage-js
 
 ### Phase 23: Documentation
 **Goal**: GitHub README documents web panel setup and usage
@@ -150,9 +150,9 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 | 19. Read-Only API | v1.3 | 2/2 | ✓ Complete | 2026-01-23 |
 | 20. Write API + CRUD | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 21. Visual Builder | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
-| 22. Visual Builder Enhancements | v1.3 | 0/3 | Not started | - |
+| 22. Visual Builder Enhancements | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 23. Documentation | v1.3 | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 22 planned*
+*Last updated: 2026-01-23 after Phase 22 complete*

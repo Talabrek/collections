@@ -5,17 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-01-23)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** v1.3 Web Control Panel - Phase 20 complete
+**Current focus:** v1.3 Web Control Panel - Phase 22 complete
 
 ## Current Position
 
 Milestone: v1.3 Web Control Panel
-Phase: 22 of 23 (Visual Builder Enhancements)
-Plan: 3 of 3 complete (awaiting human verification)
-Status: In progress - checkpoint
-Last activity: 2026-01-23 - Completed 22-03-PLAN.md (Tasks 1-2)
+Phase: 22 of 23 (Visual Builder Enhancements) - COMPLETE
+Plan: All complete
+Status: Ready for Phase 23
+Last activity: 2026-01-23 - Phase 22 verified and complete
 
-Progress: [######################] 100% (14 of 14 plans complete, pending verification)
+Progress: [######################] 93% (14 of 15 plans complete)
 
 ## Shipped Milestones
 
@@ -82,6 +82,9 @@ Full decision history archived in `.planning/milestones/`.
 | 22-02 | WEIGHT-01: Integer weights summing to 100 | Simplifies percentage calculation and avoids floating point issues |
 | 22-02 | WEIGHT-02: Proportional redistribution on percentage change | Preserves relative ratios between other items |
 | 22-02 | WEIGHT-03: isAdjustingWeights flag to prevent recursion | Prevents infinite loops during programmatic updates |
+| 22-03 | MM-01: Static MiniMessage.toHTML() for rendering | toHTML is static method on class, not instance method |
+| 22-03 | MM-02: minimessage-js v1.2.1 CDN | Latest stable version with correct API |
+| 22-03 | FIX-01: Allow 0 weights for single-item 100% | Enables proper percentage distribution edge cases |
 
 ### Known Issues
 
@@ -96,8 +99,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed 22-03-PLAN.md Tasks 1-2 (human verification checkpoint)
+Stopped at: Phase 22 complete, ready for Phase 23 (Documentation)
 Resume file: None
 
 ---
-*Updated: 2026-01-23 after 22-03 Tasks 1-2 complete*
+*Updated: 2026-01-23 after Phase 22 verified and complete*
