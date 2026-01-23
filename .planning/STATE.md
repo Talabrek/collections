@@ -5,17 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-01-23)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** Planning next milestone
+**Current focus:** v1.3 Web Control Panel
 
 ## Current Position
 
-Milestone: None (v1.2 shipped)
-Phase: --
-Plan: --
-Status: Ready to plan next milestone
-Last activity: 2026-01-23 - v1.2 milestone complete
+Milestone: v1.3 Web Control Panel
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-01-23 — Milestone v1.3 started
 
-Progress: N/A (between milestones)
+Progress: N/A (defining requirements)
 
 ## Shipped Milestones
 
@@ -60,13 +60,14 @@ Full decision history archived in `.planning/milestones/`.
 
 ### Pending Todos
 
-- Plan next milestone (v1.3 observability/admin features)
+- Define v1.3 requirements
+- Create v1.3 roadmap
 
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: v1.2 milestone shipped
-Resume with: `/gsd:new-milestone` to plan v1.3
+Stopped at: Defining v1.3 requirements
+Resume with: Continue requirements definition
 
 ---
-*Updated: 2026-01-23 after v1.2 milestone completion*
+*Updated: 2026-01-23 after v1.3 milestone start*

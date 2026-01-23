@@ -8,6 +8,19 @@ A comprehensive EQ2-style collectibles system for Paper 1.21.4 servers. Players 
 
 Every player interaction must work correctly — collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
 
+## Current Milestone: v1.3 Web Control Panel
+
+**Goal:** Enable visual collection management through an embedded web admin panel.
+
+**Target features:**
+- Embedded web server with configurable port
+- Password-protected admin authentication
+- Visual collection builder with drag-drop for items, zones, rewards, spawn rules
+- Full CRUD operations (create, read, update, delete collections)
+- Visual item browser with search/filter
+- Explicit reload to apply changes to running server
+- Updated GitHub README
+
 ## Current State
 
 **v1.2 Enhanced Collection UX — Shipped 2026-01-23**
@@ -72,7 +85,17 @@ Production-ready for multi-server network deployment with:
 - ✓ Show collection after adding item with highlight — v1.2
 - ✓ Milestone notifications at 25/50/75% progress — v1.2
 
-### Active (v1.3+)
+### Active (v1.3)
+
+- [ ] Embedded web server with configurable port
+- [ ] Password-protected admin authentication
+- [ ] Visual collection builder with drag-drop
+- [ ] Full CRUD operations for collections
+- [ ] Visual item browser with search/filter
+- [ ] Reload mechanism to apply changes
+- [ ] Updated GitHub README
+
+### Deferred (v1.4+)
 
 - [ ] Prometheus metrics endpoint (OBS-01)
 - [ ] Per-collection completion rate tracking (OBS-02)
@@ -84,7 +107,6 @@ Production-ready for multi-server network deployment with:
 ### Out of Scope
 
 - Real-time cross-server sync — MySQL shared state sufficient; Redis adds complexity
-- Web dashboard — Out of scope for plugin; use bStats dashboard
 - Discord integration — Better handled by dedicated Discord plugins
 - PostgreSQL support — MySQL sufficient for network deployment
 
@@ -133,4 +155,4 @@ See `.planning/MILESTONES.md` for shipped milestones.
 See `.planning/milestones/` for archived milestone details.
 
 ---
-*Last updated: 2026-01-23 after v1.2 milestone completion*
+*Last updated: 2026-01-23 after v1.3 milestone start*
