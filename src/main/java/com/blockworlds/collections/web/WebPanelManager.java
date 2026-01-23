@@ -1,6 +1,7 @@
 package com.blockworlds.collections.web;
 
 import com.blockworlds.collections.Collections;
+import com.blockworlds.collections.web.api.CollectionsController;
 import com.blockworlds.collections.web.api.StatusController;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
@@ -87,8 +88,12 @@ public class WebPanelManager {
         WebAuthHandler authHandler = new WebAuthHandler(passwordHash);
         authHandler.register(app);
 
+        // Create thread bridge for API controllers
+        MainThreadBridge bridge = new MainThreadBridge(plugin);
+
         // Register API controllers
         new StatusController(plugin).register(app);
+        new CollectionsController(plugin, bridge).register(app);
     }
 
     /**
