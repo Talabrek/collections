@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 ## Current Position
 
 Milestone: v1.3 Web Control Panel
-Phase: 18 of 23 (Web Infrastructure) - COMPLETE ✓
-Plan: All 3 plans complete
-Status: Phase verified and complete
-Last activity: 2026-01-23 - Phase 18 verified (5/5 criteria passed)
+Phase: 19 of 23 (Read-Only API)
+Plan: 1 of 2 complete
+Status: In progress
+Last activity: 2026-01-23 - Completed 19-01-PLAN.md (collections endpoints)
 
-Progress: [==================..] 78% (Phase 18 complete, ready for Phase 19)
+Progress: [==================..] 80% (Phase 19 plan 1 complete)
 
 ## Shipped Milestones
 
@@ -46,8 +46,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~34 min
 
 **v1.3 Velocity (in progress):**
-- Plans completed: 3
-- Duration: 17 min (6 + 5 + 6)
+- Plans completed: 4
+- Duration: 22 min (6 + 5 + 6 + 5)
 
 ## Accumulated Context
 
@@ -63,6 +63,7 @@ Full decision history archived in `.planning/milestones/`.
 | 18-02 | WEB-03: Web panel stops FIRST on disable | Release port for clean reload |
 | 18-03 | AUTH-01: HTTP Basic Auth for API routes | Simple, browser-native authentication |
 | 18-03 | WEB-05: Static files at root, API at /api/ | Clean separation of concerns |
+| 19-01 | API-01: 2000ms timeout for MainThreadBridge calls | Ensures API responses complete within requirements |
 
 ### Known Issues
 
@@ -77,8 +78,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Phase 18 (Web Infrastructure) verified and complete
-Resume with: `/gsd:discuss-phase 19` or `/gsd:plan-phase 19` to begin Read-Only API
+Stopped at: Completed 19-01-PLAN.md (collections endpoints)
+Resume file: .planning/phases/19-read-only-api/19-02-PLAN.md
 
 ---
-*Updated: 2026-01-23 after Phase 18 verification complete*
+*Updated: 2026-01-23 after 19-01 plan execution complete*
