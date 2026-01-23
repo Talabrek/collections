@@ -549,4 +549,51 @@ public class ConfigManager {
             default -> false;
         };
     }
+
+    // ========== Web Panel Settings ==========
+
+    /**
+     * Check if the web panel is enabled.
+     *
+     * @return true if web panel should start
+     */
+    public boolean isWebPanelEnabled() {
+        return plugin.getConfig().getBoolean("web-panel.enabled", false);
+    }
+
+    /**
+     * Get the web panel server port.
+     *
+     * @return The port number (default 8080)
+     */
+    public int getWebPanelPort() {
+        return plugin.getConfig().getInt("web-panel.port", 8080);
+    }
+
+    /**
+     * Get the web panel bind address.
+     *
+     * @return The bind address (default 127.0.0.1)
+     */
+    public String getWebPanelBindAddress() {
+        return plugin.getConfig().getString("web-panel.bind-address", "127.0.0.1");
+    }
+
+    /**
+     * Get the web panel password hash.
+     *
+     * @return The BCrypt password hash, or empty string if not set
+     */
+    public String getWebPanelPasswordHash() {
+        return plugin.getConfig().getString("web-panel.password-hash", "");
+    }
+
+    /**
+     * Set the web panel password hash in config.
+     *
+     * @param hash The BCrypt hash to save
+     */
+    public void setWebPanelPasswordHash(String hash) {
+        plugin.getConfig().set("web-panel.password-hash", hash);
+    }
 }

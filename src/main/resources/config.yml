@@ -280,6 +280,21 @@ notifications:
       sound: "ui.toast.challenge_complete"
       particles: true
 
+# Web Panel Settings
+web-panel:
+  # Enable/disable the web panel
+  enabled: false
+
+  # Port for the web server
+  port: 8080
+
+  # Bind address (127.0.0.1 = localhost only, 0.0.0.0 = all interfaces)
+  bind-address: "127.0.0.1"
+
+  # BCrypt password hash (auto-generated on first run if empty)
+  # To reset: delete this line and restart - new password will be generated
+  password-hash: ""
+
 # Metrics Settings
 metrics:
   # Enable bStats community metrics (anonymous server statistics)
