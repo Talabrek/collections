@@ -5,17 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-01-23)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** v1.3 Web Control Panel - Phase 19 complete, ready for Phase 20
+**Current focus:** v1.3 Web Control Panel - Phase 20 in progress
 
 ## Current Position
 
 Milestone: v1.3 Web Control Panel
-Phase: 19 of 23 (Read-Only API) - COMPLETE
-Plan: 2 of 2 complete
-Status: Phase complete
-Last activity: 2026-01-23 - Completed 19-02-PLAN.md (collection browser frontend)
+Phase: 20 of 23 (Write API + CRUD)
+Plan: 1 of 3 complete
+Status: In progress
+Last activity: 2026-01-23 - Completed 20-01-PLAN.md (Request DTOs and Validation)
 
-Progress: [####################] 100% (Phase 19 complete)
+Progress: [######--------------] 33% (Plan 1/3 of Phase 20)
 
 ## Shipped Milestones
 
@@ -46,8 +46,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~34 min
 
 **v1.3 Velocity (in progress):**
-- Plans completed: 5
-- Duration: 27 min (6 + 5 + 6 + 5 + 5)
+- Plans completed: 6
+- Duration: 33 min (6 + 5 + 6 + 5 + 5 + 6)
 
 ## Accumulated Context
 
@@ -66,6 +66,8 @@ Full decision history archived in `.planning/milestones/`.
 | 19-01 | API-01: 2000ms timeout for MainThreadBridge calls | Ensures API responses complete within requirements |
 | 19-02 | UI-01: Hash-based routing (#collection/{id}) | Enables back/forward navigation without server round-trips |
 | 19-02 | UI-02: 30-second heartbeat interval | Balances responsiveness with minimal server load |
+| 20-01 | DTO-01: Java records with nullable types for request DTOs | Records provide immutable transfer, nullable handles missing JSON |
+| 20-01 | VAL-01: Use isValid instead of valid for ValidationResult | Avoids Java record accessor/static method name conflict |
 
 ### Known Issues
 
@@ -80,8 +82,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Phase 19 (Read-Only API) verified and complete
-Resume with: `/gsd:discuss-phase 20` or `/gsd:plan-phase 20` to begin Write API + CRUD
+Stopped at: Phase 20 Plan 01 complete
+Resume with: `/gsd:execute-phase 20` to continue with 20-02-PLAN.md
 
 ---
-*Updated: 2026-01-23 after Phase 19 complete*
+*Updated: 2026-01-23 after 20-01 complete*
