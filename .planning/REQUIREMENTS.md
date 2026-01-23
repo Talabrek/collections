@@ -42,11 +42,11 @@ Requirements for the Web Control Panel milestone. Each maps to roadmap phases.
 
 ### Visual Builder Enhancements
 
-- [ ] **VBE-01**: MiniMessage formatted text shows live preview as it will appear in-game
-- [ ] **VBE-02**: Collection templates available (forest, ocean, nether, cave, end, desert)
-- [ ] **VBE-03**: Weight sum validation warns if item weights don't total 100%
-- [ ] **VBE-04**: Admin can set percentage chance for an item and weights auto-adjust
-- [ ] **VBE-05**: Visual display shows percentage drop chance for each item in collection
+- [x] **VBE-01**: MiniMessage formatted text shows live preview as it will appear in-game
+- [x] **VBE-02**: Collection templates available (forest, ocean, nether, cave, end, desert)
+- [x] **VBE-03**: Weight sum validation warns if item weights don't total 100%
+- [x] **VBE-04**: Admin can set percentage chance for an item and weights auto-adjust
+- [x] **VBE-05**: Visual display shows percentage drop chance for each item in collection
 
 ### Server Integration
 
@@ -56,9 +56,9 @@ Requirements for the Web Control Panel milestone. Each maps to roadmap phases.
 
 ### Documentation
 
-- [ ] **DOC-01**: GitHub README updated with web panel feature documentation
-- [ ] **DOC-02**: README includes setup instructions (port, password, first run)
-- [ ] **DOC-03**: README includes screenshots of web panel interface
+- [x] **DOC-01**: GitHub README updated with web panel feature documentation
+- [x] **DOC-02**: README includes setup instructions (port, password, first run)
+- [x] **DOC-03**: README includes screenshots of web panel interface
 
 ## Future Requirements (v1.4+)
 
@@ -128,20 +128,20 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VB-05 | Phase 21 | Complete |
 | VB-06 | Phase 21 | Complete |
 | VB-07 | Phase 21 | Complete |
-| VBE-01 | Phase 22 | Pending |
-| VBE-02 | Phase 22 | Pending |
-| VBE-03 | Phase 22 | Pending |
-| VBE-04 | Phase 22 | Pending |
-| VBE-05 | Phase 22 | Pending |
-| DOC-01 | Phase 23 | Pending |
-| DOC-02 | Phase 23 | Pending |
-| DOC-03 | Phase 23 | Pending |
+| VBE-01 | Phase 22 | Complete |
+| VBE-02 | Phase 22 | Complete |
+| VBE-03 | Phase 22 | Complete |
+| VBE-04 | Phase 22 | Complete |
+| VBE-05 | Phase 22 | Complete |
+| DOC-01 | Phase 23 | Complete |
+| DOC-02 | Phase 23 | Complete |
+| DOC-03 | Phase 23 | Complete |
 
 **Coverage:**
 - v1.3 requirements: 32 total
 - Mapped to phases: 32
-- Unmapped: 0
+- Complete: 32
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 21 complete*
+*Last updated: 2026-01-24 after Phase 23 complete - v1.3 milestone shipped*

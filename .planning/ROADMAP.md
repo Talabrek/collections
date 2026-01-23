@@ -5,7 +5,7 @@
 - [x] **v1.0 Quality Audit** - Phases 1-9 (shipped 2026-01-22)
 - [x] **v1.1 Operational Features** - Phases 10-13 (shipped 2026-01-22)
 - [x] **v1.2 Enhanced Collection UX** - Phases 14-17 (shipped 2026-01-23)
-- [ ] **v1.3 Web Control Panel** - Phases 18-23 (in progress)
+- [x] **v1.3 Web Control Panel** - Phases 18-23 (shipped 2026-01-24)
 
 ## Phases
 
@@ -39,7 +39,7 @@ See `.planning/milestones/v1.2-enhanced-ux/` for archived details.
 - [x] **Phase 20: Write API + CRUD** - Create, edit, delete operations with reload (complete 2026-01-23)
 - [x] **Phase 21: Visual Builder** - Drag-drop item browser and collection editor (complete 2026-01-23)
 - [x] **Phase 22: Visual Builder Enhancements** - MiniMessage preview, templates, weight validation (complete 2026-01-23)
-- [ ] **Phase 23: Documentation** - README update with setup instructions and screenshots
+- [x] **Phase 23: Documentation** - README update with setup instructions and screenshots (complete 2026-01-24)
 
 ## Phase Details
 
@@ -137,7 +137,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 23-01-PLAN.md — Update README with web panel documentation and screenshots
+- [x] 23-01-PLAN.md — Update README with web panel documentation and screenshots
 
 ## Progress
 
@@ -151,8 +151,8 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 | 20. Write API + CRUD | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 21. Visual Builder | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 22. Visual Builder Enhancements | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
-| 23. Documentation | v1.3 | 0/TBD | Not started | - |
+| 23. Documentation | v1.3 | 1/1 | ✓ Complete | 2026-01-24 |
 
 ---
 *Roadmap created: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 22 complete*
+*Last updated: 2026-01-24 after Phase 23 complete - v1.3 milestone shipped*

@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-01-23)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** v1.3 Web Control Panel - Phase 22 complete
+**Current focus:** v1.3 Web Control Panel - SHIPPED
 
 ## Current Position
 
