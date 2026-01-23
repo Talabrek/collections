@@ -34,6 +34,8 @@ import com.blockworlds.collections.task.ActionBarPromptTask;
 import com.blockworlds.collections.task.ParticleTask;
 import com.blockworlds.collections.task.RadarTask;
 import com.blockworlds.collections.manager.RadarManager;
+import com.blockworlds.collections.web.WebPanelConfig;
+import com.blockworlds.collections.web.WebPanelManager;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -68,6 +70,7 @@ public class Collections extends JavaPlugin {
     private CollectibleInteractListener collectibleInteractListener;
     private RadarManager radarManager;
     private RadarTask radarTask;
+    private WebPanelManager webPanelManager;
 
     @Override
     public void onEnable() {
@@ -145,6 +148,15 @@ public class Collections extends JavaPlugin {
         this.goggleRecipeManager = new GoggleRecipeManager(this);
         goggleRecipeManager.registerRecipes();
 
+        // Initialize web panel (if enabled)
+        if (configManager.isWebPanelEnabled()) {
+            WebPanelConfig webPanelConfig = new WebPanelConfig();
+            webPanelConfig.ensurePasswordConfigured(getConfig(), this);
+
+            this.webPanelManager = new WebPanelManager(this);
+            webPanelManager.start(configManager.getWebPanelPort());
+        }
+
         // Register commands and listeners
         registerCommands();
         registerListeners();
@@ -181,6 +193,12 @@ public class Collections extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // Stop web panel FIRST (release port for reload)
+        if (webPanelManager != null) {
+            webPanelManager.stop();
+            webPanelManager = null;
+        }
+
         // Stop radar task
         if (radarTask != null) {
             radarTask.stop();
@@ -369,5 +387,9 @@ public class Collections extends JavaPlugin {
 
     public RadarTask getRadarTask() {
         return radarTask;
+    }
+
+    public WebPanelManager getWebPanelManager() {
+        return webPanelManager;
     }
 }
