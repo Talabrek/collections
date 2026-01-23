@@ -119,11 +119,12 @@ Plans:
   3. Weight sum validation warns if item weights do not total 100%
   4. Admin can set percentage chance and weights auto-adjust other items
   5. Visual display shows percentage drop chance for each item in collection
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 22-01: TBD
-- [ ] 22-02: TBD
+- [ ] 22-01-PLAN.md - Collection templates UI and data
+- [ ] 22-02-PLAN.md - Weight validation and percentage display/adjustment
+- [ ] 22-03-PLAN.md - MiniMessage live preview with minimessage-js
 
 ### Phase 23: Documentation
 **Goal**: GitHub README documents web panel setup and usage
@@ -149,9 +150,9 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 | 19. Read-Only API | v1.3 | 2/2 | ✓ Complete | 2026-01-23 |
 | 20. Write API + CRUD | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 21. Visual Builder | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
-| 22. Visual Builder Enhancements | v1.3 | 0/TBD | Not started | - |
+| 22. Visual Builder Enhancements | v1.3 | 0/3 | Not started | - |
 | 23. Documentation | v1.3 | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 21 complete*
+*Last updated: 2026-01-23 after Phase 22 planned*
