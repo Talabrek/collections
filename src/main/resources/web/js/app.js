@@ -7,6 +7,11 @@ let currentEditId = null; // null for create, ID for edit
 let itemRowCounter = 0;
 let deleteTargetId = null;
 
+// Item browser state
+let allMaterials = [];
+let browserSortable = null;
+let collectionSortable = null;
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     startHeartbeat();
@@ -47,6 +52,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // Modal handlers
     document.getElementById('modal-cancel-btn').addEventListener('click', hideDeleteModal);
     document.getElementById('modal-confirm-btn').addEventListener('click', confirmDelete);
+
+    // Item browser search
+    const searchInput = document.getElementById('item-search');
+    if (searchInput) {
+        let searchTimeout = null;
+        searchInput.addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                filterBrowserItems(e.target.value);
+            }, 150);
+        });
+    }
+
+    // Drop zone visual feedback
+    const itemsContainer = document.getElementById('items-container');
+    if (itemsContainer) {
+        itemsContainer.addEventListener('dragenter', function() {
+            this.classList.add('drag-over');
+        });
+        itemsContainer.addEventListener('dragleave', function(e) {
+            // Only remove if leaving the container entirely
+            if (!this.contains(e.relatedTarget)) {
+                this.classList.remove('drag-over');
+            }
+        });
+        itemsContainer.addEventListener('drop', function() {
+            this.classList.remove('drag-over');
+        });
+    }
 });
 
 // Connection status heartbeat
@@ -275,6 +309,8 @@ function showCreateForm() {
     resetForm();
     addItemRow(); // Start with one empty item
     showView('view-form');
+    initItemBrowser();
+    initCollectionSortable();
 }
 
 async function showEditForm(id) {
@@ -289,6 +325,8 @@ async function showEditForm(id) {
         const collection = await response.json();
         populateForm(collection);
         showView('view-form');
+        initItemBrowser();
+        initCollectionSortable();
     } catch (error) {
         showToast('Failed to load collection', 'error');
     }
@@ -299,6 +337,12 @@ function resetForm() {
     document.getElementById('items-container').innerHTML = '';
     itemRowCounter = 0;
     clearValidationErrors();
+
+    // Reset browser search
+    const searchInput = document.getElementById('item-search');
+    if (searchInput) {
+        searchInput.value = '';
+    }
 
     // Reset spawn conditions to defaults
     document.getElementById('form-biomes').value = '';
@@ -361,6 +405,7 @@ function addItemRow(item) {
 
     row.innerHTML = `
         <div class="item-row-header">
+            <span class="drag-handle">&#9776;</span>
             <span class="item-number">Item ${container.children.length + 1}</span>
             <button type="button" class="btn-remove-item" onclick="removeItemRow(this)">&times;</button>
         </div>
@@ -601,4 +646,232 @@ function showToast(message, type) {
     setTimeout(() => {
         toast.classList.add('hidden');
     }, 3000);
+}
+
+// ========== Item Browser Functions ==========
+
+async function initItemBrowser() {
+    const grid = document.getElementById('item-browser-grid');
+    const countEl = document.getElementById('browser-count');
+
+    // Use cached materials if available
+    if (allMaterials.length > 0) {
+        countEl.textContent = allMaterials.length + ' items';
+        renderBrowserGrid(allMaterials);
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/materials');
+        if (!response.ok) throw new Error('Failed to load materials');
+        allMaterials = await response.json();
+        countEl.textContent = allMaterials.length + ' items';
+        renderBrowserGrid(allMaterials);
+    } catch (error) {
+        grid.innerHTML = '<p class="error">Failed to load items</p>';
+    }
+}
+
+function renderBrowserGrid(materials) {
+    const grid = document.getElementById('item-browser-grid');
+
+    if (materials.length === 0) {
+        grid.innerHTML = '<p class="empty">No matching items</p>';
+        return;
+    }
+
+    // Render material items (limit to first 200 for performance, search narrows down)
+    const displayMaterials = materials.slice(0, 200);
+
+    grid.innerHTML = displayMaterials.map(material => `
+        <div class="browser-item" data-material="${material}">
+            <span class="item-icon">${getMaterialEmoji(material)}</span>
+            <span class="item-label">${formatMaterialLabel(material)}</span>
+        </div>
+    `).join('');
+
+    // Initialize SortableJS on browser grid after render
+    initBrowserSortable();
+}
+
+function formatMaterialLabel(material) {
+    // DIAMOND_SWORD -> Diamond S...
+    const formatted = material.split('_')
+        .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+        .join(' ');
+    return formatted.length > 10 ? formatted.slice(0, 9) + '...' : formatted;
+}
+
+function formatMaterialName(material) {
+    // DIAMOND_SWORD -> Diamond Sword (full name for form)
+    return material.split('_')
+        .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+        .join(' ');
+}
+
+function getMaterialEmoji(material) {
+    // Simple emoji mapping for common materials
+    const emojiMap = {
+        'DIAMOND': '💎', 'EMERALD': '💚', 'GOLD_INGOT': '🥇', 'IRON_INGOT': '🔩',
+        'COAL': '⚫', 'REDSTONE': '🔴', 'LAPIS_LAZULI': '🔵', 'AMETHYST_SHARD': '💜',
+        'APPLE': '🍎', 'BREAD': '🍞', 'CARROT': '🥕', 'POTATO': '🥔',
+        'BONE': '🦴', 'STRING': '🧵', 'FEATHER': '🪶', 'LEATHER': '🟤',
+        'BOOK': '📖', 'PAPER': '📄', 'MAP': '🗺️', 'COMPASS': '🧭',
+        'ENDER_PEARL': '🟣', 'BLAZE_ROD': '🔥', 'GHAST_TEAR': '💧',
+        'SWORD': '⚔️', 'PICKAXE': '⛏️', 'AXE': '🪓', 'SHOVEL': '🔧',
+        'BOW': '🏹', 'ARROW': '➡️', 'SHIELD': '🛡️', 'TRIDENT': '🔱'
+    };
+
+    // Check for exact match first
+    if (emojiMap[material]) return emojiMap[material];
+
+    // Check for partial match (e.g., DIAMOND_SWORD contains SWORD)
+    for (const [key, emoji] of Object.entries(emojiMap)) {
+        if (material.includes(key)) return emoji;
+    }
+
+    // Default: cube emoji for blocks, circle for others
+    return material.includes('BLOCK') || material.includes('ORE') ? '🧱' : '⚪';
+}
+
+function filterBrowserItems(searchTerm) {
+    const term = searchTerm.toLowerCase().trim();
+    const countEl = document.getElementById('browser-count');
+
+    if (term === '') {
+        countEl.textContent = allMaterials.length + ' items';
+        renderBrowserGrid(allMaterials);
+        return;
+    }
+
+    const filtered = allMaterials.filter(m => m.toLowerCase().includes(term));
+    countEl.textContent = filtered.length + ' matches';
+    renderBrowserGrid(filtered);
+}
+
+// ========== SortableJS Integration ==========
+
+function initBrowserSortable() {
+    const grid = document.getElementById('item-browser-grid');
+
+    // Destroy existing sortable if any
+    if (browserSortable) {
+        browserSortable.destroy();
+    }
+
+    browserSortable = Sortable.create(grid, {
+        group: {
+            name: 'collection-items',
+            pull: 'clone',
+            put: false
+        },
+        sort: false,
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+
+        onStart: function() {
+            document.body.classList.add('is-dragging');
+        },
+
+        onEnd: function() {
+            document.body.classList.remove('is-dragging');
+        }
+    });
+}
+
+function initCollectionSortable() {
+    const container = document.getElementById('items-container');
+
+    // Destroy existing sortable if any
+    if (collectionSortable) {
+        collectionSortable.destroy();
+    }
+
+    collectionSortable = Sortable.create(container, {
+        group: {
+            name: 'collection-items',
+            pull: true,
+            put: true
+        },
+        handle: '.drag-handle',
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+
+        onAdd: function(evt) {
+            // Item dropped from browser - convert to form row
+            const browserItem = evt.item;
+            const material = browserItem.dataset.material;
+            convertBrowserItemToFormRow(browserItem, material);
+            renumberItems();
+        },
+
+        onUpdate: function() {
+            // Items reordered within collection
+            renumberItems();
+        },
+
+        onRemove: function() {
+            // Item dragged out of collection (to trash)
+            renumberItems();
+        },
+
+        onStart: function() {
+            document.body.classList.add('is-dragging');
+        },
+
+        onEnd: function() {
+            document.body.classList.remove('is-dragging');
+        }
+    });
+}
+
+function convertBrowserItemToFormRow(browserElement, material) {
+    const container = document.getElementById('items-container');
+    const idx = itemRowCounter++;
+
+    // Replace the browser item with a full form row
+    browserElement.className = 'item-row';
+    browserElement.dataset.index = idx;
+    delete browserElement.dataset.material;
+
+    browserElement.innerHTML = `
+        <div class="item-row-header">
+            <span class="drag-handle">&#9776;</span>
+            <span class="item-number">Item ${container.children.length}</span>
+            <button type="button" class="btn-remove-item" onclick="removeItemRow(this)">&times;</button>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>ID</label>
+                <input type="text" name="item-id-${idx}" placeholder="item_id" value="${material.toLowerCase()}">
+                <span class="error-message" data-field="items[${idx}].id"></span>
+            </div>
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" name="item-name-${idx}" placeholder="Item Name" value="${formatMaterialName(material)}">
+                <span class="error-message" data-field="items[${idx}].name"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Material</label>
+                <input type="text" name="item-material-${idx}" value="${material}" readonly>
+                <span class="error-message" data-field="items[${idx}].material"></span>
+            </div>
+            <div class="form-group">
+                <label>Weight</label>
+                <input type="number" name="item-weight-${idx}" min="1" value="10">
+                <span class="error-message" data-field="items[${idx}].weight"></span>
+            </div>
+            <div class="form-group checkbox-group">
+                <label><input type="checkbox" name="item-soulbound-${idx}"> Soulbound</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Lore</label>
+            <textarea name="item-lore-${idx}" rows="2" placeholder="Line 1&#10;Line 2"></textarea>
+        </div>
+    `;
 }
