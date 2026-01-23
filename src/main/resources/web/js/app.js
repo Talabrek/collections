@@ -1263,9 +1263,9 @@ function adjustWeightByPercentage(itemIndex, targetPercent) {
             }
         }
 
-        // Apply new weights
+        // Apply new weights (allow 0 for proper percentage distribution)
         weightInputs.forEach((input, idx) => {
-            input.value = Math.max(1, newWeights[idx]); // Ensure minimum of 1
+            input.value = Math.max(0, newWeights[idx]);
         });
     }
 
@@ -1314,12 +1314,13 @@ function renderMiniMessage(text, previewElement) {
 
     try {
         const component = miniMessageParser.deserialize(text);
-        // Clear and render to element
+        // Clear and render to element using static MiniMessage.toHTML
         previewElement.innerHTML = '';
-        miniMessageParser.toHTML(component, previewElement);
+        MiniMessage.toHTML(component, previewElement);
         previewElement.classList.remove('parse-error');
     } catch (error) {
         // Parse error - show original text with error styling
+        console.warn('MiniMessage parse error:', error);
         previewElement.textContent = text;
         previewElement.classList.add('parse-error');
     }
