@@ -82,6 +82,14 @@ tasks {
         relocate("org.sqlite", "com.blockworlds.collections.lib.sqlite")
         relocate("com.mysql", "com.blockworlds.collections.lib.mysql")
         relocate("org.bstats", "com.blockworlds.collections.lib.bstats")
+
+        // Web Panel relocations (WEB-04 - avoid conflicts with other plugins)
+        relocate("io.javalin", "com.blockworlds.collections.lib.javalin")
+        relocate("org.eclipse.jetty", "com.blockworlds.collections.lib.jetty")
+        relocate("org.slf4j", "com.blockworlds.collections.lib.slf4j")
+        relocate("jakarta.servlet", "com.blockworlds.collections.lib.jakarta.servlet")
+        relocate("kotlin", "com.blockworlds.collections.lib.kotlin")
+        relocate("at.favre.lib", "com.blockworlds.collections.lib.favre")
     }
 
     build {
