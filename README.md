@@ -50,6 +50,78 @@ Collection items can also drop from:
 - **Async Operations** - Database queries don't block the main thread
 - **Chunk Persistence** - Collectibles survive chunk unloads and server restarts
 
+## Web Admin Panel
+
+The Collections plugin includes a powerful web-based admin panel for visual collection management. No need to edit YAML files manually - create, edit, and delete collections through an intuitive interface.
+
+### Feature Overview
+
+- **Visual Collection Management** - Browse all collections in a card-based grid layout
+- **Full CRUD Operations** - Create, edit, and delete collections with live validation
+- **Drag-Drop Item Builder** - Add items to collections with a searchable material browser
+- **Template-Based Creation** - Quick-start with pre-configured templates (Forest, Ocean, Nether, Cave, End, Desert)
+- **MiniMessage Live Preview** - See formatted text (colors, gradients, bold) as you type
+- **Weight Percentage Validation** - Visual indicators show item drop weight distribution
+- **Live Reload** - Changes apply immediately to the server without restart
+
+### Setup Instructions
+
+1. **Enable the web panel** in `config.yml`:
+   ```yaml
+   web-panel:
+     enabled: true  # Change from false to true
+   ```
+
+2. **Configure network settings** (optional):
+   ```yaml
+   web-panel:
+     port: 8080                # Change if port 8080 is in use
+     bind-address: "127.0.0.1" # Use "0.0.0.0" for remote access
+   ```
+
+3. **Restart your server**. On first run with `enabled: true`, the plugin will:
+   - Generate a secure random password
+   - Hash it with BCrypt
+   - Save the hash to `config.yml`
+   - Display the password in console (WARNING level)
+
+4. **Save the password** shown in console. Example output:
+   ```
+   =======================================================
+   WEB PANEL PASSWORD GENERATED
+   Password: aBcD3fGh4JkMn7Pq
+   Save this password! It will not be shown again.
+   To reset: delete password-hash from config.yml and restart
+   =======================================================
+   ```
+
+5. **Access the panel** at `http://localhost:8080` (or your configured host:port)
+
+6. **Login** with:
+   - Username: `admin`
+   - Password: (the generated password from step 4)
+
+### Configuration Reference
+
+```yaml
+web-panel:
+  enabled: false           # Set to true to enable
+  port: 8080               # Web server port
+  bind-address: "127.0.0.1" # 0.0.0.0 for all interfaces
+  password-hash: ""        # Auto-generated, do not edit
+```
+
+### Security Notes
+
+- **Password Security**: Passwords are hashed with BCrypt (cost factor 12) and never stored in plaintext
+- **Default Binding**: The panel binds to `127.0.0.1` by default (localhost only) for security
+- **Remote Access**: To access from other machines, set `bind-address: "0.0.0.0"` and use a reverse proxy with HTTPS (nginx, Caddy)
+- **Password Reset**: Delete the `password-hash` line from `config.yml` and restart - a new password will be generated and logged
+
+### Screenshots
+
+*Screenshots coming soon*
+
 ## Installation
 
 1. Download the latest JAR from [Releases](https://github.com/Talabrek/collections/releases)
