@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 
 Milestone: v1.3 Web Control Panel
 Phase: 18 of 23 (Web Infrastructure)
-Plan: 1 of 3 complete
+Plan: 2 of 3 complete
 Status: In progress
-Last activity: 2026-01-23 - Completed 18-01-PLAN.md (Javalin dependencies)
+Last activity: 2026-01-23 - Completed 18-02-PLAN.md (WebPanelManager core)
 
-Progress: [==================..] 74% (Phases 1-17 of 23 complete, Phase 18 plan 1/3)
+Progress: [==================..] 75% (Phases 1-17 of 23 complete, Phase 18 plan 2/3)
 
 ## Shipped Milestones
 
@@ -46,8 +46,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~34 min
 
 **v1.3 Velocity (in progress):**
-- Plans completed: 1
-- Duration: 6 min
+- Plans completed: 2
+- Duration: 11 min (6 + 5)
 
 ## Accumulated Context
 
@@ -59,6 +59,8 @@ Full decision history archived in `.planning/milestones/`.
 | Phase | Decision | Rationale |
 |-------|----------|-----------|
 | 18-01 | WEB-04: Relocate all Javalin/Jetty transitive deps | Avoid conflicts with plugins like Dynmap |
+| 18-02 | WEB-02: Classloader context swap for Javalin instantiation | Required for ServiceLoader compatibility in Bukkit |
+| 18-02 | WEB-03: Web panel stops FIRST on disable | Release port for clean reload |
 
 ### Known Issues
 
@@ -73,8 +75,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed 18-01-PLAN.md (Javalin dependencies)
-Resume with: `/gsd:execute-plan 18-02` to continue Web Infrastructure phase
+Stopped at: Completed 18-02-PLAN.md (WebPanelManager core)
+Resume with: `/gsd:execute-plan 18-03` to continue Web Infrastructure phase
 
 ---
-*Updated: 2026-01-23 after 18-01 completion*
+*Updated: 2026-01-23 after 18-02 completion*
