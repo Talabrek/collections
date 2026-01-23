@@ -164,6 +164,13 @@ function loadTemplate(templateName) {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize MiniMessage parser
+    initMiniMessageParser();
+
+    // Attach preview to name and message fields
+    attachMiniMessagePreview('form-name', 'preview-name');
+    attachMiniMessagePreview('form-reward-message', 'preview-reward-message');
+
     startHeartbeat();
     handleRoute();
 
@@ -652,10 +659,18 @@ function addItemRow(item) {
         <div class="form-group">
             <label>Lore</label>
             <textarea name="item-lore-${idx}" rows="2" placeholder="Line 1&#10;Line 2">${(item?.lore || []).join('\n')}</textarea>
+            <div class="minimessage-preview lore-preview" data-lore-preview="${idx}"></div>
+            <small>One line per line. Supports MiniMessage formatting.</small>
         </div>
     `;
 
     container.appendChild(row);
+
+    // Attach lore preview
+    const loreTextarea = row.querySelector('[name="item-lore-' + idx + '"]');
+    const lorePreview = row.querySelector('[data-lore-preview="' + idx + '"]');
+    attachLorePreview(loreTextarea, lorePreview);
+
     renumberItems();
     validateWeights();
 }
@@ -1092,8 +1107,15 @@ function convertBrowserItemToFormRow(browserElement, material) {
         <div class="form-group">
             <label>Lore</label>
             <textarea name="item-lore-${idx}" rows="2" placeholder="Line 1&#10;Line 2"></textarea>
+            <div class="minimessage-preview lore-preview" data-lore-preview="${idx}"></div>
+            <small>One line per line. Supports MiniMessage formatting.</small>
         </div>
     `;
+
+    // Attach lore preview
+    const loreTextarea = browserElement.querySelector('[name="item-lore-' + idx + '"]');
+    const lorePreview = browserElement.querySelector('[data-lore-preview="' + idx + '"]');
+    attachLorePreview(loreTextarea, lorePreview);
 
     validateWeights();
 }
@@ -1256,4 +1278,87 @@ function adjustWeightByPercentage(itemIndex, targetPercent) {
 
     isAdjustingWeights = false;
     validateWeights();
+}
+
+// ========== MiniMessage Preview Functions ==========
+
+let miniMessageParser = null;
+
+function initMiniMessageParser() {
+    // Check if MiniMessage library is loaded
+    if (typeof MiniMessage !== 'undefined') {
+        try {
+            miniMessageParser = MiniMessage.miniMessage();
+        } catch (e) {
+            console.warn('Failed to initialize MiniMessage parser:', e);
+        }
+    }
+}
+
+function renderMiniMessage(text, previewElement) {
+    if (!previewElement) return;
+
+    // Empty text - clear preview
+    if (!text || text.trim() === '') {
+        previewElement.innerHTML = '';
+        previewElement.classList.remove('parse-error');
+        return;
+    }
+
+    // No parser available - show plain text
+    if (!miniMessageParser) {
+        previewElement.textContent = text;
+        previewElement.classList.remove('parse-error');
+        return;
+    }
+
+    try {
+        const component = miniMessageParser.deserialize(text);
+        // Clear and render to element
+        previewElement.innerHTML = '';
+        miniMessageParser.toHTML(component, previewElement);
+        previewElement.classList.remove('parse-error');
+    } catch (error) {
+        // Parse error - show original text with error styling
+        previewElement.textContent = text;
+        previewElement.classList.add('parse-error');
+    }
+}
+
+function attachMiniMessagePreview(inputId, previewId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+
+    if (!input || !preview) return;
+
+    // Initial render
+    renderMiniMessage(input.value, preview);
+
+    // Update on input
+    input.addEventListener('input', function() {
+        renderMiniMessage(this.value, preview);
+    });
+}
+
+function attachLorePreview(loreTextarea, previewElement) {
+    if (!loreTextarea || !previewElement) return;
+
+    function updateLorePreview() {
+        const lines = loreTextarea.value.split('\n').filter(l => l.trim());
+        if (lines.length === 0) {
+            previewElement.innerHTML = '';
+            return;
+        }
+
+        previewElement.innerHTML = '';
+        lines.forEach(line => {
+            const lineDiv = document.createElement('div');
+            lineDiv.className = 'lore-line';
+            renderMiniMessage(line, lineDiv);
+            previewElement.appendChild(lineDiv);
+        });
+    }
+
+    updateLorePreview();
+    loreTextarea.addEventListener('input', updateLorePreview);
 }

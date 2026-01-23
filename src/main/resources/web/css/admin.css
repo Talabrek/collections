@@ -1016,3 +1016,12 @@ body.is-dragging .item-browser-grid .browser-item {
 .minimessage-preview [style*="color"] {
     text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
+
+/* Lore preview styling */
+.lore-preview .lore-line {
+    padding: 2px 0;
+}
+
+.lore-preview .lore-line:not(:last-child) {
+    border-bottom: 1px dotted var(--border-color);
+}
