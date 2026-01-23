@@ -9,16 +9,16 @@ Requirements for the Web Control Panel milestone. Each maps to roadmap phases.
 
 ### Web Infrastructure
 
-- [ ] **WEB-01**: Plugin starts embedded Javalin web server on configurable port
-- [ ] **WEB-02**: Web server applies classloader fix for Bukkit compatibility
-- [ ] **WEB-03**: Web server stops gracefully on plugin disable (no port binding errors on reload)
-- [ ] **WEB-04**: Javalin/Jetty dependencies are relocated in shadowJar to avoid conflicts
-- [ ] **WEB-05**: Static files (HTML/JS/CSS) are served from plugin JAR
+- [x] **WEB-01**: Plugin starts embedded Javalin web server on configurable port
+- [x] **WEB-02**: Web server applies classloader fix for Bukkit compatibility
+- [x] **WEB-03**: Web server stops gracefully on plugin disable (no port binding errors on reload)
+- [x] **WEB-04**: Javalin/Jetty dependencies are relocated in shadowJar to avoid conflicts
+- [x] **WEB-05**: Static files (HTML/JS/CSS) are served from plugin JAR
 
 ### Authentication
 
-- [ ] **AUTH-01**: Web panel requires password from config.yml to access
-- [ ] **AUTH-02**: Password is hashed in config (not stored in plaintext)
+- [x] **AUTH-01**: Web panel requires password from config.yml to access
+- [x] **AUTH-02**: Password is hashed in config (not stored in plaintext)
 
 ### Collection CRUD
 
@@ -52,7 +52,7 @@ Requirements for the Web Control Panel milestone. Each maps to roadmap phases.
 
 - [ ] **INT-01**: "Reload" button applies changes to running server without restart
 - [ ] **INT-02**: Connection status indicator shows if web panel is connected to server
-- [ ] **INT-03**: All Bukkit API calls from web handlers execute on main thread
+- [x] **INT-03**: All Bukkit API calls from web handlers execute on main thread
 
 ### Documentation
 
@@ -104,14 +104,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| WEB-01 | Phase 18 | Pending |
-| WEB-02 | Phase 18 | Pending |
-| WEB-03 | Phase 18 | Pending |
-| WEB-04 | Phase 18 | Pending |
-| WEB-05 | Phase 18 | Pending |
-| AUTH-01 | Phase 18 | Pending |
-| AUTH-02 | Phase 18 | Pending |
-| INT-03 | Phase 18 | Pending |
+| WEB-01 | Phase 18 | Complete |
+| WEB-02 | Phase 18 | Complete |
+| WEB-03 | Phase 18 | Complete |
+| WEB-04 | Phase 18 | Complete |
+| WEB-05 | Phase 18 | Complete |
+| AUTH-01 | Phase 18 | Complete |
+| AUTH-02 | Phase 18 | Complete |
+| INT-03 | Phase 18 | Complete |
 | CRUD-01 | Phase 19 | Pending |
 | CRUD-02 | Phase 19 | Pending |
 | INT-02 | Phase 19 | Pending |
@@ -144,4 +144,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after roadmap creation*
+*Last updated: 2026-01-23 after Phase 18 complete*

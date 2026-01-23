@@ -34,7 +34,7 @@ See `.planning/milestones/v1.2-enhanced-ux/` for archived details.
 
 **Milestone Goal:** Enable visual collection management through an embedded web admin panel with full CRUD operations, drag-drop item builder, and live reload capability.
 
-- [ ] **Phase 18: Web Infrastructure** - Embedded Javalin server with auth and static file serving
+- [x] **Phase 18: Web Infrastructure** - Embedded Javalin server with auth and static file serving (complete 2026-01-23)
 - [ ] **Phase 19: Read-Only API** - Collection listing and detail viewing endpoints
 - [ ] **Phase 20: Write API + CRUD** - Create, edit, delete operations with reload
 - [ ] **Phase 21: Visual Builder** - Drag-drop item browser and collection editor
@@ -56,9 +56,9 @@ See `.planning/milestones/v1.2-enhanced-ux/` for archived details.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 18-01-PLAN.md - Add Javalin dependencies and shadowJar relocations
-- [ ] 18-02-PLAN.md - WebPanelManager with classloader fix and lifecycle
-- [ ] 18-03-PLAN.md - HTTP Basic auth, static files, and status endpoint
+- [x] 18-01-PLAN.md - Add Javalin dependencies and shadowJar relocations
+- [x] 18-02-PLAN.md - WebPanelManager with classloader fix and lifecycle
+- [x] 18-03-PLAN.md - HTTP Basic auth, static files, and status endpoint
 
 ### Phase 19: Read-Only API
 **Goal**: Admin can view all collections and their details through the web panel
@@ -145,7 +145,7 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 18. Web Infrastructure | v1.3 | 0/3 | Planned | - |
+| 18. Web Infrastructure | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 19. Read-Only API | v1.3 | 0/TBD | Not started | - |
 | 20. Write API + CRUD | v1.3 | 0/TBD | Not started | - |
 | 21. Visual Builder | v1.3 | 0/TBD | Not started | - |
@@ -154,4 +154,4 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 
 ---
 *Roadmap created: 2026-01-23*
-*Last updated: 2026-01-23*
+*Last updated: 2026-01-23 after Phase 18 complete*
