@@ -12,6 +12,9 @@ let allMaterials = [];
 let browserSortable = null;
 let collectionSortable = null;
 
+// Weight adjustment state
+let isAdjustingWeights = false;
+
 // Collection templates
 const templates = {
     forest: {
@@ -226,6 +229,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         itemsContainer.addEventListener('drop', function() {
             this.classList.remove('drag-over');
+        });
+
+        // Weight validation via event delegation
+        itemsContainer.addEventListener('input', function(e) {
+            if (e.target.matches('[name^="item-weight-"]')) {
+                // Clear the corresponding percentage input when weight is manually changed
+                const idx = e.target.name.replace('item-weight-', '');
+                const percentInput = document.querySelector('[name="item-percent-' + idx + '"]');
+                if (percentInput) percentInput.value = '';
+                validateWeights();
+            } else if (e.target.matches('[name^="item-percent-"]')) {
+                // Find index and trigger adjustment
+                const idx = e.target.name.replace('item-percent-', '');
+                const rows = Array.from(document.querySelectorAll('.item-row'));
+                const rowIndex = rows.findIndex(row => row.querySelector('[name="item-percent-' + idx + '"]'));
+                if (rowIndex >= 0) {
+                    const percent = parseFloat(e.target.value);
+                    if (!isNaN(percent)) {
+                        adjustWeightByPercentage(rowIndex, percent);
+                    }
+                }
+            }
         });
     }
 
@@ -610,9 +635,14 @@ function addItemRow(item) {
                 <input type="text" name="item-material-${idx}" placeholder="DIAMOND" value="${item?.material || ''}">
                 <span class="error-message" data-field="items[${idx}].material"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group weight-group">
                 <label>Weight</label>
-                <input type="number" name="item-weight-${idx}" min="1" value="${item?.weight || 10}">
+                <div class="weight-inputs">
+                    <input type="number" name="item-weight-${idx}" min="1" value="${item?.weight || 10}">
+                    <span class="weight-or">or</span>
+                    <input type="number" name="item-percent-${idx}" min="0" max="100" step="0.1" placeholder="%">
+                    <span class="weight-percentage"></span>
+                </div>
                 <span class="error-message" data-field="items[${idx}].weight"></span>
             </div>
             <div class="form-group checkbox-group">
@@ -627,12 +657,14 @@ function addItemRow(item) {
 
     container.appendChild(row);
     renumberItems();
+    validateWeights();
 }
 
 function removeItemRow(button) {
     const row = button.closest('.item-row');
     row.remove();
     renumberItems();
+    validateWeights();
 }
 
 function renumberItems() {
@@ -1043,9 +1075,14 @@ function convertBrowserItemToFormRow(browserElement, material) {
                 <input type="text" name="item-material-${idx}" value="${material}" readonly>
                 <span class="error-message" data-field="items[${idx}].material"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group weight-group">
                 <label>Weight</label>
-                <input type="number" name="item-weight-${idx}" min="1" value="10">
+                <div class="weight-inputs">
+                    <input type="number" name="item-weight-${idx}" min="1" value="10">
+                    <span class="weight-or">or</span>
+                    <input type="number" name="item-percent-${idx}" min="0" max="100" step="0.1" placeholder="%">
+                    <span class="weight-percentage"></span>
+                </div>
                 <span class="error-message" data-field="items[${idx}].weight"></span>
             </div>
             <div class="form-group checkbox-group">
@@ -1057,4 +1094,166 @@ function convertBrowserItemToFormRow(browserElement, material) {
             <textarea name="item-lore-${idx}" rows="2" placeholder="Line 1&#10;Line 2"></textarea>
         </div>
     `;
+
+    validateWeights();
+}
+
+// ========== Weight Validation ==========
+
+function validateWeights() {
+    if (isAdjustingWeights) return;
+
+    const container = document.getElementById('items-container');
+    const weightInputs = container.querySelectorAll('[name^="item-weight-"]');
+    const weights = Array.from(weightInputs).map(input => parseInt(input.value) || 0);
+    const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+
+    // Update or create validation message element
+    let validationEl = document.getElementById('weight-validation');
+    if (!validationEl) {
+        validationEl = document.createElement('div');
+        validationEl.id = 'weight-validation';
+        const addBtn = document.getElementById('add-item-btn');
+        if (addBtn && addBtn.parentNode) {
+            addBtn.parentNode.insertBefore(validationEl, addBtn);
+        }
+    }
+
+    // Set validation message
+    if (weightInputs.length === 0) {
+        validationEl.textContent = '';
+        validationEl.className = 'weight-validation';
+    } else if (totalWeight === 0) {
+        validationEl.textContent = 'Set weights to see drop distribution';
+        validationEl.className = 'weight-validation weight-info';
+    } else if (totalWeight === 100) {
+        validationEl.textContent = 'Weights sum to 100%';
+        validationEl.className = 'weight-validation weight-success';
+    } else {
+        validationEl.textContent = 'Weights sum to ' + totalWeight + '% (should be 100%)';
+        validationEl.className = 'weight-validation weight-warning';
+    }
+
+    // Update percentage display for each item
+    weightInputs.forEach((input, idx) => {
+        const weight = weights[idx];
+        const percentage = totalWeight > 0 ? ((weight / totalWeight) * 100).toFixed(1) : '0.0';
+        const row = input.closest('.item-row');
+
+        // Find or create percentage span
+        let percentSpan = row.querySelector('.weight-percentage');
+        if (!percentSpan) {
+            const weightGroup = input.closest('.weight-group') || input.parentNode;
+            percentSpan = document.createElement('span');
+            percentSpan.className = 'weight-percentage';
+            weightGroup.appendChild(percentSpan);
+        }
+        percentSpan.textContent = '(' + percentage + '% drop)';
+    });
+}
+
+function adjustWeightByPercentage(itemIndex, targetPercent) {
+    if (targetPercent < 0 || targetPercent > 100) return;
+
+    isAdjustingWeights = true;
+
+    const container = document.getElementById('items-container');
+    const weightInputs = Array.from(container.querySelectorAll('[name^="item-weight-"]'));
+    const percentInputs = Array.from(container.querySelectorAll('[name^="item-percent-"]'));
+
+    if (weightInputs.length === 0) {
+        isAdjustingWeights = false;
+        return;
+    }
+
+    // Get current weights
+    const weights = weightInputs.map(input => parseInt(input.value) || 0);
+    const currentTotal = weights.reduce((a, b) => a + b, 0);
+
+    // Target weight (we work in integer weights that sum to 100)
+    const targetWeight = Math.round(targetPercent);
+    const remaining = 100 - targetWeight;
+
+    if (weightInputs.length === 1) {
+        // Only one item - set to 100
+        weightInputs[0].value = 100;
+        isAdjustingWeights = false;
+        validateWeights();
+        return;
+    }
+
+    // Get sum of other items' current weights
+    const otherTotal = currentTotal - weights[itemIndex];
+
+    if (otherTotal === 0) {
+        // Other items have no weight - distribute evenly
+        const evenSplit = Math.floor(remaining / (weightInputs.length - 1));
+        let distributed = 0;
+
+        weightInputs.forEach((input, idx) => {
+            if (idx === itemIndex) {
+                input.value = targetWeight;
+            } else {
+                input.value = evenSplit;
+                distributed += evenSplit;
+            }
+        });
+
+        // Fix rounding - add remainder to last non-target item
+        const remainder = remaining - distributed;
+        if (remainder !== 0) {
+            for (let i = weightInputs.length - 1; i >= 0; i--) {
+                if (i !== itemIndex) {
+                    weightInputs[i].value = parseInt(weightInputs[i].value) + remainder;
+                    break;
+                }
+            }
+        }
+    } else {
+        // Distribute proportionally based on current weights
+        let distributed = 0;
+        const newWeights = [];
+
+        weightInputs.forEach((input, idx) => {
+            if (idx === itemIndex) {
+                newWeights[idx] = targetWeight;
+            } else {
+                const proportion = weights[idx] / otherTotal;
+                const newWeight = Math.round(remaining * proportion);
+                newWeights[idx] = newWeight;
+                distributed += newWeight;
+            }
+        });
+
+        // Fix rounding error by adjusting the largest non-target weight
+        const difference = remaining - distributed;
+        if (difference !== 0) {
+            let largestIdx = -1;
+            let largestWeight = -1;
+            weights.forEach((w, idx) => {
+                if (idx !== itemIndex && w > largestWeight) {
+                    largestWeight = w;
+                    largestIdx = idx;
+                }
+            });
+            if (largestIdx >= 0) {
+                newWeights[largestIdx] += difference;
+            }
+        }
+
+        // Apply new weights
+        weightInputs.forEach((input, idx) => {
+            input.value = Math.max(1, newWeights[idx]); // Ensure minimum of 1
+        });
+    }
+
+    // Clear all percentage inputs (they're just for input, not display)
+    percentInputs.forEach((input, idx) => {
+        if (idx !== itemIndex) {
+            input.value = '';
+        }
+    });
+
+    isAdjustingWeights = false;
+    validateWeights();
 }

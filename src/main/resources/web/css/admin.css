@@ -933,3 +933,58 @@ body.is-dragging .item-browser-grid .browser-item {
         font-size: 2rem;
     }
 }
+
+/* ========== Weight Validation ========== */
+.weight-validation {
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.weight-validation:empty {
+    display: none;
+}
+
+.weight-validation.weight-info {
+    background: rgba(0, 217, 255, 0.1);
+    color: var(--accent-color);
+}
+
+.weight-validation.weight-success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+.weight-validation.weight-warning {
+    background: rgba(255, 170, 0, 0.15);
+    color: #ffaa00;
+}
+
+/* ========== Weight Input Group ========== */
+.weight-group .weight-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.weight-group .weight-inputs input[name^="item-weight-"] {
+    width: 80px;
+}
+
+.weight-group .weight-inputs input[name^="item-percent-"] {
+    width: 70px;
+}
+
+.weight-or {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.weight-percentage {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
