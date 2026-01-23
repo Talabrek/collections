@@ -299,6 +299,14 @@ function resetForm() {
     document.getElementById('items-container').innerHTML = '';
     itemRowCounter = 0;
     clearValidationErrors();
+
+    // Reset spawn conditions to defaults
+    document.getElementById('form-biomes').value = '';
+    document.getElementById('dim-normal').checked = true;
+    document.getElementById('dim-nether').checked = false;
+    document.getElementById('dim-end').checked = false;
+    document.getElementById('form-min-y').value = '-64';
+    document.getElementById('form-max-y').value = '320';
 }
 
 function populateForm(c) {
@@ -313,6 +321,22 @@ function populateForm(c) {
     document.getElementById('form-reward-fireworks').checked = c.rewards.fireworks || false;
     document.getElementById('form-reward-commands').value = (c.rewards.commands || []).join('\n');
     document.getElementById('form-reward-message').value = c.rewards.message || '';
+
+    // Populate spawn conditions
+    if (c.biomes && c.biomes.length > 0) {
+        document.getElementById('form-biomes').value = c.biomes.join(', ');
+    } else {
+        document.getElementById('form-biomes').value = '';
+    }
+
+    // Set dimension checkboxes
+    document.getElementById('dim-normal').checked = !c.dimensions || c.dimensions.length === 0 || c.dimensions.includes('NORMAL');
+    document.getElementById('dim-nether').checked = c.dimensions && c.dimensions.includes('NETHER');
+    document.getElementById('dim-end').checked = c.dimensions && c.dimensions.includes('THE_END');
+
+    // Set Y levels
+    document.getElementById('form-min-y').value = c.minY !== undefined && c.minY !== null ? c.minY : -64;
+    document.getElementById('form-max-y').value = c.maxY !== undefined && c.maxY !== null ? c.maxY : 320;
 
     // Add item rows
     c.items.forEach(item => addItemRow(item));
@@ -409,6 +433,17 @@ function collectFormData() {
     const zones = document.getElementById('form-zones').value;
     const requires = document.getElementById('form-requires').value;
     const commands = document.getElementById('form-reward-commands').value;
+    const biomes = document.getElementById('form-biomes').value;
+
+    // Collect checked dimensions
+    const dimensions = [];
+    if (document.getElementById('dim-normal').checked) dimensions.push('NORMAL');
+    if (document.getElementById('dim-nether').checked) dimensions.push('NETHER');
+    if (document.getElementById('dim-end').checked) dimensions.push('THE_END');
+
+    // Get Y levels (null if default)
+    const minY = parseInt(document.getElementById('form-min-y').value);
+    const maxY = parseInt(document.getElementById('form-max-y').value);
 
     return {
         id: document.getElementById('form-id').value,
@@ -424,7 +459,11 @@ function collectFormData() {
             message: document.getElementById('form-reward-message').value || null
         },
         zones: zones ? zones.split(',').map(z => z.trim()).filter(z => z) : [],
-        requires: requires ? requires.split(',').map(r => r.trim()).filter(r => r) : []
+        requires: requires ? requires.split(',').map(r => r.trim()).filter(r => r) : [],
+        biomes: biomes ? biomes.split(',').map(b => b.trim()).filter(b => b) : null,
+        dimensions: dimensions.length > 0 ? dimensions : null,
+        minY: (minY !== -64) ? minY : null,
+        maxY: (maxY !== 320) ? maxY : null
     };
 }
 
