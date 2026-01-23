@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 
 Milestone: v1.3 Web Control Panel
 Phase: 21 of 23 (Visual Builder)
-Plan: 1 of 2 complete
-Status: In progress
-Last activity: 2026-01-23 - Completed 21-01-PLAN.md (Materials API + Spawn Conditions)
+Plan: 2 of 2 complete
+Status: Phase complete
+Last activity: 2026-01-23 - Completed 21-03-PLAN.md (Visual Builder JavaScript)
 
-Progress: [██████████░░░░░░░░░░] 50% (1 of 2 plans in phase 21)
+Progress: [████████████████████] 100% (2 of 2 plans in phase 21)
 
 ## Shipped Milestones
 
@@ -46,8 +46,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~34 min
 
 **v1.3 Velocity (in progress):**
-- Plans completed: 9
-- Duration: 49 min (6 + 5 + 6 + 5 + 5 + 6 + 5 + 5 + 6)
+- Plans completed: 10
+- Duration: 52 min (6 + 5 + 6 + 5 + 5 + 6 + 5 + 5 + 6 + 3)
 
 ## Accumulated Context
 
@@ -71,6 +71,11 @@ Full decision history archived in `.planning/milestones/`.
 | 20-02 | CRUD-01: RuntimeException message prefix for main thread error translation | Clean error propagation from main thread to HTTP response codes |
 | 21-01 | API-02: Material enum filtering done without main thread bridge | Material.values() is static, safe on web thread |
 | 21-01 | FORM-01: Spawn conditions default to Overworld, Y -64 to 320 | Minecraft 1.21 world bounds |
+| 21-03 | FORM-02: Display first 200 materials, search narrows results | Performance optimization for 1400+ materials |
+| 21-03 | SEARCH-01: 150ms debounce on search input | Prevents flicker and excessive re-renders |
+| 21-03 | DRAG-01: Clone-on-drag from browser | Browser items remain selectable after drag |
+| 21-03 | DRAG-02: Drag handle for collection reordering | Prevents accidental reordering |
+| 21-03 | CACHE-01: Cache materials in allMaterials array | Avoid redundant API calls |
 
 ### Known Issues
 
@@ -85,8 +90,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed 21-01-PLAN.md (Materials API + Spawn Conditions)
+Stopped at: Completed 21-03-PLAN.md (Visual Builder JavaScript) - Phase 21 complete
 Resume file: None
 
 ---
-*Updated: 2026-01-23 after 21-01 complete*
+*Updated: 2026-01-23 after 21-03 complete*
