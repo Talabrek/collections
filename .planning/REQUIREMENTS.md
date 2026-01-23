@@ -24,11 +24,11 @@ Requirements for the Web Control Panel milestone. Each maps to roadmap phases.
 
 - [x] **CRUD-01**: Admin can view list of all collections in web panel
 - [x] **CRUD-02**: Admin can view details of a single collection
-- [ ] **CRUD-03**: Admin can create a new collection from scratch
-- [ ] **CRUD-04**: Admin can edit any field of an existing collection
-- [ ] **CRUD-05**: Admin can delete a collection (with confirmation prompt)
-- [ ] **CRUD-06**: YAML validation prevents saving invalid configurations
-- [ ] **CRUD-07**: Validation errors display clear messages with field locations
+- [x] **CRUD-03**: Admin can create a new collection from scratch
+- [x] **CRUD-04**: Admin can edit any field of an existing collection
+- [x] **CRUD-05**: Admin can delete a collection (with confirmation prompt)
+- [x] **CRUD-06**: YAML validation prevents saving invalid configurations
+- [x] **CRUD-07**: Validation errors display clear messages with field locations
 
 ### Visual Builder
 
@@ -50,7 +50,7 @@ Requirements for the Web Control Panel milestone. Each maps to roadmap phases.
 
 ### Server Integration
 
-- [ ] **INT-01**: "Reload" button applies changes to running server without restart
+- [x] **INT-01**: "Reload" button applies changes to running server without restart
 - [x] **INT-02**: Connection status indicator shows if web panel is connected to server
 - [x] **INT-03**: All Bukkit API calls from web handlers execute on main thread
 
@@ -115,12 +115,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CRUD-01 | Phase 19 | Complete |
 | CRUD-02 | Phase 19 | Complete |
 | INT-02 | Phase 19 | Complete |
-| CRUD-03 | Phase 20 | Pending |
-| CRUD-04 | Phase 20 | Pending |
-| CRUD-05 | Phase 20 | Pending |
-| CRUD-06 | Phase 20 | Pending |
-| CRUD-07 | Phase 20 | Pending |
-| INT-01 | Phase 20 | Pending |
+| CRUD-03 | Phase 20 | Complete |
+| CRUD-04 | Phase 20 | Complete |
+| CRUD-05 | Phase 20 | Complete |
+| CRUD-06 | Phase 20 | Complete |
+| CRUD-07 | Phase 20 | Complete |
+| INT-01 | Phase 20 | Complete |
 | VB-01 | Phase 21 | Pending |
 | VB-02 | Phase 21 | Pending |
 | VB-03 | Phase 21 | Pending |
@@ -144,4 +144,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 19 complete*
+*Last updated: 2026-01-23 after Phase 20 complete*

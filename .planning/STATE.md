@@ -84,7 +84,7 @@ None for v1.3 yet.
 
 Last session: 2026-01-23
 Stopped at: Phase 20 complete
-Resume with: `/gsd:execute-phase 21` to start Player Stats API phase
+Resume with: `/gsd:plan-phase 21` to plan Visual Builder phase
 
 ---
 *Updated: 2026-01-23 after 20-03 complete*

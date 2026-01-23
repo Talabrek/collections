@@ -36,7 +36,7 @@ See `.planning/milestones/v1.2-enhanced-ux/` for archived details.
 
 - [x] **Phase 18: Web Infrastructure** - Embedded Javalin server with auth and static file serving (complete 2026-01-23)
 - [x] **Phase 19: Read-Only API** - Collection listing and detail viewing endpoints (complete 2026-01-23)
-- [ ] **Phase 20: Write API + CRUD** - Create, edit, delete operations with reload
+- [x] **Phase 20: Write API + CRUD** - Create, edit, delete operations with reload (complete 2026-01-23)
 - [ ] **Phase 21: Visual Builder** - Drag-drop item browser and collection editor
 - [ ] **Phase 22: Visual Builder Enhancements** - MiniMessage preview, templates, weight validation
 - [ ] **Phase 23: Documentation** - README update with setup instructions and screenshots
@@ -88,9 +88,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 20-01-PLAN.md - Request DTOs, CollectionValidator, and CollectionYamlWriter
-- [ ] 20-02-PLAN.md - CRUD endpoints in CollectionsController with reload
-- [ ] 20-03-PLAN.md - Frontend forms, delete modal, and validation feedback
+- [x] 20-01-PLAN.md - Request DTOs, CollectionValidator, and CollectionYamlWriter
+- [x] 20-02-PLAN.md - CRUD endpoints in CollectionsController with reload
+- [x] 20-03-PLAN.md - Frontend forms, delete modal, and validation feedback
 
 ### Phase 21: Visual Builder
 **Goal**: Admin can build collections by dragging items from a visual browser
@@ -147,11 +147,11 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 |-------|-----------|----------------|--------|-----------|
 | 18. Web Infrastructure | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 19. Read-Only API | v1.3 | 2/2 | ✓ Complete | 2026-01-23 |
-| 20. Write API + CRUD | v1.3 | 0/3 | Planned | - |
+| 20. Write API + CRUD | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 21. Visual Builder | v1.3 | 0/TBD | Not started | - |
 | 22. Visual Builder Enhancements | v1.3 | 0/TBD | Not started | - |
 | 23. Documentation | v1.3 | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 20 planning*
+*Last updated: 2026-01-23 after Phase 20 complete*
