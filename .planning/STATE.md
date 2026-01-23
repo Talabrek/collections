@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 
 Milestone: v1.3 Web Control Panel
 Phase: 18 of 23 (Web Infrastructure)
-Plan: Ready to plan
-Status: Ready to plan
-Last activity: 2026-01-23 - Roadmap created for v1.3
+Plan: 1 of 3 complete
+Status: In progress
+Last activity: 2026-01-23 - Completed 18-01-PLAN.md (Javalin dependencies)
 
-Progress: [==================..] 74% (Phases 1-17 of 23 complete)
+Progress: [==================..] 74% (Phases 1-17 of 23 complete, Phase 18 plan 1/3)
 
 ## Shipped Milestones
 
@@ -45,12 +45,20 @@ See `.planning/milestones/` for archived details.
 - Average duration: 5.7 min
 - Total execution time: ~34 min
 
+**v1.3 Velocity (in progress):**
+- Plans completed: 1
+- Duration: 6 min
+
 ## Accumulated Context
 
 ### Key Decisions
 
 Major decisions are logged in PROJECT.md Key Decisions table.
 Full decision history archived in `.planning/milestones/`.
+
+| Phase | Decision | Rationale |
+|-------|----------|-----------|
+| 18-01 | WEB-04: Relocate all Javalin/Jetty transitive deps | Avoid conflicts with plugins like Dynmap |
 
 ### Known Issues
 
@@ -65,8 +73,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Roadmap created for v1.3 Web Control Panel
-Resume with: `/gsd:plan-phase 18` to begin Web Infrastructure phase
+Stopped at: Completed 18-01-PLAN.md (Javalin dependencies)
+Resume with: `/gsd:execute-plan 18-02` to continue Web Infrastructure phase
 
 ---
-*Updated: 2026-01-23 after roadmap creation*
+*Updated: 2026-01-23 after 18-01 completion*
