@@ -17,9 +17,11 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.InternalServerErrorResponse;
 import io.javalin.http.NotFoundResponse;
+import org.bukkit.Material;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +64,7 @@ public class CollectionsController {
         app.put("/api/collections/{id}", this::updateCollection);
         app.delete("/api/collections/{id}", this::deleteCollection);
         app.post("/api/reload", this::reloadCollections);
+        app.get("/api/materials", this::listMaterials);
     }
 
     /**
@@ -274,6 +277,23 @@ public class CollectionsController {
         } catch (MainThreadBridge.MainThreadException e) {
             throw new InternalServerErrorResponse("Server busy, please retry");
         }
+    }
+
+    /**
+     * GET /api/materials - List all valid Minecraft material names.
+     *
+     * Returns JSON array of material names sorted alphabetically.
+     * Filters out legacy materials and non-item materials.
+     */
+    private void listMaterials(Context ctx) {
+        // No main thread needed - Material enum is static
+        List<String> materials = Arrays.stream(Material.values())
+            .filter(m -> !m.isLegacy())
+            .filter(Material::isItem)
+            .map(Material::name)
+            .sorted()
+            .toList();
+        ctx.json(materials);
     }
 
     /**
