@@ -12,6 +12,153 @@ let allMaterials = [];
 let browserSortable = null;
 let collectionSortable = null;
 
+// Collection templates
+const templates = {
+    forest: {
+        name: "Forest Collection",
+        tier: "COMMON",
+        icon: "OAK_SAPLING",
+        biomes: ["FOREST", "BIRCH_FOREST", "FLOWER_FOREST"],
+        dimensions: ["NORMAL"],
+        minY: 60,
+        maxY: 120,
+        rewardXp: 100,
+        items: [
+            { id: "oak_log", name: "Oak Log", material: "OAK_LOG", weight: 15 },
+            { id: "birch_log", name: "Birch Log", material: "BIRCH_LOG", weight: 15 },
+            { id: "oak_sapling", name: "Oak Sapling", material: "OAK_SAPLING", weight: 10 },
+            { id: "fern", name: "Fern", material: "FERN", weight: 8 },
+            { id: "dandelion", name: "Dandelion", material: "DANDELION", weight: 8 }
+        ]
+    },
+    ocean: {
+        name: "Ocean Collection",
+        tier: "UNCOMMON",
+        icon: "TROPICAL_FISH",
+        biomes: ["OCEAN", "DEEP_OCEAN", "WARM_OCEAN", "LUKEWARM_OCEAN", "COLD_OCEAN"],
+        dimensions: ["NORMAL"],
+        minY: -64,
+        maxY: 63,
+        rewardXp: 150,
+        items: [
+            { id: "tropical_fish", name: "Tropical Fish", material: "TROPICAL_FISH", weight: 12 },
+            { id: "cod", name: "Cod", material: "COD", weight: 12 },
+            { id: "kelp", name: "Kelp", material: "KELP", weight: 10 },
+            { id: "seagrass", name: "Seagrass", material: "SEAGRASS", weight: 10 },
+            { id: "prismarine_shard", name: "Prismarine Shard", material: "PRISMARINE_SHARD", weight: 8 }
+        ]
+    },
+    nether: {
+        name: "Nether Collection",
+        tier: "RARE",
+        icon: "NETHERRACK",
+        biomes: ["NETHER_WASTES", "CRIMSON_FOREST", "WARPED_FOREST", "BASALT_DELTAS", "SOUL_SAND_VALLEY"],
+        dimensions: ["NETHER"],
+        minY: 0,
+        maxY: 128,
+        rewardXp: 250,
+        items: [
+            { id: "netherrack", name: "Netherrack", material: "NETHERRACK", weight: 15 },
+            { id: "soul_sand", name: "Soul Sand", material: "SOUL_SAND", weight: 12 },
+            { id: "crimson_fungus", name: "Crimson Fungus", material: "CRIMSON_FUNGUS", weight: 10 },
+            { id: "warped_fungus", name: "Warped Fungus", material: "WARPED_FUNGUS", weight: 10 },
+            { id: "blaze_rod", name: "Blaze Rod", material: "BLAZE_ROD", weight: 5 }
+        ]
+    },
+    cave: {
+        name: "Cave Collection",
+        tier: "COMMON",
+        icon: "COAL",
+        biomes: ["DRIPSTONE_CAVES", "LUSH_CAVES", "DEEP_DARK"],
+        dimensions: ["NORMAL"],
+        minY: -64,
+        maxY: 0,
+        rewardXp: 120,
+        items: [
+            { id: "coal", name: "Coal", material: "COAL", weight: 15 },
+            { id: "iron_ore", name: "Iron Ore", material: "IRON_ORE", weight: 12 },
+            { id: "dripstone", name: "Pointed Dripstone", material: "POINTED_DRIPSTONE", weight: 10 },
+            { id: "glow_berries", name: "Glow Berries", material: "GLOW_BERRIES", weight: 8 },
+            { id: "amethyst", name: "Amethyst Shard", material: "AMETHYST_SHARD", weight: 6 }
+        ]
+    },
+    end: {
+        name: "End Collection",
+        tier: "EPIC",
+        icon: "END_STONE",
+        biomes: ["THE_END", "END_HIGHLANDS", "END_MIDLANDS", "SMALL_END_ISLANDS"],
+        dimensions: ["THE_END"],
+        minY: 0,
+        maxY: 256,
+        rewardXp: 500,
+        items: [
+            { id: "end_stone", name: "End Stone", material: "END_STONE", weight: 15 },
+            { id: "chorus_fruit", name: "Chorus Fruit", material: "CHORUS_FRUIT", weight: 12 },
+            { id: "ender_pearl", name: "Ender Pearl", material: "ENDER_PEARL", weight: 10 },
+            { id: "shulker_shell", name: "Shulker Shell", material: "SHULKER_SHELL", weight: 5 },
+            { id: "dragon_breath", name: "Dragon's Breath", material: "DRAGON_BREATH", weight: 3 }
+        ]
+    },
+    desert: {
+        name: "Desert Collection",
+        tier: "COMMON",
+        icon: "SAND",
+        biomes: ["DESERT", "BADLANDS", "SAVANNA"],
+        dimensions: ["NORMAL"],
+        minY: 60,
+        maxY: 100,
+        rewardXp: 100,
+        items: [
+            { id: "sand", name: "Sand", material: "SAND", weight: 15 },
+            { id: "cactus", name: "Cactus", material: "CACTUS", weight: 12 },
+            { id: "dead_bush", name: "Dead Bush", material: "DEAD_BUSH", weight: 10 },
+            { id: "terracotta", name: "Terracotta", material: "TERRACOTTA", weight: 8 },
+            { id: "rabbit_hide", name: "Rabbit Hide", material: "RABBIT_HIDE", weight: 6 }
+        ]
+    }
+};
+
+function loadTemplate(templateName) {
+    const template = templates[templateName];
+    if (!template) return;
+
+    // Clear the form
+    resetForm();
+
+    // Generate unique ID suggestion (template name + timestamp suffix)
+    const timestamp = Date.now().toString().slice(-4);
+    document.getElementById('form-id').value = templateName + '_' + timestamp;
+
+    // Populate basic info
+    document.getElementById('form-name').value = template.name;
+    document.getElementById('form-tier').value = template.tier;
+    document.getElementById('form-icon').value = template.icon;
+
+    // Populate spawn conditions
+    document.getElementById('form-biomes').value = template.biomes.join(', ');
+
+    // Set dimension checkboxes
+    document.getElementById('dim-normal').checked = template.dimensions.includes('NORMAL');
+    document.getElementById('dim-nether').checked = template.dimensions.includes('NETHER');
+    document.getElementById('dim-end').checked = template.dimensions.includes('THE_END');
+
+    // Set Y levels
+    document.getElementById('form-min-y').value = template.minY;
+    document.getElementById('form-max-y').value = template.maxY;
+
+    // Set reward experience
+    document.getElementById('form-reward-xp').value = template.rewardXp;
+
+    // Clear items container and add template items
+    document.getElementById('items-container').innerHTML = '';
+    itemRowCounter = 0;
+    template.items.forEach(item => {
+        addItemRow(item);
+    });
+
+    showToast('Template loaded', 'success');
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     startHeartbeat();
@@ -306,10 +453,31 @@ function showCreateForm() {
     currentEditId = null;
     document.getElementById('form-title').textContent = 'New Collection';
     document.getElementById('form-id').disabled = false;
-    resetForm();
-    addItemRow(); // Start with one empty item
+
+    // Show template selector
+    document.getElementById('template-selector').classList.remove('hidden');
+    document.getElementById('collection-form').classList.add('hidden');
+
     showView('view-form');
     initItemBrowser();
+}
+
+function startBlankCollection() {
+    // Hide template selector and show form
+    document.getElementById('template-selector').classList.add('hidden');
+    document.getElementById('collection-form').classList.remove('hidden');
+
+    resetForm();
+    addItemRow(); // Start with one empty item
+    initCollectionSortable();
+}
+
+function startFromTemplate(templateName) {
+    // Hide template selector and show form
+    document.getElementById('template-selector').classList.add('hidden');
+    document.getElementById('collection-form').classList.remove('hidden');
+
+    loadTemplate(templateName);
     initCollectionSortable();
 }
 
@@ -317,6 +485,11 @@ async function showEditForm(id) {
     currentEditId = id;
     document.getElementById('form-title').textContent = 'Edit Collection';
     document.getElementById('form-id').disabled = true; // Can't change ID
+
+    // Hide template selector and show form directly for edit mode
+    document.getElementById('template-selector').classList.add('hidden');
+    document.getElementById('collection-form').classList.remove('hidden');
+
     resetForm();
 
     try {
