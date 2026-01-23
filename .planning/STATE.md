@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 ## Current Position
 
 Milestone: v1.3 Web Control Panel
-Phase: 20 of 23 (Write API + CRUD)
-Plan: 3 of 3 complete
-Status: Phase complete
-Last activity: 2026-01-23 - Completed 20-03-PLAN.md (Admin CRUD UI)
+Phase: 21 of 23 (Visual Builder)
+Plan: 2 of 6 complete
+Status: In progress
+Last activity: 2026-01-23 - Completed 21-02-PLAN.md (Visual Builder Layout)
 
-Progress: [####################] 100% (Phase 20 complete)
+Progress: [████░░░░░░░░░░░░░░░░] 33% (2 of 6 plans in phase 21)
 
 ## Shipped Milestones
 
@@ -46,8 +46,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~34 min
 
 **v1.3 Velocity (in progress):**
-- Plans completed: 8
-- Duration: 43 min (6 + 5 + 6 + 5 + 5 + 6 + 5 + 5)
+- Plans completed: 9
+- Duration: 45 min (6 + 5 + 6 + 5 + 5 + 6 + 5 + 5 + 2)
 
 ## Accumulated Context
 
@@ -69,6 +69,8 @@ Full decision history archived in `.planning/milestones/`.
 | 20-01 | DTO-01: Java records with nullable types for request DTOs | Records provide immutable transfer, nullable handles missing JSON |
 | 20-01 | VAL-01: Use isValid instead of valid for ValidationResult | Avoids Java record accessor/static method name conflict |
 | 20-02 | CRUD-01: RuntimeException message prefix for main thread error translation | Clean error propagation from main thread to HTTP response codes |
+| 21-02 | VB-01: SortableJS from CDN (not npm) | Simpler integration without build step for web panel |
+| 21-02 | VB-02: Browser panel sticky positioning | Keeps item browser visible while scrolling items |
 
 ### Known Issues
 
@@ -83,8 +85,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Phase 20 complete
-Resume with: `/gsd:plan-phase 21` to plan Visual Builder phase
+Stopped at: Completed 21-02-PLAN.md (Visual Builder Layout)
+Resume file: None
 
 ---
-*Updated: 2026-01-23 after 20-03 complete*
+*Updated: 2026-01-23 after 21-02 complete*
