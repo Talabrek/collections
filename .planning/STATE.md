@@ -5,17 +5,17 @@
 See: .planning/PROJECT.md (updated 2026-01-23)
 
 **Core value:** Every player interaction must work correctly - collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
-**Current focus:** v1.3 Web Control Panel - Phase 19 (API Endpoints)
+**Current focus:** v1.3 Web Control Panel - Phase 19 complete, ready for Phase 20
 
 ## Current Position
 
 Milestone: v1.3 Web Control Panel
-Phase: 19 of 23 (Read-Only API)
-Plan: 1 of 2 complete
-Status: In progress
-Last activity: 2026-01-23 - Completed 19-01-PLAN.md (collections endpoints)
+Phase: 19 of 23 (Read-Only API) - COMPLETE
+Plan: 2 of 2 complete
+Status: Phase complete
+Last activity: 2026-01-23 - Completed 19-02-PLAN.md (collection browser frontend)
 
-Progress: [==================..] 80% (Phase 19 plan 1 complete)
+Progress: [####################] 100% (Phase 19 complete)
 
 ## Shipped Milestones
 
@@ -46,8 +46,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~34 min
 
 **v1.3 Velocity (in progress):**
-- Plans completed: 4
-- Duration: 22 min (6 + 5 + 6 + 5)
+- Plans completed: 5
+- Duration: 27 min (6 + 5 + 6 + 5 + 5)
 
 ## Accumulated Context
 
@@ -64,6 +64,8 @@ Full decision history archived in `.planning/milestones/`.
 | 18-03 | AUTH-01: HTTP Basic Auth for API routes | Simple, browser-native authentication |
 | 18-03 | WEB-05: Static files at root, API at /api/ | Clean separation of concerns |
 | 19-01 | API-01: 2000ms timeout for MainThreadBridge calls | Ensures API responses complete within requirements |
+| 19-02 | UI-01: Hash-based routing (#collection/{id}) | Enables back/forward navigation without server round-trips |
+| 19-02 | UI-02: 30-second heartbeat interval | Balances responsiveness with minimal server load |
 
 ### Known Issues
 
@@ -78,8 +80,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed 19-01-PLAN.md (collections endpoints)
-Resume file: .planning/phases/19-read-only-api/19-02-PLAN.md
+Stopped at: Completed Phase 19 (Read-Only API)
+Resume file: .planning/phases/20-player-data-api/20-01-PLAN.md
 
 ---
-*Updated: 2026-01-23 after 19-01 plan execution complete*
+*Updated: 2026-01-23 after Phase 19 complete*
