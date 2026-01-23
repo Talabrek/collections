@@ -53,6 +53,48 @@
                     <button id="form-back-btn" class="btn-back">&larr; Cancel</button>
                     <h2 id="form-title">New Collection</h2>
                 </div>
+
+                <!-- Template Selector (shown only for new collections) -->
+                <div id="template-selector" class="template-selector hidden">
+                    <h3>Choose a Template</h3>
+                    <p class="selector-subtitle">Start with a pre-configured collection or build from scratch</p>
+                    <div class="template-grid">
+                        <button type="button" class="template-btn" data-template="forest">
+                            <span class="template-icon">🌲</span>
+                            <span class="template-name">Forest</span>
+                            <span class="template-desc">Trees & woodland items</span>
+                        </button>
+                        <button type="button" class="template-btn" data-template="ocean">
+                            <span class="template-icon">🌊</span>
+                            <span class="template-name">Ocean</span>
+                            <span class="template-desc">Fish & underwater items</span>
+                        </button>
+                        <button type="button" class="template-btn" data-template="nether">
+                            <span class="template-icon">🔥</span>
+                            <span class="template-name">Nether</span>
+                            <span class="template-desc">Hell dimension items</span>
+                        </button>
+                        <button type="button" class="template-btn" data-template="cave">
+                            <span class="template-icon">⛏️</span>
+                            <span class="template-name">Cave</span>
+                            <span class="template-desc">Underground items</span>
+                        </button>
+                        <button type="button" class="template-btn" data-template="end">
+                            <span class="template-icon">🌌</span>
+                            <span class="template-name">End</span>
+                            <span class="template-desc">Ender dimension items</span>
+                        </button>
+                        <button type="button" class="template-btn" data-template="desert">
+                            <span class="template-icon">🏜️</span>
+                            <span class="template-name">Desert</span>
+                            <span class="template-desc">Sand & arid items</span>
+                        </button>
+                    </div>
+                    <div class="template-actions">
+                        <button type="button" id="start-blank-btn" class="btn-secondary">Start Blank</button>
+                    </div>
+                </div>
+
                 <form id="collection-form">
                     <div class="form-section">
                         <h3>Basic Info</h3>

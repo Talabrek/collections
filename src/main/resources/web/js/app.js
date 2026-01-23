@@ -228,6 +228,16 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.remove('drag-over');
         });
     }
+
+    // Template selector handlers
+    document.getElementById('start-blank-btn').addEventListener('click', startBlankCollection);
+
+    document.querySelectorAll('.template-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const templateName = this.dataset.template;
+            startFromTemplate(templateName);
+        });
+    });
 });
 
 // Connection status heartbeat
