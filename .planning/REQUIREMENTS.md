@@ -104,44 +104,44 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| WEB-01 | TBD | Pending |
-| WEB-02 | TBD | Pending |
-| WEB-03 | TBD | Pending |
-| WEB-04 | TBD | Pending |
-| WEB-05 | TBD | Pending |
-| AUTH-01 | TBD | Pending |
-| AUTH-02 | TBD | Pending |
-| CRUD-01 | TBD | Pending |
-| CRUD-02 | TBD | Pending |
-| CRUD-03 | TBD | Pending |
-| CRUD-04 | TBD | Pending |
-| CRUD-05 | TBD | Pending |
-| CRUD-06 | TBD | Pending |
-| CRUD-07 | TBD | Pending |
-| VB-01 | TBD | Pending |
-| VB-02 | TBD | Pending |
-| VB-03 | TBD | Pending |
-| VB-04 | TBD | Pending |
-| VB-05 | TBD | Pending |
-| VB-06 | TBD | Pending |
-| VB-07 | TBD | Pending |
-| VBE-01 | TBD | Pending |
-| VBE-02 | TBD | Pending |
-| VBE-03 | TBD | Pending |
-| VBE-04 | TBD | Pending |
-| VBE-05 | TBD | Pending |
-| INT-01 | TBD | Pending |
-| INT-02 | TBD | Pending |
-| INT-03 | TBD | Pending |
-| DOC-01 | TBD | Pending |
-| DOC-02 | TBD | Pending |
-| DOC-03 | TBD | Pending |
+| WEB-01 | Phase 18 | Pending |
+| WEB-02 | Phase 18 | Pending |
+| WEB-03 | Phase 18 | Pending |
+| WEB-04 | Phase 18 | Pending |
+| WEB-05 | Phase 18 | Pending |
+| AUTH-01 | Phase 18 | Pending |
+| AUTH-02 | Phase 18 | Pending |
+| INT-03 | Phase 18 | Pending |
+| CRUD-01 | Phase 19 | Pending |
+| CRUD-02 | Phase 19 | Pending |
+| INT-02 | Phase 19 | Pending |
+| CRUD-03 | Phase 20 | Pending |
+| CRUD-04 | Phase 20 | Pending |
+| CRUD-05 | Phase 20 | Pending |
+| CRUD-06 | Phase 20 | Pending |
+| CRUD-07 | Phase 20 | Pending |
+| INT-01 | Phase 20 | Pending |
+| VB-01 | Phase 21 | Pending |
+| VB-02 | Phase 21 | Pending |
+| VB-03 | Phase 21 | Pending |
+| VB-04 | Phase 21 | Pending |
+| VB-05 | Phase 21 | Pending |
+| VB-06 | Phase 21 | Pending |
+| VB-07 | Phase 21 | Pending |
+| VBE-01 | Phase 22 | Pending |
+| VBE-02 | Phase 22 | Pending |
+| VBE-03 | Phase 22 | Pending |
+| VBE-04 | Phase 22 | Pending |
+| VBE-05 | Phase 22 | Pending |
+| DOC-01 | Phase 23 | Pending |
+| DOC-02 | Phase 23 | Pending |
+| DOC-03 | Phase 23 | Pending |
 
 **Coverage:**
 - v1.3 requirements: 32 total
-- Mapped to phases: 0
-- Unmapped: 32
+- Mapped to phases: 32
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after initial definition*
+*Last updated: 2026-01-23 after roadmap creation*
