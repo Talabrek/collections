@@ -34,6 +34,15 @@ dependencies {
         exclude(group = "com.google.protobuf") // X DevAPI not needed
     }
 
+    // Web Panel - Javalin embedded web server
+    implementation("io.javalin:javalin:6.7.0")
+
+    // SLF4J for Javalin logging (required)
+    implementation("org.slf4j:slf4j-simple:2.0.17")
+
+    // BCrypt for password hashing (standalone, no Spring dependency)
+    implementation("at.favre.lib:bcrypt:0.10.2")
+
     // Testing - Use Paper 1.21.1 for MockBukkit compatibility
     // MockBukkit v1.21 is built against 1.21.1-R0.1-SNAPSHOT
     testImplementation("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
