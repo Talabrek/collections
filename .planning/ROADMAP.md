@@ -30,129 +30,24 @@ See `.planning/milestones/v1.2-enhanced-ux/` for archived details.
 
 </details>
 
-### v1.3 Web Control Panel (In Progress)
+<details>
+<summary>v1.3 Web Control Panel (Phases 18-23) - SHIPPED 2026-01-24</summary>
 
-**Milestone Goal:** Enable visual collection management through an embedded web admin panel with full CRUD operations, drag-drop item builder, and live reload capability.
+See `.planning/milestones/v1.3-web-control-panel/` for archived details.
 
-- [x] **Phase 18: Web Infrastructure** - Embedded Javalin server with auth and static file serving (complete 2026-01-23)
-- [x] **Phase 19: Read-Only API** - Collection listing and detail viewing endpoints (complete 2026-01-23)
-- [x] **Phase 20: Write API + CRUD** - Create, edit, delete operations with reload (complete 2026-01-23)
-- [x] **Phase 21: Visual Builder** - Drag-drop item browser and collection editor (complete 2026-01-23)
-- [x] **Phase 22: Visual Builder Enhancements** - MiniMessage preview, templates, weight validation (complete 2026-01-23)
-- [x] **Phase 23: Documentation** - README update with setup instructions and screenshots (complete 2026-01-24)
-
-## Phase Details
-
-### Phase 18: Web Infrastructure
-**Goal**: Plugin hosts an embedded web server that serves static files and requires authentication
-**Depends on**: Phase 17 (v1.2 complete)
-**Requirements**: WEB-01, WEB-02, WEB-03, WEB-04, WEB-05, AUTH-01, AUTH-02, INT-03
-**Success Criteria** (what must be TRUE):
-  1. Admin can access web panel at configured port after plugin starts
-  2. Web panel displays login page when accessed without credentials
-  3. Admin can log in with password from config.yml
-  4. Plugin reload does not cause port binding errors
-  5. Password is stored as hash in config.yml (not plaintext)
-**Plans**: 3 plans
-
-Plans:
-- [x] 18-01-PLAN.md - Add Javalin dependencies and shadowJar relocations
-- [x] 18-02-PLAN.md - WebPanelManager with classloader fix and lifecycle
-- [x] 18-03-PLAN.md - HTTP Basic auth, static files, and status endpoint
-
-### Phase 19: Read-Only API
-**Goal**: Admin can view all collections and their details through the web panel
-**Depends on**: Phase 18
-**Requirements**: CRUD-01, CRUD-02, INT-02
-**Success Criteria** (what must be TRUE):
-  1. Web panel displays list of all collections with names and item counts
-  2. Admin can click a collection to view its full details (items, zones, rewards)
-  3. Connection status indicator shows green when server is reachable
-  4. Collection details load within 2 seconds
-**Plans**: 2 plans
-
-Plans:
-- [x] 19-01-PLAN.md - Backend API: DTO records and CollectionsController endpoints
-- [x] 19-02-PLAN.md - Frontend: Collection list, detail view, and connection heartbeat
-
-### Phase 20: Write API + CRUD
-**Goal**: Admin can create, edit, and delete collections through the web panel
-**Depends on**: Phase 19
-**Requirements**: CRUD-03, CRUD-04, CRUD-05, CRUD-06, CRUD-07, INT-01
-**Success Criteria** (what must be TRUE):
-  1. Admin can create a new collection with basic fields (name, tier, zones)
-  2. Admin can edit any field of an existing collection
-  3. Admin can delete a collection after confirmation prompt
-  4. Invalid YAML syntax shows clear error message with field location
-  5. Reload button applies changes to running server without restart
-**Plans**: 3 plans
-
-Plans:
-- [x] 20-01-PLAN.md - Request DTOs, CollectionValidator, and CollectionYamlWriter
-- [x] 20-02-PLAN.md - CRUD endpoints in CollectionsController with reload
-- [x] 20-03-PLAN.md - Frontend forms, delete modal, and validation feedback
-
-### Phase 21: Visual Builder
-**Goal**: Admin can build collections by dragging items from a visual browser
-**Depends on**: Phase 20
-**Requirements**: VB-01, VB-02, VB-03, VB-04, VB-05, VB-06, VB-07
-**Success Criteria** (what must be TRUE):
-  1. Admin can search/filter items by name and see visual grid with icons
-  2. Admin can drag items from browser into collection slots
-  3. Admin can reorder items within collection via drag-drop
-  4. Admin can remove items from collection via button or drag-out
-  5. Form fields exist for all collection properties (tier, biomes, dimensions, y-levels)
-**Plans**: 3 plans
-
-Plans:
-- [x] 21-01-PLAN.md - Materials API endpoint and spawn condition form fields
-- [x] 21-02-PLAN.md - Two-panel visual builder layout and CSS styling
-- [x] 21-03-PLAN.md - Item browser JavaScript and SortableJS drag-drop integration
-
-### Phase 22: Visual Builder Enhancements
-**Goal**: Visual builder provides templates, weight validation, and MiniMessage preview
-**Depends on**: Phase 21
-**Requirements**: VBE-01, VBE-02, VBE-03, VBE-04, VBE-05
-**Success Criteria** (what must be TRUE):
-  1. MiniMessage formatted text shows live preview as it will appear in-game
-  2. Admin can start new collection from template (forest, ocean, nether, cave, end, desert)
-  3. Weight sum validation warns if item weights do not total 100%
-  4. Admin can set percentage chance and weights auto-adjust other items
-  5. Visual display shows percentage drop chance for each item in collection
-**Plans**: 3 plans
-
-Plans:
-- [x] 22-01-PLAN.md - Collection templates UI and data
-- [x] 22-02-PLAN.md - Weight validation and percentage display/adjustment
-- [x] 22-03-PLAN.md - MiniMessage live preview with minimessage-js
-
-### Phase 23: Documentation
-**Goal**: GitHub README documents web panel setup and usage
-**Depends on**: Phase 22
-**Requirements**: DOC-01, DOC-02, DOC-03
-**Success Criteria** (what must be TRUE):
-  1. README includes web panel feature section with capabilities overview
-  2. README includes setup instructions (port configuration, password, first run)
-  3. README includes screenshots of web panel interface
-**Plans**: 1 plan
-
-Plans:
-- [x] 23-01-PLAN.md — Update README with web panel documentation and screenshots
+</details>
 
 ## Progress
 
-**Execution Order:**
-Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
+| Milestone | Phases | Plans | Status | Shipped |
+|-----------|--------|-------|--------|---------|
+| v1.0 Quality Audit | 1-9 | 24 | ✓ Complete | 2026-01-22 |
+| v1.1 Operational Features | 10-13 | 14 | ✓ Complete | 2026-01-22 |
+| v1.2 Enhanced Collection UX | 14-17 | 6 | ✓ Complete | 2026-01-23 |
+| v1.3 Web Control Panel | 18-23 | 15 | ✓ Complete | 2026-01-24 |
 
-| Phase | Milestone | Plans Complete | Status | Completed |
-|-------|-----------|----------------|--------|-----------|
-| 18. Web Infrastructure | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
-| 19. Read-Only API | v1.3 | 2/2 | ✓ Complete | 2026-01-23 |
-| 20. Write API + CRUD | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
-| 21. Visual Builder | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
-| 22. Visual Builder Enhancements | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
-| 23. Documentation | v1.3 | 1/1 | ✓ Complete | 2026-01-24 |
+**Total:** 4 milestones, 23 phases, 59 plans shipped
 
 ---
-*Roadmap created: 2026-01-23*
-*Last updated: 2026-01-24 after Phase 23 complete - v1.3 milestone shipped*
+*Roadmap created: 2026-01-20*
+*Last updated: 2026-01-24 after v1.3 milestone archived*

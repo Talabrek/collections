@@ -8,20 +8,19 @@ A comprehensive EQ2-style collectibles system for Paper 1.21.4 servers. Players 
 
 Every player interaction must work correctly — collecting items, tracking progress, and claiming rewards cannot lose data or behave unexpectedly.
 
-## Current Milestone: v1.3 Web Control Panel
-
-**Goal:** Enable visual collection management through an embedded web admin panel.
-
-**Target features:**
-- Embedded web server with configurable port
-- Password-protected admin authentication
-- Visual collection builder with drag-drop for items, zones, rewards, spawn rules
-- Full CRUD operations (create, read, update, delete collections)
-- Visual item browser with search/filter
-- Explicit reload to apply changes to running server
-- Updated GitHub README
-
 ## Current State
+
+**v1.3 Web Control Panel — Shipped 2026-01-24**
+
+The plugin now includes a web-based admin panel for visual collection management:
+- Embedded Javalin web server with BCrypt authentication
+- Full CRUD operations (create, read, update, delete collections)
+- Visual collection builder with drag-drop item browser (1400+ materials)
+- 6 biome templates for quick collection creation
+- MiniMessage live preview for styled text
+- Weight validation with percentage display
+- Live reload to apply changes without restart
+- Complete README documentation
 
 **v1.2 Enhanced Collection UX — Shipped 2026-01-23**
 
@@ -84,16 +83,18 @@ Production-ready for multi-server network deployment with:
 - ✓ Add confirmation UI with Yes/No — v1.2
 - ✓ Show collection after adding item with highlight — v1.2
 - ✓ Milestone notifications at 25/50/75% progress — v1.2
+- ✓ Embedded web server with configurable port — v1.3
+- ✓ Password-protected admin authentication (BCrypt) — v1.3
+- ✓ Visual collection builder with drag-drop — v1.3
+- ✓ Full CRUD operations for collections — v1.3
+- ✓ Visual item browser with search/filter — v1.3
+- ✓ 6 biome templates for quick creation — v1.3
+- ✓ MiniMessage live preview — v1.3
+- ✓ Weight validation with percentage display — v1.3
+- ✓ Reload mechanism to apply changes — v1.3
+- ✓ Updated GitHub README — v1.3
 
-### Active (v1.3)
-
-- [ ] Embedded web server with configurable port
-- [ ] Password-protected admin authentication
-- [ ] Visual collection builder with drag-drop
-- [ ] Full CRUD operations for collections
-- [ ] Visual item browser with search/filter
-- [ ] Reload mechanism to apply changes
-- [ ] Updated GitHub README
+### Active (v1.4+)
 
 ### Deferred (v1.4+)
 
@@ -118,7 +119,7 @@ Production-ready for multi-server network deployment with:
 - Full operational tooling for network administrators
 - Data export/import for server migration
 
-**Codebase:** 20,371 lines of Java, 73 files, 120 unit tests
+**Codebase:** 21,895 lines of Java, 81 files, 120 unit tests
 
 ## Constraints
 
@@ -148,6 +149,12 @@ Production-ready for multi-server network deployment with:
 | Boss bar radar | Real-time collectible detection | ✓ With direction indicators |
 | Milestone bitmask | Once-per-milestone triggering | ✓ Database-persisted byte field |
 | GUI transition pattern | Smooth add → view flow | ✓ Unregister source before open |
+| Javalin classloader fix | ServiceLoader compatibility in Bukkit | ✓ Context swap at startup |
+| HTTP Basic Auth | Simple browser-native authentication | ✓ BCrypt password hashing |
+| MainThreadBridge pattern | Thread-safe Bukkit API access from web | ✓ 2000ms timeout |
+| SortableJS for drag-drop | Visual item browser integration | ✓ Clone-on-drag |
+| Template-based creation | Quick collection setup | ✓ 6 biome templates |
+| MiniMessage preview | Live styled text preview | ✓ minimessage-js CDN |
 
 ## Milestones
 
@@ -155,4 +162,4 @@ See `.planning/MILESTONES.md` for shipped milestones.
 See `.planning/milestones/` for archived milestone details.
 
 ---
-*Last updated: 2026-01-23 after v1.3 milestone start*
+*Last updated: 2026-01-24 after v1.3 milestone shipped*

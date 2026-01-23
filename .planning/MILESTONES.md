@@ -1,5 +1,34 @@
 # Project Milestones: Collections Plugin
 
+## v1.3 Web Control Panel (Shipped: 2026-01-24)
+
+**Delivered:** Visual collection management through an embedded web admin panel with full CRUD operations, drag-drop item builder, MiniMessage preview, templates, and comprehensive README documentation.
+
+**Phases completed:** 18-23 (15 plans total)
+
+**Key accomplishments:**
+
+- Built embedded Javalin web server with BCrypt authentication and classloader fix for Bukkit compatibility
+- Created full CRUD API with field-specific validation errors and YAML persistence
+- Implemented visual collection builder with SortableJS drag-drop for 1400+ Minecraft materials
+- Added 6 biome templates (forest, ocean, nether, cave, end, desert) for quick collection creation
+- Built MiniMessage live preview for colored/styled text using minimessage-js
+- Added weight validation with percentage display and auto-adjustment between items
+- Updated README with comprehensive web panel documentation and setup instructions
+
+**Stats:**
+
+- 68 files created/modified
+- 21,895 lines of Java (total project, +1,524 new)
+- 6 phases, 15 plans
+- 2 days from v1.2 to ship (68 minutes execution time)
+
+**Git range:** `docs(18)` → `docs(23)`
+
+**What's next:** v1.4 could add Prometheus metrics endpoint, batch admin operations, spawn heatmap export, and actual web panel screenshots.
+
+---
+
 ## v1.2 Enhanced Collection UX (Shipped: 2026-01-23)
 
 **Delivered:** Tier visibility fixes, boss bar radar for nearby collectibles, enhanced add flow with collection preview, and milestone notifications at 25/50/75% progress.

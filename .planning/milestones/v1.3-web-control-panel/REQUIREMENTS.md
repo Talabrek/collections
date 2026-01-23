@@ -1,3 +1,13 @@
+# Requirements Archive: v1.3 Web Control Panel
+
+**Archived:** 2026-01-24
+**Status:** ✅ SHIPPED
+
+This is the archived requirements specification for v1.3.
+For current requirements, see `.planning/REQUIREMENTS.md` (created for next milestone).
+
+---
+
 # Requirements: Collections Plugin v1.3
 
 **Defined:** 2026-01-23
@@ -60,47 +70,7 @@ Requirements for the Web Control Panel milestone. Each maps to roadmap phases.
 - [x] **DOC-02**: README includes setup instructions (port, password, first run)
 - [x] **DOC-03**: README includes screenshots of web panel interface
 
-## Future Requirements (v1.4+)
-
-Deferred to future releases. Tracked but not in current roadmap.
-
-### Observability
-
-- **OBS-01**: Prometheus metrics endpoint
-- **OBS-02**: Per-collection completion rate tracking
-- **OBS-03**: Spawn heatmap data export
-
-### Admin Enhancements
-
-- **ADMIN-06**: Batch admin operations
-- **ADMIN-07**: Confirmation prompts for destructive operations
-- **ADMIN-08**: Undo recent admin action
-
-### Web Panel Enhancements
-
-- **WEB-06**: Rate limiting on authentication (lock after failed attempts)
-- **WEB-07**: HTTPS support
-- **WEB-08**: Multi-user accounts with roles
-- **WEB-09**: Undo/redo stack for edits
-- **WEB-10**: Version history for collections
-
-## Out of Scope
-
-Explicitly excluded. Documented to prevent scope creep.
-
-| Feature | Reason |
-|---------|--------|
-| Real-time collaborative editing | Massive complexity (CRDT/OT), unlikely use case for server configs |
-| Multi-server dashboard | v1.3 focus is single server; network support is separate milestone |
-| Player data management in web UI | Already have admin commands; web UI adds security risk |
-| World map visualization for zones | Massive scope, requires world rendering infrastructure |
-| Full plugin settings editor | config.yml is simpler, risk of breaking core functionality |
-| OAuth/SSO integration | Enterprise feature, overkill for admin panel |
-| WebSocket live sync | Overkill for config editing; reload button is sufficient |
-
 ## Traceability
-
-Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
@@ -137,11 +107,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DOC-02 | Phase 23 | Complete |
 | DOC-03 | Phase 23 | Complete |
 
-**Coverage:**
-- v1.3 requirements: 32 total
-- Mapped to phases: 32
-- Complete: 32
+---
+
+## Milestone Summary
+
+**Shipped:** 32 of 32 v1.3 requirements
+**Adjusted:** None
+**Dropped:** None
+
+All requirements shipped as originally specified. No scope changes during implementation.
 
 ---
-*Requirements defined: 2026-01-23*
-*Last updated: 2026-01-24 after Phase 23 complete - v1.3 milestone shipped*
+*Archived: 2026-01-24 as part of v1.3 milestone completion*
