@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 ## Current Position
 
 Milestone: v1.3 Web Control Panel
-Phase: 21 of 23 (Visual Builder)
-Plan: 3 of 3 complete
-Status: Phase complete
-Last activity: 2026-01-23 - Completed Phase 21 (Visual Builder)
+Phase: 22 of 23 (Visual Builder Enhancements)
+Plan: 1 of 3 complete
+Status: In progress
+Last activity: 2026-01-23 - Completed 22-01-PLAN.md
 
-Progress: [####################] 100% (Phase 21 complete)
+Progress: [#####################] 92% (12 of 13 plans complete)
 
 ## Shipped Milestones
 
@@ -46,8 +46,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~34 min
 
 **v1.3 Velocity (in progress):**
-- Plans completed: 11
-- Duration: 54 min (6 + 5 + 6 + 5 + 5 + 6 + 5 + 5 + 6 + 2 + 3)
+- Plans completed: 12
+- Duration: 58 min (6 + 5 + 6 + 5 + 5 + 6 + 5 + 5 + 6 + 2 + 3 + 4)
 
 ## Accumulated Context
 
@@ -76,6 +76,9 @@ Full decision history archived in `.planning/milestones/`.
 | 21-03 | DRAG-01: Clone-on-drag from browser | Browser items remain selectable after drag |
 | 21-03 | DRAG-02: Drag handle for collection reordering | Prevents accidental reordering |
 | 21-03 | CACHE-01: Cache materials in allMaterials array | Avoid redundant API calls |
+| 22-01 | TMPL-01: 6 template types with pre-configured biomes, dimensions, and items | Reduces setup time from minutes to seconds |
+| 22-01 | TMPL-02: Template selector only for new collections | Edit mode bypasses template selector |
+| 22-01 | TMPL-03: Auto-generate unique IDs with template name + timestamp | Prevents ID collision |
 
 ### Known Issues
 
@@ -90,8 +93,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Phase 21 complete
-Resume with: `/gsd:plan-phase 22` to plan Visual Builder Enhancements phase
+Stopped at: Completed 22-01-PLAN.md
+Resume file: None
 
 ---
-*Updated: 2026-01-23 after 21-03 complete*
+*Updated: 2026-01-23 after 22-01 complete*
