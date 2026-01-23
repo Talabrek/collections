@@ -22,8 +22,8 @@ Requirements for the Web Control Panel milestone. Each maps to roadmap phases.
 
 ### Collection CRUD
 
-- [ ] **CRUD-01**: Admin can view list of all collections in web panel
-- [ ] **CRUD-02**: Admin can view details of a single collection
+- [x] **CRUD-01**: Admin can view list of all collections in web panel
+- [x] **CRUD-02**: Admin can view details of a single collection
 - [ ] **CRUD-03**: Admin can create a new collection from scratch
 - [ ] **CRUD-04**: Admin can edit any field of an existing collection
 - [ ] **CRUD-05**: Admin can delete a collection (with confirmation prompt)
@@ -51,7 +51,7 @@ Requirements for the Web Control Panel milestone. Each maps to roadmap phases.
 ### Server Integration
 
 - [ ] **INT-01**: "Reload" button applies changes to running server without restart
-- [ ] **INT-02**: Connection status indicator shows if web panel is connected to server
+- [x] **INT-02**: Connection status indicator shows if web panel is connected to server
 - [x] **INT-03**: All Bukkit API calls from web handlers execute on main thread
 
 ### Documentation
@@ -112,9 +112,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-01 | Phase 18 | Complete |
 | AUTH-02 | Phase 18 | Complete |
 | INT-03 | Phase 18 | Complete |
-| CRUD-01 | Phase 19 | Pending |
-| CRUD-02 | Phase 19 | Pending |
-| INT-02 | Phase 19 | Pending |
+| CRUD-01 | Phase 19 | Complete |
+| CRUD-02 | Phase 19 | Complete |
+| INT-02 | Phase 19 | Complete |
 | CRUD-03 | Phase 20 | Pending |
 | CRUD-04 | Phase 20 | Pending |
 | CRUD-05 | Phase 20 | Pending |
@@ -144,4 +144,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 18 complete*
+*Last updated: 2026-01-23 after Phase 19 complete*

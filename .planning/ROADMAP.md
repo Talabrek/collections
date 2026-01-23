@@ -35,7 +35,7 @@ See `.planning/milestones/v1.2-enhanced-ux/` for archived details.
 **Milestone Goal:** Enable visual collection management through an embedded web admin panel with full CRUD operations, drag-drop item builder, and live reload capability.
 
 - [x] **Phase 18: Web Infrastructure** - Embedded Javalin server with auth and static file serving (complete 2026-01-23)
-- [ ] **Phase 19: Read-Only API** - Collection listing and detail viewing endpoints
+- [x] **Phase 19: Read-Only API** - Collection listing and detail viewing endpoints (complete 2026-01-23)
 - [ ] **Phase 20: Write API + CRUD** - Create, edit, delete operations with reload
 - [ ] **Phase 21: Visual Builder** - Drag-drop item browser and collection editor
 - [ ] **Phase 22: Visual Builder Enhancements** - MiniMessage preview, templates, weight validation
@@ -72,8 +72,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 19-01-PLAN.md - Backend API: DTO records and CollectionsController endpoints
-- [ ] 19-02-PLAN.md - Frontend: Collection list, detail view, and connection heartbeat
+- [x] 19-01-PLAN.md - Backend API: DTO records and CollectionsController endpoints
+- [x] 19-02-PLAN.md - Frontend: Collection list, detail view, and connection heartbeat
 
 ### Phase 20: Write API + CRUD
 **Goal**: Admin can create, edit, and delete collections through the web panel
@@ -146,7 +146,7 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 18. Web Infrastructure | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
-| 19. Read-Only API | v1.3 | 0/2 | Not started | - |
+| 19. Read-Only API | v1.3 | 2/2 | ✓ Complete | 2026-01-23 |
 | 20. Write API + CRUD | v1.3 | 0/TBD | Not started | - |
 | 21. Visual Builder | v1.3 | 0/TBD | Not started | - |
 | 22. Visual Builder Enhancements | v1.3 | 0/TBD | Not started | - |
@@ -154,4 +154,4 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 
 ---
 *Roadmap created: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 19 planned*
+*Last updated: 2026-01-23 after Phase 19 complete*

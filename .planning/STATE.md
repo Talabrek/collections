@@ -80,8 +80,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed Phase 19 (Read-Only API)
-Resume file: .planning/phases/20-player-data-api/20-01-PLAN.md
+Stopped at: Phase 19 (Read-Only API) verified and complete
+Resume with: `/gsd:discuss-phase 20` or `/gsd:plan-phase 20` to begin Write API + CRUD
 
 ---
 *Updated: 2026-01-23 after Phase 19 complete*
