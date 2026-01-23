@@ -622,3 +622,224 @@ footer {
     margin: 0;
     flex: 1;
 }
+
+/* ========== Visual Builder Layout ========== */
+
+/* Two-panel layout for items section */
+.items-section .items-layout {
+    display: flex;
+    gap: 1rem;
+}
+
+.collection-items-panel {
+    flex: 2;
+    min-width: 300px;
+}
+
+.item-browser-panel {
+    flex: 1;
+    min-width: 250px;
+    max-width: 350px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    padding: 1rem;
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+}
+
+.browser-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.browser-header h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.browser-count {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.browser-search {
+    margin-bottom: 0.75rem;
+}
+
+.browser-search input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.browser-search input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* Item browser grid */
+.item-browser-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+    gap: 4px;
+    overflow-y: auto;
+    flex: 1;
+    padding: 4px;
+}
+
+.browser-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 4px;
+    cursor: grab;
+    border-radius: 4px;
+    background: var(--bg-secondary);
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+    min-height: 56px;
+}
+
+.browser-item:hover {
+    background: var(--bg-primary);
+    border-color: var(--accent-color);
+    transform: scale(1.05);
+}
+
+.browser-item:active {
+    cursor: grabbing;
+}
+
+.browser-item .item-icon {
+    font-size: 1.5rem;
+    margin-bottom: 2px;
+}
+
+.browser-item .item-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+/* Items container styling */
+.items-container {
+    min-height: 100px;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.items-container:empty::before {
+    content: 'Drag items here or click Add Item';
+    display: block;
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.items-container.drag-over {
+    background: rgba(0, 217, 255, 0.05);
+    border-color: var(--accent-color);
+}
+
+/* Drag handle for item rows */
+.item-row {
+    position: relative;
+}
+
+.item-row-header {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 6px 6px 0 0;
+}
+
+.drag-handle {
+    cursor: grab;
+    padding: 0 0.5rem 0 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+    user-select: none;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.item-number {
+    flex: 1;
+    font-weight: 500;
+}
+
+/* SortableJS drag states */
+.sortable-ghost {
+    opacity: 0.4;
+    background: var(--accent-color) !important;
+}
+
+.sortable-chosen {
+    box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3);
+}
+
+.sortable-drag {
+    opacity: 1 !important;
+}
+
+/* Body class during drag for global feedback */
+body.is-dragging .items-container {
+    background: rgba(0, 217, 255, 0.03);
+}
+
+body.is-dragging .item-browser-grid .browser-item {
+    pointer-events: none;
+}
+
+/* Checkbox row for dimensions */
+.checkbox-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.checkbox-row label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+/* Responsive: Stack panels on narrow screens */
+@media (max-width: 768px) {
+    .items-section .items-layout {
+        flex-direction: column;
+    }
+
+    .item-browser-panel {
+        max-width: none;
+        max-height: 300px;
+        position: static;
+    }
+}
