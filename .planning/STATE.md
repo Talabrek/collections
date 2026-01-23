@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 
 Milestone: v1.3 Web Control Panel
 Phase: 22 of 23 (Visual Builder Enhancements)
-Plan: 1 of 3 complete
+Plan: 2 of 3 complete
 Status: In progress
-Last activity: 2026-01-23 - Completed 22-01-PLAN.md
+Last activity: 2026-01-23 - Completed 22-02-PLAN.md
 
-Progress: [#####################] 92% (12 of 13 plans complete)
+Progress: [######################] 93% (13 of 14 plans complete)
 
 ## Shipped Milestones
 
@@ -46,8 +46,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~34 min
 
 **v1.3 Velocity (in progress):**
-- Plans completed: 12
-- Duration: 58 min (6 + 5 + 6 + 5 + 5 + 6 + 5 + 5 + 6 + 2 + 3 + 4)
+- Plans completed: 13
+- Duration: 62 min (6 + 5 + 6 + 5 + 5 + 6 + 5 + 5 + 6 + 2 + 3 + 4 + 4)
 
 ## Accumulated Context
 
@@ -79,6 +79,9 @@ Full decision history archived in `.planning/milestones/`.
 | 22-01 | TMPL-01: 6 template types with pre-configured biomes, dimensions, and items | Reduces setup time from minutes to seconds |
 | 22-01 | TMPL-02: Template selector only for new collections | Edit mode bypasses template selector |
 | 22-01 | TMPL-03: Auto-generate unique IDs with template name + timestamp | Prevents ID collision |
+| 22-02 | WEIGHT-01: Integer weights summing to 100 | Simplifies percentage calculation and avoids floating point issues |
+| 22-02 | WEIGHT-02: Proportional redistribution on percentage change | Preserves relative ratios between other items |
+| 22-02 | WEIGHT-03: isAdjustingWeights flag to prevent recursion | Prevents infinite loops during programmatic updates |
 
 ### Known Issues
 
@@ -93,8 +96,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Completed 22-01-PLAN.md
+Stopped at: Completed 22-02-PLAN.md
 Resume file: None
 
 ---
-*Updated: 2026-01-23 after 22-01 complete*
+*Updated: 2026-01-23 after 22-02 complete*
