@@ -37,7 +37,7 @@ See `.planning/milestones/v1.2-enhanced-ux/` for archived details.
 - [x] **Phase 18: Web Infrastructure** - Embedded Javalin server with auth and static file serving (complete 2026-01-23)
 - [x] **Phase 19: Read-Only API** - Collection listing and detail viewing endpoints (complete 2026-01-23)
 - [x] **Phase 20: Write API + CRUD** - Create, edit, delete operations with reload (complete 2026-01-23)
-- [ ] **Phase 21: Visual Builder** - Drag-drop item browser and collection editor
+- [x] **Phase 21: Visual Builder** - Drag-drop item browser and collection editor (complete 2026-01-23)
 - [ ] **Phase 22: Visual Builder Enhancements** - MiniMessage preview, templates, weight validation
 - [ ] **Phase 23: Documentation** - README update with setup instructions and screenshots
 
@@ -105,9 +105,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 21-01-PLAN.md - Materials API endpoint and spawn condition form fields
-- [ ] 21-02-PLAN.md - Two-panel visual builder layout and CSS styling
-- [ ] 21-03-PLAN.md - Item browser JavaScript and SortableJS drag-drop integration
+- [x] 21-01-PLAN.md - Materials API endpoint and spawn condition form fields
+- [x] 21-02-PLAN.md - Two-panel visual builder layout and CSS styling
+- [x] 21-03-PLAN.md - Item browser JavaScript and SortableJS drag-drop integration
 
 ### Phase 22: Visual Builder Enhancements
 **Goal**: Visual builder provides templates, weight validation, and MiniMessage preview
@@ -148,10 +148,10 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 | 18. Web Infrastructure | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 19. Read-Only API | v1.3 | 2/2 | ✓ Complete | 2026-01-23 |
 | 20. Write API + CRUD | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
-| 21. Visual Builder | v1.3 | 0/3 | Not started | - |
+| 21. Visual Builder | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 22. Visual Builder Enhancements | v1.3 | 0/TBD | Not started | - |
 | 23. Documentation | v1.3 | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 21 planning*
+*Last updated: 2026-01-23 after Phase 21 complete*

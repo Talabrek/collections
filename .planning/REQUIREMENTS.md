@@ -32,13 +32,13 @@ Requirements for the Web Control Panel milestone. Each maps to roadmap phases.
 
 ### Visual Builder
 
-- [ ] **VB-01**: Admin can search/filter all Minecraft items by name
-- [ ] **VB-02**: Admin can browse items in visual grid with icons
-- [ ] **VB-03**: Admin can drag items from browser into collection slots
-- [ ] **VB-04**: Admin can reorder items within collection via drag-drop
-- [ ] **VB-05**: Admin can remove items from collection via drag-drop or button
-- [ ] **VB-06**: Form fields exist for: tier, biomes, dimensions, y-level range
-- [ ] **VB-07**: Item entry form has: material, name, lore lines, weight
+- [x] **VB-01**: Admin can search/filter all Minecraft items by name
+- [x] **VB-02**: Admin can browse items in visual grid with icons
+- [x] **VB-03**: Admin can drag items from browser into collection slots
+- [x] **VB-04**: Admin can reorder items within collection via drag-drop
+- [x] **VB-05**: Admin can remove items from collection via drag-drop or button
+- [x] **VB-06**: Form fields exist for: tier, biomes, dimensions, y-level range
+- [x] **VB-07**: Item entry form has: material, name, lore lines, weight
 
 ### Visual Builder Enhancements
 
@@ -121,13 +121,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CRUD-06 | Phase 20 | Complete |
 | CRUD-07 | Phase 20 | Complete |
 | INT-01 | Phase 20 | Complete |
-| VB-01 | Phase 21 | Pending |
-| VB-02 | Phase 21 | Pending |
-| VB-03 | Phase 21 | Pending |
-| VB-04 | Phase 21 | Pending |
-| VB-05 | Phase 21 | Pending |
-| VB-06 | Phase 21 | Pending |
-| VB-07 | Phase 21 | Pending |
+| VB-01 | Phase 21 | Complete |
+| VB-02 | Phase 21 | Complete |
+| VB-03 | Phase 21 | Complete |
+| VB-04 | Phase 21 | Complete |
+| VB-05 | Phase 21 | Complete |
+| VB-06 | Phase 21 | Complete |
+| VB-07 | Phase 21 | Complete |
 | VBE-01 | Phase 22 | Pending |
 | VBE-02 | Phase 22 | Pending |
 | VBE-03 | Phase 22 | Pending |
@@ -144,4 +144,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 20 complete*
+*Last updated: 2026-01-23 after Phase 21 complete*
