@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 
 Milestone: v1.3 Web Control Panel
 Phase: 20 of 23 (Write API + CRUD)
-Plan: 1 of 3 complete
+Plan: 2 of 3 complete
 Status: In progress
-Last activity: 2026-01-23 - Completed 20-01-PLAN.md (Request DTOs and Validation)
+Last activity: 2026-01-23 - Completed 20-02-PLAN.md (CRUD Endpoints)
 
-Progress: [######--------------] 33% (Plan 1/3 of Phase 20)
+Progress: [############--------] 67% (Plan 2/3 of Phase 20)
 
 ## Shipped Milestones
 
@@ -46,8 +46,8 @@ See `.planning/milestones/` for archived details.
 - Total execution time: ~34 min
 
 **v1.3 Velocity (in progress):**
-- Plans completed: 6
-- Duration: 33 min (6 + 5 + 6 + 5 + 5 + 6)
+- Plans completed: 7
+- Duration: 38 min (6 + 5 + 6 + 5 + 5 + 6 + 5)
 
 ## Accumulated Context
 
@@ -68,6 +68,7 @@ Full decision history archived in `.planning/milestones/`.
 | 19-02 | UI-02: 30-second heartbeat interval | Balances responsiveness with minimal server load |
 | 20-01 | DTO-01: Java records with nullable types for request DTOs | Records provide immutable transfer, nullable handles missing JSON |
 | 20-01 | VAL-01: Use isValid instead of valid for ValidationResult | Avoids Java record accessor/static method name conflict |
+| 20-02 | CRUD-01: RuntimeException message prefix for main thread error translation | Clean error propagation from main thread to HTTP response codes |
 
 ### Known Issues
 
@@ -82,8 +83,8 @@ None for v1.3 yet.
 ## Session Continuity
 
 Last session: 2026-01-23
-Stopped at: Phase 20 Plan 01 complete
-Resume with: `/gsd:execute-phase 20` to continue with 20-02-PLAN.md
+Stopped at: Phase 20 Plan 02 complete
+Resume with: `/gsd:execute-phase 20` to continue with 20-03-PLAN.md
 
 ---
-*Updated: 2026-01-23 after 20-01 complete*
+*Updated: 2026-01-23 after 20-02 complete*
