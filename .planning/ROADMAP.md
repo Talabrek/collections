@@ -85,12 +85,12 @@ Plans:
   3. Admin can delete a collection after confirmation prompt
   4. Invalid YAML syntax shows clear error message with field location
   5. Reload button applies changes to running server without restart
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 20-01: TBD
-- [ ] 20-02: TBD
-- [ ] 20-03: TBD
+- [ ] 20-01-PLAN.md - Request DTOs, CollectionValidator, and CollectionYamlWriter
+- [ ] 20-02-PLAN.md - CRUD endpoints in CollectionsController with reload
+- [ ] 20-03-PLAN.md - Frontend forms, delete modal, and validation feedback
 
 ### Phase 21: Visual Builder
 **Goal**: Admin can build collections by dragging items from a visual browser
@@ -147,11 +147,11 @@ Phases execute in numeric order: 18 -> 19 -> 20 -> 21 -> 22 -> 23
 |-------|-----------|----------------|--------|-----------|
 | 18. Web Infrastructure | v1.3 | 3/3 | ✓ Complete | 2026-01-23 |
 | 19. Read-Only API | v1.3 | 2/2 | ✓ Complete | 2026-01-23 |
-| 20. Write API + CRUD | v1.3 | 0/TBD | Not started | - |
+| 20. Write API + CRUD | v1.3 | 0/3 | Planned | - |
 | 21. Visual Builder | v1.3 | 0/TBD | Not started | - |
 | 22. Visual Builder Enhancements | v1.3 | 0/TBD | Not started | - |
 | 23. Documentation | v1.3 | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-01-23*
-*Last updated: 2026-01-23 after Phase 19 complete*
+*Last updated: 2026-01-23 after Phase 20 planning*
