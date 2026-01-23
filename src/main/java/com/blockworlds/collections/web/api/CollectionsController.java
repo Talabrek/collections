@@ -187,7 +187,8 @@ public class CollectionsController {
         CollectionRequest effectiveRequest = request.id() != null ? request :
             new CollectionRequest(id, request.name(), request.description(),
                 request.tier(), request.icon(), request.items(),
-                request.rewards(), request.zones(), request.requires());
+                request.rewards(), request.zones(), request.requires(),
+                request.biomes(), request.dimensions(), request.minY(), request.maxY());
 
         // Validate request
         CollectionValidator.ValidationResult validation = validator.validate(effectiveRequest);

@@ -52,6 +52,23 @@ public class CollectionYamlWriter {
             yaml.set("requires", request.requires());
         }
 
+        // Spawn conditions
+        if (request.biomes() != null && !request.biomes().isEmpty()) {
+            yaml.set("biomes", request.biomes());
+        }
+
+        if (request.dimensions() != null && !request.dimensions().isEmpty()) {
+            yaml.set("dimensions", request.dimensions());
+        }
+
+        if (request.minY() != null && request.minY() != -64) {
+            yaml.set("min-y", request.minY());
+        }
+
+        if (request.maxY() != null && request.maxY() != 320) {
+            yaml.set("max-y", request.maxY());
+        }
+
         // Items section
         if (request.items() != null) {
             for (ItemRequest item : request.items()) {
